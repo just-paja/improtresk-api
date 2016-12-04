@@ -19,8 +19,6 @@ Po uhrazení účastnického poplatku budete přiřazen na workshop. O přijetí
 platby tě budeme informovat automatickým e-mailem. Detaily platby jsou níže.
 
 Do zprávy prosím uveď pro kontrolu svoje jméno.
-
-{footer}
 """
 
 
