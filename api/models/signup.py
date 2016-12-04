@@ -1,11 +1,12 @@
 """Signup model."""
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core import mail
 from django.db import models
+
+from ..mail import signup as templates
+from ..mail.common import formatMail, formatWorkshop
 from .base import Base
 from .workshop import Workshop
-from ..mail.common import formatMail, formatWorkshop
-from ..mail import signup as templates
 
 
 class Signup(Base):
@@ -24,6 +25,11 @@ class Signup(Base):
 
     assignedWorkshop = models.ForeignKey(Workshop, blank=True, null=True)
 
+    def __str__(self):
+        """Return name and status as string representation."""
+        status = 'assigned' if self.assignedWorkshop else 'unassigned'
+        return "%s (%s)" % (self.name, status)
+
     def __init__(self, *args, **kwargs):
         """Store initial asssignment."""
         super(Signup, self).__init__(*args, **kwargs)
@@ -34,7 +40,7 @@ class Signup(Base):
         super(Signup, self).save(*args, **kwargs)
         self.mailReassignment()
 
-    def getReassignmentOperation(self):
+    def getReassignmentTemplate(self):
         """Reconcile what e-mail template will be used."""
         template = None
 
@@ -57,12 +63,8 @@ class Signup(Base):
 
         return template
 
-    def mailReassignment(self):
-        """E-mail changes to the signup assignment."""
-        template = self.getReassignmentOperation()
-        if not template:
-            return None
-
+    def getReassignmentMailBody(self, template):
+        """Format template body to be emailed."""
         prevWorkshop = None
         currentWorkshop = None
 
@@ -78,10 +80,18 @@ class Signup(Base):
                 'lectorName': self.assignedWorkshop.lector.name,
             })
 
-        body = formatMail(template[1], {
+        return formatMail(template, {
             'prevWorkshop': prevWorkshop,
             'currentWorkshop': currentWorkshop,
             'workshopPreferences': 'foo',
         })
 
-        send_mail(template[0], body, settings.EMAIL_SENDER, [self.email])
+    def mailReassignment(self):
+        """E-mail changes to the signup assignment."""
+        template = self.getReassignmentTemplate()
+
+        if not template:
+            return None
+
+        body = self.getReassignmentMailBody(template[1])
+        mail.send_mail(template[0], body, settings.EMAIL_SENDER, [self.email])
