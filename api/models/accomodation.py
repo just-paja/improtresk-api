@@ -12,3 +12,7 @@ class Accomodation(Base):
     price = models.PositiveIntegerField()
     visibility = models.PositiveIntegerField(choices=VISIBILITY_CHOICES)
     capacity = models.PositiveIntegerField(default=12)
+
+    def __str__(self):
+        """Return name as string representation."""
+        return self.name
