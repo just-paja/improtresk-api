@@ -1,5 +1,7 @@
 """Common items for all e-mails."""
 
+from django.conf import settings
+
 WORKSHOP = "{lectorName}: {name}"
 
 WORKSHOP_LIST_ITEM = """
@@ -33,13 +35,12 @@ Tato zpráva byla vyžádána v rámci placené přihlášky na Improtřesk {yea
 
 def formatWorkshop(data):
     """Format workshop data into string."""
-    print("%s" % data)
-    return WORKSHOP.format(data)
+    return WORKSHOP.format(**data)
 
 
 def formatWorkshopListItem(data):
     """Format workshop data into list item string."""
-    return WORKSHOP_LIST_ITEM.format(data)
+    return WORKSHOP_LIST_ITEM.format(**data)
 
 
 def formatWorkshopList(workshops):
@@ -49,5 +50,9 @@ def formatWorkshopList(workshops):
 
 def formatMail(template, data):
     """Format e-mail body to be sent."""
+    config = {
+     'year': settings.YEAR,
+    }
+    replace = {**data, **config}
     body = template + MAIL_FOOTER
-    return body.format(data)
+    return body.format(**replace)
