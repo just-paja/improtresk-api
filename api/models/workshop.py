@@ -14,3 +14,7 @@ class Workshop(Base):
     visibility = models.PositiveIntegerField(choices=VISIBILITY_CHOICES)
     capacity = models.PositiveIntegerField(default=12)
     lector = models.ForeignKey(Lector, related_name='workshops')
+
+    def __str__(self):
+        """Return name as string representation."""
+        return self.name
