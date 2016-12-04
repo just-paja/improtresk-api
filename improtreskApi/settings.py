@@ -129,3 +129,5 @@ NOSE_ARGS = [
 ]
 
 EMAIL_SENDER = 'info@improtresk.cz'
+
+YEAR = 2017
