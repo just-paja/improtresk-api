@@ -104,7 +104,6 @@ class PaymentAdmin(BaseAdminModel):
                 'message',
             ]
         return super(PaymentAdmin, self).get_readonly_fields(
-            self,
             request,
             obj
         )
