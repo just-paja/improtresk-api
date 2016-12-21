@@ -1,0 +1,61 @@
+FORMAT: 1A
+HOST: http://improtresk-api.apiblueprint.org/api
+
+# improtresk-api
+
+Improtřesk API is a public API service that allows festival participants to log in to festival, but tickets and view archive of Improtřesk festival.
+
+## Years Collection [/years]
+
+### List All Years [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "year": "2015",
+                "startAt": "2015-04-22",
+                "startSignupsAt": "2015-02-12T15:23:00",
+                "endAt": "2015-04-27",
+                "topic": "Sladíme se spolu"
+            },
+            {
+                "id": 2,
+                "year": "2016",
+                "startAt": "2016-04-22",
+                "startSignupsAt": "2016-02-12T15:23:00",
+                "endAt": "2016-04-27",
+                "topic": "Na společné vlně"
+            },
+            {
+                "id": 3,
+                "year": "2017",
+                "startAt": "2017-04-22",
+                "startSignupsAt": "2017-02-12T11:00:00",
+                "endAt": "2017-04-27",
+                "topic": "Až na kůži",
+                "current": true
+            }
+        ]
+
+## News Collection [/news]
+
+### List All News [GET]
+
+Sorted by created at descendant
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 2,
+                "text": "Zveřejnili jsme všechny workshopy. Přihlašovat se můžete od 1. března.",
+                "createdAt": "2016-11-30T18:29:31"
+            },
+            {
+                "id": 1,
+                "text": "Organizace Improtřesku začíná. Sestavili jsme nový organizační tým a už to jede!",
+                "createdAt": "2016-11-29T18:29:31"
+            }
+        ]
