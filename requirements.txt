@@ -1,5 +1,6 @@
 argh==0.26.2
 astroid==1.4.8
+codeclimate-test-reporter==0.2.0
 colorama==0.3.7
 coverage==4.2
 Django==1.10.4
@@ -15,6 +16,7 @@ pathtools==0.1.2
 pbr==1.10.0
 pep8==1.7.0
 Pillow==3.4.2
+pluggy==0.4.0
 py==1.4.31
 pycodestyle==2.2.0
 pydocstyle==1.1.1
@@ -25,6 +27,8 @@ pytest==3.0.4
 pytest-django==3.1.2
 pytest-watch==4.1.0
 PyYAML==3.12
+requests==2.12.4
 six==1.10.0
+virtualenv==15.1.0
 watchdog==0.8.3
 wrapt==1.10.8
