@@ -3,3 +3,4 @@ __pycache__
 /var
 /db.sqlite3
 /.coverage
+/env
