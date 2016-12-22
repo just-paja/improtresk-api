@@ -11,7 +11,7 @@ from .workshop import Workshop
 def generate_symvar():
     """Generate variable symbol for a new order."""
     today = datetime.now().strftime('%y%m%d%H%M')
-    total = Order.count()
+    total = Order.objects.count()
     return "%s%s" % (today, total)
 
 
@@ -29,7 +29,7 @@ class Order(Base):
 
     def save(self, *args, **kwargs):
         """Generate variable symbol if not available yet."""
-        super(Base, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
         if not self.symvar:
             self.symvar = generate_symvar()
