@@ -12,6 +12,7 @@ from .participant import Participant
 from .workshop import Workshop
 from .workshopPhoto import WorkshopPhoto
 from .year import Year
+from .workshopDifficulty import WorkshopDifficulty
 
 __all__ = (
     Accomodation,
@@ -26,4 +27,5 @@ __all__ = (
     Workshop,
     WorkshopPhoto,
     Year,
+    WorkshopDifficulty,
 )

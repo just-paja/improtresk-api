@@ -44,6 +44,13 @@ class WorkshopPhotoAdmin(BaseInlineAdminModel):
     model = models.WorkshopPhoto
 
 
+@admin.register(models.WorkshopDifficulty)
+class WorkshopDifficultyAdmin(BaseAdminModel):
+    """Admin model for Workshop difficulties."""
+
+    prepopulated_fields = {'slug': ('name',)}
+
+
 @admin.register(models.Workshop)
 class WorkshopAdmin(BaseAdminModel):
     """Admin model for Workshops and their photos."""
