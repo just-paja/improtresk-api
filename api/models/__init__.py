@@ -7,6 +7,8 @@ from .foodPhoto import FoodPhoto
 from .lector import Lector
 from .lectorPhoto import LectorPhoto
 from .lectorRole import LectorRole
+from .meal import Meal
+from .mealReservation import MealReservation
 from .order import Order
 from .payment import Payment
 from .participant import Participant
@@ -28,6 +30,8 @@ __all__ = (
     Lector,
     LectorPhoto,
     LectorRole,
+    Meal,
+    MealReservation,
     Order,
     Payment,
     Participant,
