@@ -1,7 +1,7 @@
 """Site administration module."""
 from django.contrib import admin
-from .models import Accomodation, AccomodationPhoto, Food, FoodPhoto, \
-    Lector, LectorPhoto, Payment, Participant, Workshop, WorkshopPhoto, Year
+
+from . import models
 
 
 DEFAULT_READONLY = ['createdAt', 'updatedAt']
@@ -26,10 +26,10 @@ class BaseInlineAdminModel(admin.TabularInline):
 class LectorPhotoAdmin(BaseInlineAdminModel):
     """Admin model for Lector photos."""
 
-    model = LectorPhoto
+    model = models.LectorPhoto
 
 
-@admin.register(Lector)
+@admin.register(models.Lector)
 class LectorAdmin(BaseAdminModel):
     """Admin model for Lectors and their photos."""
 
@@ -41,10 +41,10 @@ class LectorAdmin(BaseAdminModel):
 class WorkshopPhotoAdmin(BaseInlineAdminModel):
     """Admin model for Workshop photos."""
 
-    model = WorkshopPhoto
+    model = models.WorkshopPhoto
 
 
-@admin.register(Workshop)
+@admin.register(models.Workshop)
 class WorkshopAdmin(BaseAdminModel):
     """Admin model for Workshops and their photos."""
 
@@ -56,10 +56,10 @@ class WorkshopAdmin(BaseAdminModel):
 class AccomodationPhotoAdmin(BaseInlineAdminModel):
     """Admin model for Accomodation photos."""
 
-    model = AccomodationPhoto
+    model = models.AccomodationPhoto
 
 
-@admin.register(Accomodation)
+@admin.register(models.Accomodation)
 class AccomodationAdmin(BaseAdminModel):
     """Admin model for Accomodation and its photos."""
 
@@ -71,10 +71,10 @@ class AccomodationAdmin(BaseAdminModel):
 class FoodPhotoAdmin(BaseInlineAdminModel):
     """Admin model for Food photos."""
 
-    model = FoodPhoto
+    model = models.FoodPhoto
 
 
-@admin.register(Food)
+@admin.register(models.Food)
 class FoodAdmin(BaseAdminModel):
     """Admin model for Food and its photos."""
 
@@ -83,7 +83,7 @@ class FoodAdmin(BaseAdminModel):
     ]
 
 
-@admin.register(Payment)
+@admin.register(models.Payment)
 class PaymentAdmin(BaseAdminModel):
     """Admin model for Food and its photos."""
 
@@ -109,14 +109,14 @@ class PaymentAdmin(BaseAdminModel):
         )
 
 
-@admin.register(Participant)
+@admin.register(models.Participant)
 class ParticipantAdmin(BaseAdminModel):
     """Admin model for Participants."""
 
     pass
 
 
-@admin.register(Year)
+@admin.register(models.Year)
 class YearAdmin(BaseAdminModel):
     """Admin model for Years."""
 
