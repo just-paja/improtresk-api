@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from .base import Base
 from .lector import Lector
 from .workshopDifficulty import WorkshopDifficulty
+from .workshopLector import WorkshopLector
 from ..fields import VISIBILITY_CHOICES
 
 
@@ -19,7 +20,7 @@ class Workshop(Base):
     )
     visibility = models.PositiveIntegerField(choices=VISIBILITY_CHOICES)
     capacity = models.PositiveIntegerField(default=12)
-    lector = models.ForeignKey(Lector, related_name='workshops')
+    lectors = models.ManyToManyField(Lector, related_name='workshops', through=WorkshopLector)
 
     def __str__(self):
         """Return name as string representation."""
