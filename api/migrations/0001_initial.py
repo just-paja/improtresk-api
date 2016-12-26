@@ -106,6 +106,20 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='LectorRole',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('name', models.CharField(max_length=127, verbose_name='Name')),
+                ('slug', models.SlugField(verbose_name='Identifier')),
+            ],
+            options={
+                'verbose_name': 'Lectors role at workshop',
+                'verbose_name_plural': 'Lectors roles at workshop',
+            },
+        ),
+        migrations.CreateModel(
             name='Order',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -126,8 +140,8 @@ class Migration(migrations.Migration):
             name='Participant',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('createdAt', models.DateTimeField()),
-                ('updatedAt', models.DateTimeField()),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=255)),
                 ('address', models.CharField(max_length=255)),
                 ('email', models.EmailField(max_length=255)),
@@ -167,8 +181,8 @@ class Migration(migrations.Migration):
             name='Team',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('createdAt', models.DateTimeField()),
-                ('updatedAt', models.DateTimeField()),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=127, verbose_name='Team name')),
                 ('desc', models.TextField(blank=True, null=True, verbose_name='Team description')),
                 ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')], default=2, verbose_name='Visibility')),
@@ -196,8 +210,8 @@ class Migration(migrations.Migration):
             name='WorkshopDifficulty',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('createdAt', models.DateTimeField()),
-                ('updatedAt', models.DateTimeField()),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
                 ('slug', models.SlugField(verbose_name='Identifier')),
                 ('description', models.TextField(blank=True, verbose_name='Description')),
@@ -205,6 +219,21 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Workshop difficulty',
                 'verbose_name_plural': 'Workshop difficulties',
+            },
+        ),
+        migrations.CreateModel(
+            name='WorkshopLector',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('lector', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Lector', verbose_name='Lector')),
+                ('role', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.LectorRole', verbose_name='Lector role')),
+                ('workshop', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Workshop', verbose_name='Workshop')),
+            ],
+            options={
+                'verbose_name': 'Workshop lector',
+                'verbose_name_plural': 'Workshop lectors',
             },
         ),
         migrations.CreateModel(
@@ -226,8 +255,8 @@ class Migration(migrations.Migration):
             name='Year',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('createdAt', models.DateTimeField()),
-                ('updatedAt', models.DateTimeField()),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
                 ('year', models.SlugField(unique=True, verbose_name='Year')),
                 ('topic', models.TextField(blank=True, verbose_name='Topic of this year')),
                 ('start_date', models.DateField(verbose_name='Date of festival start')),
@@ -246,8 +275,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='workshop',
-            name='lector',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='workshops', to='api.Lector'),
+            name='lectors',
+            field=models.ManyToManyField(related_name='workshops', through='api.WorkshopLector', to='api.Lector'),
         ),
         migrations.AddField(
             model_name='participant',

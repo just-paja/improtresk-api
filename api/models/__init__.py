@@ -6,11 +6,13 @@ from .food import Food
 from .foodPhoto import FoodPhoto
 from .lector import Lector
 from .lectorPhoto import LectorPhoto
+from .lectorRole import LectorRole
 from .order import Order
 from .payment import Payment
 from .participant import Participant
 from .team import Team
 from .workshop import Workshop
+from .workshopLector import WorkshopLector
 from .workshopPhoto import WorkshopPhoto
 from .year import Year
 from .workshopDifficulty import WorkshopDifficulty
@@ -22,10 +24,12 @@ __all__ = (
     FoodPhoto,
     Lector,
     LectorPhoto,
+    LectorRole,
     Order,
     Payment,
     Participant,
     Workshop,
+    WorkshopLector,
     WorkshopPhoto,
     Year,
     WorkshopDifficulty,
