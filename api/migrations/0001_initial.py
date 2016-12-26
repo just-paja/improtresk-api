@@ -130,7 +130,6 @@ class Migration(migrations.Migration):
                 ('updatedAt', models.DateTimeField()),
                 ('name', models.CharField(max_length=255)),
                 ('address', models.CharField(max_length=255)),
-                ('team', models.CharField(max_length=255)),
                 ('email', models.EmailField(max_length=255)),
                 ('phone', models.CharField(max_length=255)),
                 ('birthday', models.CharField(max_length=255)),
@@ -159,6 +158,20 @@ class Migration(migrations.Migration):
                 ('received', models.DateTimeField(blank=True, null=True)),
                 ('message', models.TextField(blank=True, max_length=255)),
                 ('order', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='api.Order')),
+            ],
+            options={
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
+            name='Team',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField()),
+                ('updatedAt', models.DateTimeField()),
+                ('name', models.CharField(max_length=127, verbose_name='Team name')),
+                ('desc', models.TextField(blank=True, null=True, verbose_name='Team description')),
+                ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')], default=2, verbose_name='Visibility')),
             ],
             options={
                 'abstract': False,
@@ -202,8 +215,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('createdAt', models.DateTimeField()),
                 ('updatedAt', models.DateTimeField()),
-                ('topic', models.TextField(blank=True, verbose_name='Topic of this year')),
                 ('year', models.SlugField(unique=True, verbose_name='Year')),
+                ('topic', models.TextField(blank=True, verbose_name='Topic of this year')),
                 ('start_date', models.DateField(verbose_name='Date of festival start')),
                 ('end_date', models.DateField(verbose_name='Date of festival end')),
                 ('start_date_of_signups', models.DateField(verbose_name='Date when signups are starting')),
@@ -217,6 +230,11 @@ class Migration(migrations.Migration):
             model_name='participant',
             name='assignedWorkshop',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='api.Workshop'),
+        ),
+        migrations.AddField(
+            model_name='participant',
+            name='team',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='api.Team', verbose_name='Team'),
         ),
         migrations.AddField(
             model_name='order',
