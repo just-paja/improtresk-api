@@ -110,6 +110,20 @@ class FoodAdmin(BaseAdminModel):
     ]
 
 
+@admin.register(models.Meal)
+class MealAdmin(BaseAdminModel):
+    """Admin model for Meal."""
+
+    pass
+
+
+@admin.register(models.MealReservation)
+class MealReservationAdmin(BaseAdminModel):
+    """Admin model for MealReservation."""
+
+    pass
+
+
 @admin.register(models.Payment)
 class PaymentAdmin(BaseAdminModel):
     """Admin model for Food and its photos."""
