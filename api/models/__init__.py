@@ -11,6 +11,7 @@ from .payment import Payment
 from .participant import Participant
 from .workshop import Workshop
 from .workshopPhoto import WorkshopPhoto
+from .year import Year
 
 __all__ = (
     Accomodation,
@@ -24,4 +25,5 @@ __all__ = (
     Participant,
     Workshop,
     WorkshopPhoto,
+    Year,
 )

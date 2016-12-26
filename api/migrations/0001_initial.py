@@ -196,6 +196,23 @@ class Migration(migrations.Migration):
                 'abstract': False,
             },
         ),
+        migrations.CreateModel(
+            name='Year',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField()),
+                ('updatedAt', models.DateTimeField()),
+                ('topic', models.TextField(blank=True, verbose_name='Topic of this year')),
+                ('year', models.SlugField(unique=True, verbose_name='Year')),
+                ('start_date', models.DateField(verbose_name='Date of festival start')),
+                ('end_date', models.DateField(verbose_name='Date of festival end')),
+                ('start_date_of_signups', models.DateField(verbose_name='Date when signups are starting')),
+                ('current', models.BooleanField(verbose_name='Is this year current?')),
+            ],
+            options={
+                'abstract': False,
+            },
+        ),
         migrations.AddField(
             model_name='participant',
             name='assignedWorkshop',
