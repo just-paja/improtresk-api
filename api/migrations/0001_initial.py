@@ -178,6 +178,19 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='PriceLevel',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('name', models.CharField(max_length=127, verbose_name='Name')),
+                ('takes_effect_on', models.DateField(verbose_name='Date, when this price level takes effect')),
+            ],
+            options={
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
             name='Team',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -217,8 +230,8 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True, verbose_name='Description')),
             ],
             options={
-                'verbose_name': 'Workshop difficulty',
                 'verbose_name_plural': 'Workshop difficulties',
+                'verbose_name': 'Workshop difficulty',
             },
         ),
         migrations.CreateModel(
@@ -252,6 +265,20 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='WorkshopPrice',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('price', models.PositiveIntegerField(verbose_name='Price in CZK')),
+                ('price_level', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.PriceLevel', verbose_name='Price level')),
+                ('workshop', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Workshop', verbose_name='Workshop')),
+            ],
+            options={
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
             name='Year',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -277,6 +304,11 @@ class Migration(migrations.Migration):
             model_name='workshop',
             name='lectors',
             field=models.ManyToManyField(related_name='workshops', through='api.WorkshopLector', to='api.Lector'),
+        ),
+        migrations.AddField(
+            model_name='pricelevel',
+            name='year',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Year', verbose_name='Year'),
         ),
         migrations.AddField(
             model_name='participant',
