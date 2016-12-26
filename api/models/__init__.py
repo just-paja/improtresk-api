@@ -10,8 +10,10 @@ from .order import Order
 from .payment import Payment
 from .participant import Participant
 from .team import Team
+from .priceLevel import PriceLevel
 from .workshop import Workshop
 from .workshopPhoto import WorkshopPhoto
+from .workshopPrice import WorkshopPrice
 from .year import Year
 from .workshopDifficulty import WorkshopDifficulty
 
@@ -25,8 +27,10 @@ __all__ = (
     Order,
     Payment,
     Participant,
+    PriceLevel,
     Workshop,
     WorkshopPhoto,
+    WorkshopPrice,
     Year,
     WorkshopDifficulty,
 )

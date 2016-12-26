@@ -50,6 +50,10 @@ class WorkshopDifficultyAdmin(BaseAdminModel):
 
     prepopulated_fields = {'slug': ('name',)}
 
+class WorkshopPriceInlineAdmin(BaseInlineAdminModel):
+    """Inline admin for Workshop prices."""
+
+    model = models.WorkshopPrice
 
 
 @admin.register(models.Workshop)
@@ -58,6 +62,7 @@ class WorkshopAdmin(BaseAdminModel):
 
     inlines = [
         WorkshopPhotoAdmin,
+        WorkshopPriceInlineAdmin,
     ]
 
 
@@ -124,11 +129,19 @@ class ParticipantAdmin(BaseAdminModel):
     pass
 
 
+class PriceLevelInlineAdmin(BaseInlineAdminModel):
+    """Inline admin for Workshop prices."""
+
+    model = models.PriceLevel
+
+
 @admin.register(models.Year)
 class YearAdmin(BaseAdminModel):
     """Admin model for Years."""
 
-    pass
+    inlines = [
+        PriceLevelInlineAdmin,
+    ]
 
 
 @admin.register(models.Team)
