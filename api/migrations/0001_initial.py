@@ -123,6 +123,26 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='Participant',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField()),
+                ('updatedAt', models.DateTimeField()),
+                ('name', models.CharField(max_length=255)),
+                ('address', models.CharField(max_length=255)),
+                ('team', models.CharField(max_length=255)),
+                ('email', models.EmailField(max_length=255)),
+                ('phone', models.CharField(max_length=255)),
+                ('birthday', models.CharField(max_length=255)),
+                ('rules', models.BooleanField(default=False)),
+                ('newsletter', models.BooleanField(default=False)),
+                ('paid', models.BooleanField(default=False)),
+            ],
+            options={
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
             name='Payment',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -139,26 +159,6 @@ class Migration(migrations.Migration):
                 ('received', models.DateTimeField(blank=True, null=True)),
                 ('message', models.TextField(blank=True, max_length=255)),
                 ('order', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='api.Order')),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='Signup',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('createdAt', models.DateTimeField()),
-                ('updatedAt', models.DateTimeField()),
-                ('name', models.CharField(max_length=255)),
-                ('address', models.CharField(max_length=255)),
-                ('team', models.CharField(max_length=255)),
-                ('email', models.EmailField(max_length=255)),
-                ('phone', models.CharField(max_length=255)),
-                ('birthday', models.CharField(max_length=255)),
-                ('rules', models.BooleanField(default=False)),
-                ('newsletter', models.BooleanField(default=False)),
-                ('paid', models.BooleanField(default=False)),
             ],
             options={
                 'abstract': False,
@@ -197,14 +197,14 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.AddField(
-            model_name='signup',
+            model_name='participant',
             name='assignedWorkshop',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='api.Workshop'),
         ),
         migrations.AddField(
             model_name='order',
-            name='signup',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='api.Signup'),
+            name='participant',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='api.Participant'),
         ),
         migrations.AddField(
             model_name='order',

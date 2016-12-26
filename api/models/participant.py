@@ -9,8 +9,8 @@ from .base import Base
 from .workshop import Workshop
 
 
-class Signup(Base):
-    """Stores signups."""
+class Participant(Base):
+    """Stores participants."""
 
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
@@ -32,12 +32,12 @@ class Signup(Base):
 
     def __init__(self, *args, **kwargs):
         """Store initial asssignment."""
-        super(Signup, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.initialAssignment = self.assignedWorkshop
 
     def save(self, *args, **kwargs):
         """Save and notify about changes."""
-        super(Signup, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         self.mailReassignment()
 
     def getReassignmentTemplate(self):
@@ -87,7 +87,7 @@ class Signup(Base):
         })
 
     def mailReassignment(self):
-        """E-mail changes to the signup assignment."""
+        """E-mail changes to the participant assignment."""
         template = self.getReassignmentTemplate()
 
         if not template:
