@@ -5,6 +5,98 @@ HOST: http://improtresk-api.apiblueprint.org/api
 
 Improtřesk API is a public API service that allows festival participants to log in to festival, but tickets and view archive of Improtřesk festival.
 
+## Accomodation Collection [/accomodation]
+
+### List All Accomodation types [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "Dům Kultury Milevsko",
+                "address": "Nádražní 846, 399 01 Milevsko",
+                "available": 60,
+                "capacity": 90,
+                "price": 0,
+                "text": "V základní nabídce ubytování je spaní se svojí skupinou na stejných místech, kde budou přes den workshopy. Vezmi si s sebou spacák a karimatku, ať si se skupinou uděláte super letiště. Nezapomeňte si prosím uklidit věci přes den někam do kouta, ať nepřekážíte workshopům.\n### Pro\n\n* Z párty do postele je to 30 vteřin\n* Spíš mezi svými\n* Máš kontakt se zemí\n### Proti\n\n* Bolavá záda\n* Noční ruch kultury\n* Hledání svého spacáku po tmě",
+                "photos": [
+                    {
+                        "src": "http://www.milevskem.cz/fs/4fb1e8ef-6b7a-11e4-a0f3-00155d09255c-fre8780-2.jpg",
+                        "height": 661,
+                        "width": 1500
+                    },
+                    {
+                        "src": "http://restauracevklubu.cz/wp-content/uploads/photo-gallery/b.JPG",
+                        "height": 801,
+                        "width": 1200
+                    },
+                    {
+                        "src": "http://restauracevklubu.cz/wp-content/uploads/photo-gallery/3.JPG",
+                        "height": 801,
+                        "width": 1200
+                    },
+                    {
+                        "src": "http://www.milevskem.cz/fs/c082853e-6b76-11e4-a0f3-00155d09255c-fre8728.jpg",
+                        "height": 994,
+                        "width": 1500
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Hotel Stadion",
+                "address": "J. A. Komenského 1034, 399 01 Milevsko",
+                "available": 15,
+                "capacity": 20,
+                "price": 500,
+                "text": "Pokud pro vás není vhodné ubytování na podlaze, je možnost si připlatit za spaní v penzionu Stadion, které pro vás zařídíme. Je to vzdálené asi 5 minut pěšky od DK Milevsko, tedy celého centra dění. Protože nevíme kdy dostaneme přesnou nabídku a velikosti pokojů, dostanete později k vyplnění formulář, který vás spojí s dalšími spolubydlícími.\n### Pro\n\n* Nepotřebuješ si vozit spacák\n* Spíš v posteli\n* Máš menší pravděpodobnost že tě někdo bude rušit v noci\n\n### Proti\n\n* Neprobudí tě hromadný budíček\n* Delší cesta na snídani\n* Odstrčenost od společnosti",
+                "photos": [
+                    {
+                        "src": "http://static.panoramio.com/photos/original/59204263.jpg",
+                        "height": 2128,
+                        "width": 2832
+                    },
+                    {
+                        "src": "http://spos-milevsko.cz/foto/rest1.jpg",
+                        "height": 960,
+                        "width": 1280
+                    },
+                    {
+                        "src": "http://spos-milevsko.cz/foto/stul2.jpg",
+                        "height": 960,
+                        "width": 1280
+                    }
+                ]
+            }
+        ]
+
+
+## Food Times Collection [/foodTimes]
+
+### List All Food Times [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "Oběd",
+                "date": "2016-05-07"
+
+            },
+            {
+                "id": 2,
+                "name": "Oběd",
+                "date": "2016-05-08"
+            },
+            {
+                "id": 3,
+                "name": "Oběd",
+                "date": "2016-05-09"
+            }
+        ]
+
 ## Years Collection [/years]
 
 ### List All Years [GET]
@@ -59,3 +151,184 @@ Sorted by created at descendant
                 "createdAt": "2016-11-29T18:29:31"
             }
         ]
+        
+## Workshops Collection [/workshops]
+
+### List All Workshops [GET /workshops]
+
+Returns a list of workshops for current year. If there is no current year, returns empty array.
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "Pantomima a fyzické divadlo",
+                "desc": "Na workshopu se zaměříme na práci s tělem, nonverbální herectví a pantomimu. Budeme se věnovat fyzickému tréninku a technikám k ovládnutí svého těla a celkovému propojení se svým tělem na jevišti. S tím souvisí i cvičení na jevištní přítomnost, dech, pohled a temporytmus. Podíváme se také na techniku imaginární pantomimy jako chůze na místě, práce s imaginárním objektem a další. Zkusíme si základy nonverbálního herectví, tvorbu divadelní postavy podle jejího fyzična a práci s hereckým partnerem...zkrátka uvidíme, co všechno stihneme. :)",
+                "difficulty": "Pro všechny",
+                "photos": [],
+                "lector": {
+                    "name": "Vojtěch Svoboda",
+                    "photos": [
+                        {
+                            "src": "http://improtresk.cz/var/files/edff/121e/0a9b/895126431c7eebdf2082/svoboda-portrait.jpg",
+                            "height": 400,
+                            "width": 300
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 2,
+                "name": "Slam poetry",
+                "desc": "Bohdan Bláhovec říká: „Stát se slovem.“ To je možná slam poetry. Proměnit se a zároveň být svůj a autentický a s tím časoprostorem se utkat beze strachu nebo aspoň se ctí. Možná to tak je a možná taky ne. Nikdo moc neví. Pravidla jsou ale jasný. Ty, mikrofon, tvoje báseň (předem připravená nebo improvizovaná na místě) a tři minuty.\n\nA tohle budeme na workshopu společně zkoumat: Psaní básní, Improvizace básní na místě, Jak být na podiu svůj",
+                "difficulty": "Pro všechny",
+                "photos": [],
+                "lector": {
+                    "name": "Tomáš Sir Jireček",
+                    "photos": [
+                        {
+                            "src": "http://improtresk.cz/var/files/15f4/19bd/1bb0/6fd9ebadb097e73142a4/12784802_10206961527414201_2009147122_n.jpg",
+                            "height": 640,
+                            "width": 960
+                        },
+                        {
+                            "src": "http://improtresk.cz/var/files/e002/90d8/7446/97eced19ed16b2685d03/sir1.jpg",
+                            "height": 281,
+                            "width": 281
+                        },
+                        {
+                            "src": "http://improtresk.cz/var/files/42f5/12bd/5543/ea70eb3258828098a6b1/sir2.jpg",
+                            "height": 1366,
+                            "width": 1366
+                        },
+                        {
+                            "src": "http://improtresk.cz/var/files/06df/9e20/884c/efa75a6780e028849f4c/sir3.jpg",
+                            "height": 1600,
+                            "width": 1067
+                        }
+                    ]
+                }
+            }
+        ]
+
+### Workshop detail [GET /workshops/{workshop}]
+
+Returns workshop detail with lector detail and list of photos.
+
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "name": "Slam poetry",
+            "desc": "Bohdan Bláhovec říká: „Stát se slovem.“ To je možná slam poetry. Proměnit se a zároveň být svůj a autentický a s tím časoprostorem se utkat beze strachu nebo aspoň se ctí. Možná to tak je a možná taky ne. Nikdo moc neví. Pravidla jsou ale jasný. Ty, mikrofon, tvoje báseň (předem připravená nebo improvizovaná na místě) a tři minuty.\n\nA tohle budeme na workshopu společně zkoumat: Psaní básní, Improvizace básní na místě, Jak být na podiu svůj",
+            "difficulty": "Pro všechny",
+            "photos": [],
+            "lector": {
+                "name": "Tomáš Jireček",
+                "about": "Nebo taky Sir. Jsem milovníkem impro divadla a slam poetry a normální klasický poetry taky. Myslím si, že všechny tyhle věci jsou pro člověka prospěšný a dokonce sem tam i moc důležitý, a proto se jim věnuju, co můžu. Nebo dělám věci, abych se těmhle věcem mohl věnovat, co můžu, ale ty věci mě zas tak nebaví. Jde třeba o psaní medailonků a anotací. Ale bez toho to halt nejde, že jo. Protože musíš vědět, s kým budeš mít na workshopu tu čest. A to je správně. Nuže k věci: Hraji s Paleťáky z Pardubic – to je pokřik a nic víc. A taky s Oolong Teatrum, kteří své místo na scéně teprve hledají a dělají první vratké krůčky. V Improvision zase aplikujme impro do života firem.\n\nSlam poetry mě baví moc. Hledání si toho svého v tom. A být tam na prknech s pány veršotepci a ženami jako báseň. Inspirace tři mrťosy a ještě vůkol z každé exhibice. Jest to jízda symbolů ve slovech schovaných.\n\nA co poezie jako takové se týče, toho času jest vydána kniha Hrdinové nebo srabi? S pořadem k tomuto dílu brázdíme země hezké. Krom toho se objeví něco v nějakém literárním časáku, či almanachu. A jest dva roky rozpracována kniha nová, a jak se zdá, tak ještě aspoň rok bude.",
+                "photos": [
+                    {
+                        "src": "http://improtresk.cz/var/files/15f4/19bd/1bb0/6fd9ebadb097e73142a4/12784802_10206961527414201_2009147122_n.jpg",
+                        "height": 960,
+                        "width": 640
+                    },
+                    {
+                        "src": "http://improtresk.cz/var/files/e002/90d8/7446/97eced19ed16b2685d03/sir1.jpg",
+                        "height": 281,
+                        "width": 281
+                    },
+                    {
+                        "src": "http://improtresk.cz/var/files/42f5/12bd/5543/ea70eb3258828098a6b1/sir2.jpg",
+                        "height": 1366,
+                        "width": 1366
+                    },
+                    {
+                        "src": "http://improtresk.cz/var/files/06df/9e20/884c/efa75a6780e028849f4c/sir3.jpg",
+                        "height": 1067,
+                        "width": 1600
+                    }
+                ]
+            }
+        }
+
+## Texts Collection [/texts]
+
+### Get Text by slug [GET /texts/{text}]
+
+Returns text specified by slug in URL
+
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "name": "Ubytování, hlavička",
+            "text": "V přihlášce dostanete na výběr z možností ubytování a spaní. Protože máme omezené kapacity, dostanete na výběr i možnost řešit spaní po vlastní ose."
+        }
+
++ Response 204
+
+## Tips Collection [/tips]
+
+### List All Tips [GET]
+
+Returns a list of travelling tips to place of the festival tips body is formatted in Markdown with list of photos.
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "Kolem Orlíka",
+                "text": "Jeďte po R4 a vezměte to přes Orlickou přehradu, kde je krásný výhled do okolí. Také je to cesta, kudy moc aut nejezdí, takže se vyhnete zácpám. Prohlédněte si [trasu na Google maps](https://www.google.cz/maps/dir/Praha/Bohostice/Orl%C3%ADk,+Orl%C3%ADk+nad+Vltavou/D%C5%AFm+Kultury+Milevsko,+N%C3%A1dra%C5%BEn%C3%AD,+M%C3%ADlevsko/@49.6411069,14.1716165,9z/data=!4m26!4m25!1m5!1m1!1s0x470b939c0970798b:0x400af0f66164090!2m2!1d14.4378005!2d50.0755381!1m5!1m1!1s0x470b6c5d965f9c49:0x400af0f6614c120!2m2!1d14.1381328!2d49.602143!1m5!1m1!1s0x470b6dc9d619c56b:0xb369d10adf1974ad!2m2!1d14.181619!2d49.606625!1m5!1m1!1s0x470b5e041c33aa45:0xb16eae125d625dbe!2m2!1d14.365178!2d49.445387!3e0). Cesta na Improtřesk 2016 vám zabere asi hodinu a 20 minut.",
+                "photos": [
+                    { 
+                        "src": "http://improtresk.cz/static/pixmap/photos/tips/orlik.32.jpg",
+                        "caption": "Prehrada Orlik",
+                        "height": 308,
+                        "width": 640
+                    },
+                    {
+                        "src": "http://www.zamekorlik.cz/images/f3.jpg",
+                        "caption": "Zamek Orlik",
+                        "height": 496,
+                        "width": 750
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Z Brna přes Kámen",
+                "text": "Pokud pojedete po D1 a sjedete u Humpolce na R19 na Pelhřimov, máte po cestě hrad Kámen ve stejnojmenné vesnici, ve kterého si můžete odpočinout a poznat zase kus českého kulturního dědictví. Prohlédněte si [trasu na Google maps](https://www.google.cz/maps/dir/Brno/Hrad+K%C3%A1men,+K%C3%A1men/D%C5%AFm+Kultury+Milevsko,+N%C3%A1dra%C5%BEn%C3%AD,+M%C3%ADlevsko/@49.2933291,15.5217184,9z/data=!4m20!4m19!1m5!1m1!1s0x4712943ac03f5111:0x400af0f6614b1b0!2m2!1d16.6068371!2d49.1950602!1m5!1m1!1s0x470cebc6cde5b615:0xcd3e48a7240a238a!2m2!1d15.013879!2d49.424392!1m5!1m1!1s0x470b5e041c33aa45:0xb16eae125d625dbe!2m2!1d14.365178!2d49.445387!3e0). Cesta na Improtřesk 2016 vám zabere asi dvě hodiny a 20 minut.",
+                "photos": [
+                    {
+                        "src": "http://improtresk.cz/static/pixmap/photos/tips/kamen.32.jpg",
+                        "height": 320,
+                        "width": 640
+                    },
+                    {
+                        "src": "http://www.vyletnik.cz/images/vylet/uzivatele/vlasta79/kamen-8a3.jpg",
+                        "height": 1063,
+                        "width": 1600
+                    }
+                ]
+            }
+        ]
+
+
+## Conditions Collection [/conditions]
+
+### Display participant rules and conditions for year [GET]
+
+Returns object containing markdown formatted rules and conditions for current year. If there is no current year, returns null.
+
++ Response 200 (application/json)
+
+        {
+            "id": 5,
+            "year": 3,
+            "name": "Podmínky pro účastníky",
+            "text": "Pro přihlášení na festival Improtřesk, musíte souhlasit s následujícími podmínkami.\n\nPodmínky pro účastníky improvizačního festivalu Improtřesk, organizovaném Českou improvizační ligou z. s. (dále jen „Improliga“)\n\nImproliga není povinna vracet poplatek účastníkům, kteří se z libovolných důvodů nemohou zúčastnit festivalu. Účastníci si za sebe mohou při neúčasti najít náhradníka.\n\nÚčastníci jsou odpovědní sami za sebe a Improliga nenese odpovědnost za zdraví a činy účastníků.\n\nPořadatel nenese odpovědnost za ztracené, či odcizené věci. Doporučujeme s sebou na festival nebrat žádné cennosti.\n\nKouření je v areálu festivalu povoleno jen na předem vyhrazených místech.\n\nDo celého areálu festivalu je přísný zákaz vstupu se psy a dalšími zvířaty.\n\nDo areálu festivalu je zákaz vnášení zbraní.\n\nPři porušování těchto podmínek, či nerespektování pravidel slušného chování, mají pořadatelé právo vyloučit účastníka z festivalu a zamezit mu ve vstupu do areálu.\n\nSouhlasím, aby Improliga, zpracovávala mé osobní údaje pro administrativní účely (ukládání, úprava, vyhledávání, třídění, kombinování, likvidace a poskytování třetím osobám, jejichž totožnost je mi Improliga povinna sdělit) v souladu se zákonem č. 101/2000 Sb. \"O ochraně osobních údajů\" ve znění pozdějších předpisů, a to až do odvolání písemnou formou. Potvrzuji, že jsem obeznámen se svými právy v souvislosti s přístupem k informacím a jejich ochraně podle §12 a §21 zákona č. 101/2000 Sb. ve znění pozdějších předpisů."
+        }
+
++ Response 204 (application/json)
