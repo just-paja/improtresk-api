@@ -2,7 +2,7 @@
 from django.db import models
 from datetime import datetime
 from .base import Base
-from .signup import Signup
+from .participant import Participant
 from .accomodation import Accomodation
 from .food import Food
 from .workshop import Workshop
@@ -18,7 +18,7 @@ def generate_symvar():
 class Order(Base):
     """Stores orders types."""
 
-    signup = models.ForeignKey(Signup, related_name="orders")
+    participant = models.ForeignKey(Participant, related_name="orders")
     symvar = models.CharField(max_length=63, blank=True)
     workshops = models.ManyToManyField(Workshop)
     food = models.ManyToManyField(Food)

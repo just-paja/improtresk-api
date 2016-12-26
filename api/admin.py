@@ -1,7 +1,7 @@
 """Site administration module."""
 from django.contrib import admin
 from .models import Accomodation, AccomodationPhoto, Food, FoodPhoto, \
-    Lector, LectorPhoto, Payment, Signup, Workshop, WorkshopPhoto
+    Lector, LectorPhoto, Payment, Participant, Workshop, WorkshopPhoto
 
 
 DEFAULT_READONLY = ['createdAt', 'updatedAt']
@@ -109,8 +109,8 @@ class PaymentAdmin(BaseAdminModel):
         )
 
 
-@admin.register(Signup)
-class SignupAdmin(BaseAdminModel):
-    """Admin model for Signups."""
+@admin.register(Participant)
+class ParticipantAdmin(BaseAdminModel):
+    """Admin model for Participants."""
 
     pass
