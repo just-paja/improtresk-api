@@ -143,6 +143,20 @@ class ParticipantAdmin(BaseAdminModel):
     pass
 
 
+@admin.register(models.Reservation)
+class ReservationAdmin(BaseAdminModel):
+    """Admin model for Reservations."""
+
+    pass
+
+
+@admin.register(models.Order)
+class OrderAdmin(BaseAdminModel):
+    """Admin model for Orders."""
+
+    pass
+
+
 class PriceLevelInlineAdmin(BaseInlineAdminModel):
     """Inline admin for Workshop prices."""
 
