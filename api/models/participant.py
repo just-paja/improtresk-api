@@ -2,10 +2,12 @@
 from django.conf import settings
 from django.core import mail
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 from ..mail import signup as templates
 from ..mail.common import formatMail, formatWorkshop
 from .base import Base
+from .team import Team
 from .workshop import Workshop
 
 
@@ -14,7 +16,12 @@ class Participant(Base):
 
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
-    team = models.CharField(max_length=255)
+    team = models.ForeignKey(
+        Team,
+        verbose_name=_("Team"),
+        blank=True,
+        null=True,
+    )
     email = models.EmailField(max_length=255)
     phone = models.CharField(max_length=255)
     birthday = models.CharField(max_length=255)

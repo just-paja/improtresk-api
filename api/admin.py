@@ -129,3 +129,10 @@ class YearAdmin(BaseAdminModel):
     """Admin model for Years."""
 
     pass
+
+
+@admin.register(models.Team)
+class TeamAdmin(BaseAdminModel):
+    """Admin model for Teams."""
+
+    pass
