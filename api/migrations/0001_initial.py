@@ -185,13 +185,26 @@ class Migration(migrations.Migration):
                 ('updatedAt', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=127)),
                 ('desc', models.TextField()),
-                ('difficulty', models.CharField(max_length=127)),
                 ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')])),
                 ('capacity', models.PositiveIntegerField(default=12)),
-                ('lector', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='workshops', to='api.Lector')),
             ],
             options={
                 'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
+            name='WorkshopDifficulty',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField()),
+                ('updatedAt', models.DateTimeField()),
+                ('name', models.CharField(max_length=255, verbose_name='Name')),
+                ('slug', models.SlugField(verbose_name='Identifier')),
+                ('description', models.TextField(blank=True, verbose_name='Description')),
+            ],
+            options={
+                'verbose_name': 'Workshop difficulty',
+                'verbose_name_plural': 'Workshop difficulties',
             },
         ),
         migrations.CreateModel(
@@ -225,6 +238,16 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
+        ),
+        migrations.AddField(
+            model_name='workshop',
+            name='difficulty',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.WorkshopDifficulty', verbose_name='Difficulty'),
+        ),
+        migrations.AddField(
+            model_name='workshop',
+            name='lector',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='workshops', to='api.Lector'),
         ),
         migrations.AddField(
             model_name='participant',
