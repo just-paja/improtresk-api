@@ -1,0 +1,7 @@
+recursive-include bin *
+recursive-include api *.py
+recursive-include api_textual *.py
+recursive-include improtreskApi *.py
+include requirements.txt
+include README.md
+include manage.py
