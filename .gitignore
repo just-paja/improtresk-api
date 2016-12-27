@@ -1,4 +1,6 @@
 __pycache__
+*.pyc
+/htmlcov
 /.cache
 /var
 /db.sqlite3
