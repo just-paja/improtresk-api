@@ -11,3 +11,7 @@ This API service written in [Django](https://www.djangoproject.com/) manages dat
 
 * Django 1.10
 * Python 3.5
+
+# Frontend
+
+Frontend for this app is written in React / Redux. You can see it in separate repository: [improtresk-web](https://github.com/just-paja/improtresk-web).
