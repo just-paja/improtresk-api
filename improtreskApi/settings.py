@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django_nose',
     'storages',
     'api',
+    'api_textual',
 ]
 
 MIDDLEWARE = [
@@ -133,7 +134,7 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-package=api',
+    '--cover-package=api,api_textual',
 ]
 
 EMAIL_SENDER = 'info@improtresk.cz'
