@@ -7,3 +7,7 @@ __pycache__
 /db.sqlite3
 /.coverage
 /env
+/dist
+/improtresk_api.egg-info
+/build
+
