@@ -9,6 +9,7 @@ from .lectorPhoto import LectorPhoto
 from .order import Order
 from .payment import Payment
 from .participant import Participant
+from .team import Team
 from .workshop import Workshop
 from .workshopPhoto import WorkshopPhoto
 from .year import Year
