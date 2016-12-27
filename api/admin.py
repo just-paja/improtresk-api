@@ -51,6 +51,7 @@ class WorkshopDifficultyAdmin(BaseAdminModel):
     prepopulated_fields = {'slug': ('name',)}
 
 
+
 @admin.register(models.Workshop)
 class WorkshopAdmin(BaseAdminModel):
     """Admin model for Workshops and their photos."""
