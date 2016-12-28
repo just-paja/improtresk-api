@@ -1,11 +1,10 @@
 """Order model."""
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
+
 from datetime import datetime
 from .base import Base
 from .participant import Participant
-from .accomodation import Accomodation
-from .food import Food
-from .workshop import Workshop
 
 
 def generate_symvar():
@@ -20,12 +19,17 @@ class Order(Base):
 
     participant = models.ForeignKey(Participant, related_name="orders")
     symvar = models.CharField(max_length=63, blank=True)
-    workshops = models.ManyToManyField(Workshop)
-    food = models.ManyToManyField(Food)
-    accomodation = models.ManyToManyField(Accomodation)
-    price = models.PositiveIntegerField()
-    paid = models.BooleanField(default=False)
+    price = models.PositiveIntegerField(
+        verbose_name=_("Definitive price"),
+    )
+    paid = models.BooleanField(
+        default=False,
+        verbose_name=_("Is paid?"),
+    )
     overPaid = models.BooleanField(default=False)
+    canceled = models.BooleanField(
+        verbose_name=_("Is canceled?"),
+    )
 
     def save(self, *args, **kwargs):
         """Generate variable symbol if not available yet."""
@@ -34,3 +38,7 @@ class Order(Base):
         if not self.symvar:
             self.symvar = generate_symvar()
             self.save()
+
+    def __str__(self):
+        """Return name as string representation."""
+        return "%s at %s" % (self.participant.name, self.createdAt)
