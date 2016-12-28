@@ -26,6 +26,10 @@ class Reservation(Base):
         verbose_name=_("Meals"),
         through='MealReservation',
     )
+    accomodation = models.ForeignKey(
+        'Accomodation',
+        verbose_name=_("Accomodation"),
+    )
     ends_at = models.DateTimeField(
         verbose_name=_("Reservation is valid until"),
     )
