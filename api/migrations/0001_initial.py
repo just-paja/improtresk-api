@@ -331,7 +331,7 @@ class Migration(migrations.Migration):
                 ('topic', models.TextField(blank=True, verbose_name='Topic of this year')),
                 ('start_date', models.DateField(verbose_name='Date of festival start')),
                 ('end_date', models.DateField(verbose_name='Date of festival end')),
-                ('start_date_of_signups', models.DateField(verbose_name='Date when signups are starting')),
+                ('start_date_of_signups', models.DateTimeField(verbose_name='Date and time when signups are starting')),
                 ('current', models.BooleanField(verbose_name='Is this year current?')),
             ],
             options={
