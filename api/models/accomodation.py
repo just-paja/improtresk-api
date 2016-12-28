@@ -3,10 +3,12 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
+from .capacityMixin import CapacityMixin
+from .reservation import Reservation
 from ..fields import VISIBILITY_CHOICES
 
 
-class Accomodation(Base):
+class Accomodation(CapacityMixin, Base):
     """Stores accomodation types."""
 
     name = models.CharField(
@@ -28,6 +30,12 @@ class Accomodation(Base):
         verbose_name=_("Capacity"),
         help_text=_("How many people can fit in"),
     )
+
+    def get_reservations_query(self):
+        """
+        Returns query path from reservation to self.
+        """
+        return Reservation.objects.filter(accomodation=self)
 
     def __str__(self):
         """Return name as string representation."""
