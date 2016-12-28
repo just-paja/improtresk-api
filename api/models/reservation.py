@@ -3,7 +3,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
-from .meal import Meal
 
 
 class Reservation(Base):
@@ -23,7 +22,7 @@ class Reservation(Base):
         through='MealReservation',
     )
     meals = models.ManyToManyField(
-        Meal,
+        'Meal',
         verbose_name=_("Meals"),
         through='MealReservation',
     )

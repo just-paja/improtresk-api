@@ -11,6 +11,7 @@ class CapacityMixin(models.Model):
 
     capacity = models.PositiveIntegerField(
         verbose_name=_("Capacity"),
+        help_text=_("How many people can fit in"),
         blank=True,
         null=True,
     )
