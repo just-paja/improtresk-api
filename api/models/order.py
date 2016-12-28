@@ -18,9 +18,14 @@ class Order(Base):
     """Stores orders types."""
 
     participant = models.ForeignKey(Participant, related_name="orders")
-    symvar = models.CharField(max_length=63, blank=True)
+    symvar = models.CharField(
+        verbose_name=_("Variable symbol"),
+        max_length=63,
+        blank=True,
+    )
     price = models.PositiveIntegerField(
         verbose_name=_("Definitive price"),
+        null=True,
     )
     paid = models.BooleanField(
         default=False,
