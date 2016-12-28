@@ -1,5 +1,7 @@
 """Import Django models."""
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
+
 from ..fields import VISIBILITY_CHOICES
 from .base import Base
 
@@ -13,5 +15,10 @@ class Photo(Base):
         abstract = True
 
     image = models.ImageField(upload_to='var/photos')
-    desc = models.CharField(max_length=255)
+    desc = models.CharField(
+        verbose_name=_("Description"),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
     visibility = models.PositiveIntegerField(choices=VISIBILITY_CHOICES)
