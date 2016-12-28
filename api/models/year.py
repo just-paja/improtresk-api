@@ -23,8 +23,8 @@ class Year(Base):
     end_date = models.DateField(
         verbose_name=_("Date of festival end"),
     )
-    start_date_of_signups = models.DateField(
-        verbose_name=_("Date when signups are starting"),
+    start_date_of_signups = models.DateTimeField(
+        verbose_name=_("Date and time when signups are starting"),
     )
     current = models.BooleanField(
         verbose_name=_("Is this year current?"),
