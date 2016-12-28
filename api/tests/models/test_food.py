@@ -18,7 +18,7 @@ class FoodTest(TestCase):
         entry = Food(name="Foo Food")
         self.assertEqual(str(entry), 'Foo Food')
 
-    @freeze_time("2017-2-1")
+    @freeze_time("2017-02-01")
     def test_capacity(self):
         meal_reservation = mommy.make(
             'api.MealReservation',
@@ -30,7 +30,7 @@ class FoodTest(TestCase):
         self.assertEqual(food.number_of_reservations(), 1)
         self.assertEqual(food.has_free_capacity(), False)
 
-    @freeze_time("2017-2-1")
+    @freeze_time("2017-02-01")
     def test_capacity_after_reservation(self):
         meal_reservation = mommy.make(
             'api.MealReservation',
@@ -42,7 +42,7 @@ class FoodTest(TestCase):
         self.assertEqual(food.number_of_reservations(), 0)
         self.assertEqual(food.has_free_capacity(), True)
 
-    @freeze_time("2017-2-1")
+    @freeze_time("2017-02-01")
     def test_capacity_paid(self):
         meal_reservation = mommy.make(
             'api.MealReservation',

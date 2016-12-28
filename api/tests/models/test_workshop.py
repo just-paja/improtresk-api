@@ -18,7 +18,7 @@ class WorkshopTest(TestCase):
         entry = Workshop(name="Foo Workshop")
         self.assertEqual(str(entry), 'Foo Workshop')
 
-    @freeze_time("2017-2-1")
+    @freeze_time("2017-02-01")
     def test_capacity(self):
         reservation = mommy.make(
             'api.Reservation',
@@ -30,7 +30,7 @@ class WorkshopTest(TestCase):
         self.assertEqual(workshop.number_of_reservations(), 1)
         self.assertEqual(workshop.has_free_capacity(), False)
 
-    @freeze_time("2017-2-1")
+    @freeze_time("2017-02-01")
     def test_capacity_after_reservation(self):
         reservation = mommy.make(
             'api.Reservation',
@@ -42,7 +42,7 @@ class WorkshopTest(TestCase):
         self.assertEqual(workshop.number_of_reservations(), 0)
         self.assertEqual(workshop.has_free_capacity(), True)
 
-    @freeze_time("2017-2-1")
+    @freeze_time("2017-02-01")
     def test_capacity_paid(self):
         reservation = mommy.make(
             'api.Reservation',
