@@ -24,7 +24,9 @@ class Participant(Base):
     )
     email = models.EmailField(max_length=255)
     phone = models.CharField(max_length=255)
-    birthday = models.CharField(max_length=255)
+    birthday = models.DateField(
+        verbose_name=_("Date of birthday"),
+    )
 
     rules = models.BooleanField(default=False)
     newsletter = models.BooleanField(default=False)
