@@ -145,7 +145,7 @@ class Migration(migrations.Migration):
                 ('address', models.CharField(max_length=255)),
                 ('email', models.EmailField(max_length=255)),
                 ('phone', models.CharField(max_length=255)),
-                ('birthday', models.CharField(max_length=255)),
+                ('birthday', models.DateField(verbose_name='Date of birthday')),
                 ('rules', models.BooleanField(default=False)),
                 ('newsletter', models.BooleanField(default=False)),
                 ('paid', models.BooleanField(default=False)),
