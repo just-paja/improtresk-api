@@ -3,6 +3,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
+from .food import Food
+from .meal import Meal
 from .order import Order
 from .workshopPrice import WorkshopPrice
 
@@ -17,6 +19,16 @@ class Reservation(Base):
     order = models.ForeignKey(
         Order,
         verbose_name=_("Order"),
+    )
+    foods = models.ManyToManyField(
+        Food,
+        verbose_name=_("Foods"),
+        through='MealReservation',
+    )
+    meals = models.ManyToManyField(
+        Meal,
+        verbose_name=_("Meals"),
+        through='MealReservation',
     )
     ends_at = models.DateTimeField(
         verbose_name=_("Reservation is valid until"),

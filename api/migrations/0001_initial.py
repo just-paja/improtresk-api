@@ -51,12 +51,9 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('createdAt', models.DateTimeField(auto_now_add=True)),
                 ('updatedAt', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=127)),
-                ('course', models.PositiveIntegerField(choices=[(1, 'Soup'), (2, 'Main course')])),
-                ('price', models.PositiveIntegerField()),
+                ('name', models.CharField(help_text='eg. Fish and chips', max_length=127, verbose_name='Name')),
+                ('capacity', models.PositiveIntegerField(blank=True, default=None, null=True, verbose_name='Capacity')),
                 ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')])),
-                ('date', models.DateField()),
-                ('capacity', models.PositiveIntegerField(default=12)),
             ],
             options={
                 'abstract': False,
@@ -120,6 +117,38 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='Meal',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('name', models.CharField(help_text='eg. Friday lunch', max_length=127, verbose_name='Name of meal')),
+                ('course', models.PositiveIntegerField(choices=[(1, 'Soup'), (2, 'Main course')], verbose_name='Course')),
+                ('price', models.PositiveIntegerField(verbose_name='Price')),
+                ('date', models.DateField(verbose_name='Date')),
+                ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')])),
+                ('capacity', models.PositiveIntegerField(default=12)),
+            ],
+            options={
+                'verbose_name': 'Meal',
+                'verbose_name_plural': 'Meals',
+            },
+        ),
+        migrations.CreateModel(
+            name='MealReservation',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('food', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='api.Food', verbose_name='Food')),
+                ('meal', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Meal', verbose_name='Meal')),
+            ],
+            options={
+                'verbose_name': 'Meal reservation',
+                'verbose_name_plural': 'Meal reservations',
+            },
+        ),
+        migrations.CreateModel(
             name='Order',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -145,7 +174,7 @@ class Migration(migrations.Migration):
                 ('address', models.CharField(max_length=255)),
                 ('email', models.EmailField(max_length=255)),
                 ('phone', models.CharField(max_length=255)),
-                ('birthday', models.CharField(max_length=255)),
+                ('birthday', models.DateField(verbose_name='Date of birthday')),
                 ('rules', models.BooleanField(default=False)),
                 ('newsletter', models.BooleanField(default=False)),
                 ('paid', models.BooleanField(default=False)),
@@ -196,6 +225,8 @@ class Migration(migrations.Migration):
                 ('createdAt', models.DateTimeField(auto_now_add=True)),
                 ('updatedAt', models.DateTimeField(auto_now=True)),
                 ('ends_at', models.DateTimeField(verbose_name='Reservation is valid until')),
+                ('foods', models.ManyToManyField(through='api.MealReservation', to='api.Food', verbose_name='Foods')),
+                ('meals', models.ManyToManyField(through='api.MealReservation', to='api.Meal', verbose_name='Meals')),
                 ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Order', verbose_name='Order')),
             ],
             options={
@@ -341,5 +372,15 @@ class Migration(migrations.Migration):
             model_name='order',
             name='participant',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='api.Participant'),
+        ),
+        migrations.AddField(
+            model_name='mealreservation',
+            name='reservation',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Reservation', verbose_name='Reservation'),
+        ),
+        migrations.AddField(
+            model_name='food',
+            name='meal',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Meal', verbose_name='Meal'),
         ),
     ]
