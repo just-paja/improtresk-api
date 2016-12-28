@@ -15,7 +15,12 @@ class Participant(Base):
     """Stores participants."""
 
     name = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
+    address = models.CharField(
+        verbose_name=_("Address"),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
     team = models.ForeignKey(
         Team,
         verbose_name=_("Team"),
