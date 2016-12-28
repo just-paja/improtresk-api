@@ -1,5 +1,6 @@
 """Signup model."""
 from django.conf import settings
+from django.contrib import auth
 from django.core import mail
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -11,7 +12,7 @@ from .team import Team
 from .workshop import Workshop
 
 
-class Participant(Base):
+class Participant(Base, auth.models.AbstractBaseUser):
     """Stores participants."""
 
     name = models.CharField(max_length=255)

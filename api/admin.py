@@ -154,7 +154,11 @@ class PaymentAdmin(BaseAdminModel):
 class ParticipantAdmin(BaseAdminModel):
     """Admin model for Participants."""
 
-    pass
+    readonly_fields = [
+        'password',
+        'last_login',
+        'paid',
+    ]
 
 
 @admin.register(models.Reservation)
