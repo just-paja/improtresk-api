@@ -63,6 +63,12 @@ class WorkshopLectorInlineAdmin(BaseInlineAdminModel):
     model = models.WorkshopLector
 
 
+class WorkshopPriceInlineAdmin(BaseInlineAdminModel):
+    """Inline admin for Workshop prices."""
+
+    model = models.WorkshopPrice
+
+
 @admin.register(models.Workshop)
 class WorkshopAdmin(BaseAdminModel):
     """Admin model for Workshops and their photos."""
@@ -70,6 +76,7 @@ class WorkshopAdmin(BaseAdminModel):
     inlines = [
         WorkshopPhotoAdmin,
         WorkshopLectorInlineAdmin,
+        WorkshopPriceInlineAdmin,
     ]
 
 
@@ -136,11 +143,33 @@ class ParticipantAdmin(BaseAdminModel):
     pass
 
 
+@admin.register(models.Reservation)
+class ReservationAdmin(BaseAdminModel):
+    """Admin model for Reservations."""
+
+    pass
+
+
+@admin.register(models.Order)
+class OrderAdmin(BaseAdminModel):
+    """Admin model for Orders."""
+
+    pass
+
+
+class PriceLevelInlineAdmin(BaseInlineAdminModel):
+    """Inline admin for Workshop prices."""
+
+    model = models.PriceLevel
+
+
 @admin.register(models.Year)
 class YearAdmin(BaseAdminModel):
     """Admin model for Years."""
 
-    pass
+    inlines = [
+        PriceLevelInlineAdmin,
+    ]
 
 
 @admin.register(models.Team)
