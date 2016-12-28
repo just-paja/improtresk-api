@@ -38,6 +38,13 @@ class LectorAdmin(BaseAdminModel):
     ]
 
 
+@admin.register(models.LectorRole)
+class LectorRoleAdmin(BaseAdminModel):
+    """Admin model for Lector roles."""
+
+    prepopulated_fields = {'slug': ('name',)}
+
+
 class WorkshopPhotoAdmin(BaseInlineAdminModel):
     """Admin model for Workshop photos."""
 
@@ -49,6 +56,13 @@ class WorkshopDifficultyAdmin(BaseAdminModel):
     """Admin model for Workshop difficulties."""
 
     prepopulated_fields = {'slug': ('name',)}
+
+    
+class WorkshopLectorInlineAdmin(BaseInlineAdminModel):
+    """Inline admin model for Workshop lectors."""
+
+    model = models.WorkshopLector
+
 
 class WorkshopPriceInlineAdmin(BaseInlineAdminModel):
     """Inline admin for Workshop prices."""
@@ -62,6 +76,7 @@ class WorkshopAdmin(BaseAdminModel):
 
     inlines = [
         WorkshopPhotoAdmin,
+        WorkshopLectorInlineAdmin,
         WorkshopPriceInlineAdmin,
     ]
 
@@ -125,6 +140,20 @@ class PaymentAdmin(BaseAdminModel):
 @admin.register(models.Participant)
 class ParticipantAdmin(BaseAdminModel):
     """Admin model for Participants."""
+
+    pass
+
+
+@admin.register(models.Reservation)
+class ReservationAdmin(BaseAdminModel):
+    """Admin model for Reservations."""
+
+    pass
+
+
+@admin.register(models.Order)
+class OrderAdmin(BaseAdminModel):
+    """Admin model for Orders."""
 
     pass
 

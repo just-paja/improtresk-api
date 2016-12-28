@@ -106,17 +106,30 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='LectorRole',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('name', models.CharField(max_length=127, verbose_name='Name')),
+                ('slug', models.SlugField(verbose_name='Identifier')),
+            ],
+            options={
+                'verbose_name': 'Lectors role at workshop',
+                'verbose_name_plural': 'Lectors roles at workshop',
+            },
+        ),
+        migrations.CreateModel(
             name='Order',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('createdAt', models.DateTimeField(auto_now_add=True)),
                 ('updatedAt', models.DateTimeField(auto_now=True)),
                 ('symvar', models.CharField(blank=True, max_length=63)),
-                ('price', models.PositiveIntegerField()),
-                ('paid', models.BooleanField(default=False)),
+                ('price', models.PositiveIntegerField(verbose_name='Definitive price')),
+                ('paid', models.BooleanField(default=False, verbose_name='Is paid?')),
                 ('overPaid', models.BooleanField(default=False)),
-                ('accomodation', models.ManyToManyField(to='api.Accomodation')),
-                ('food', models.ManyToManyField(to='api.Food')),
+                ('canceled', models.BooleanField(verbose_name='Is canceled?')),
             ],
             options={
                 'abstract': False,
@@ -177,6 +190,19 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='Reservation',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('ends_at', models.DateTimeField(verbose_name='Reservation is valid until')),
+                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Order', verbose_name='Order')),
+            ],
+            options={
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
             name='Team',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -218,6 +244,21 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'Workshop difficulties',
                 'verbose_name': 'Workshop difficulty',
+            },
+        ),
+        migrations.CreateModel(
+            name='WorkshopLector',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('lector', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Lector', verbose_name='Lector')),
+                ('role', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.LectorRole', verbose_name='Lector role')),
+                ('workshop', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Workshop', verbose_name='Workshop')),
+            ],
+            options={
+                'verbose_name': 'Workshop lector',
+                'verbose_name_plural': 'Workshop lectors',
             },
         ),
         migrations.CreateModel(
@@ -273,8 +314,18 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='workshop',
-            name='lector',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='workshops', to='api.Lector'),
+            name='lectors',
+            field=models.ManyToManyField(related_name='workshops', through='api.WorkshopLector', to='api.Lector'),
+        ),
+        migrations.AddField(
+            model_name='reservation',
+            name='workshop_price',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.WorkshopPrice', verbose_name='Workshop price'),
+        ),
+        migrations.AddField(
+            model_name='pricelevel',
+            name='year',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Year', verbose_name='Year'),
         ),
         migrations.AddField(
             model_name='pricelevel',
@@ -295,10 +346,5 @@ class Migration(migrations.Migration):
             model_name='order',
             name='participant',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='api.Participant'),
-        ),
-        migrations.AddField(
-            model_name='order',
-            name='workshops',
-            field=models.ManyToManyField(to='api.Workshop'),
         ),
     ]
