@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('createdAt', models.DateTimeField(auto_now_add=True)),
                 ('updatedAt', models.DateTimeField(auto_now=True)),
                 ('image', models.ImageField(upload_to='var/photos')),
-                ('desc', models.CharField(max_length=255)),
+                ('desc', models.CharField(blank=True, max_length=255, null=True, verbose_name='Description')),
                 ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')])),
                 ('text', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='photos', to='api_textual.Text', verbose_name='Text')),
             ],
