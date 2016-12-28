@@ -253,10 +253,10 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('createdAt', models.DateTimeField(auto_now_add=True)),
                 ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('capacity', models.PositiveIntegerField(blank=True, null=True, verbose_name='Capacity')),
                 ('name', models.CharField(max_length=127)),
                 ('desc', models.TextField()),
                 ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')])),
-                ('capacity', models.PositiveIntegerField(default=12)),
             ],
             options={
                 'abstract': False,
