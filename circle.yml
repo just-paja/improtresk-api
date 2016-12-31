@@ -1,6 +1,10 @@
 machine:
   python:
     version: 3.5.0
+compile:
+  post:
+    - python setup.py sdist
 test:
   post:
     - codeclimate-test-reporter
+    - mv dist/* $CIRCLE_ARTIFACTS/
