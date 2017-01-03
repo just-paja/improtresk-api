@@ -57,6 +57,7 @@ class WorkshopDifficultyAdmin(BaseAdminModel):
 
     prepopulated_fields = {'slug': ('name',)}
 
+    
 class WorkshopLectorInlineAdmin(BaseInlineAdminModel):
     """Inline admin model for Workshop lectors."""
 

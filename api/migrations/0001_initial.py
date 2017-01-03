@@ -273,8 +273,8 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True, verbose_name='Description')),
             ],
             options={
-                'verbose_name': 'Workshop difficulty',
                 'verbose_name_plural': 'Workshop difficulties',
+                'verbose_name': 'Workshop difficulty',
             },
         ),
         migrations.CreateModel(
@@ -352,6 +352,11 @@ class Migration(migrations.Migration):
             model_name='reservation',
             name='workshop_price',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.WorkshopPrice', verbose_name='Workshop price'),
+        ),
+        migrations.AddField(
+            model_name='pricelevel',
+            name='year',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Year', verbose_name='Year'),
         ),
         migrations.AddField(
             model_name='pricelevel',
