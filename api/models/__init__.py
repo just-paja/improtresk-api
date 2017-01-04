@@ -15,6 +15,7 @@ from .participant import Participant
 from .team import Team
 from .priceLevel import PriceLevel
 from .reservation import Reservation
+from .rules import Rules
 from .workshop import Workshop
 from .workshopLector import WorkshopLector
 from .workshopPhoto import WorkshopPhoto
@@ -37,6 +38,7 @@ __all__ = (
     Participant,
     PriceLevel,
     Reservation,
+    Rules,
     Workshop,
     WorkshopLector,
     WorkshopPhoto,
