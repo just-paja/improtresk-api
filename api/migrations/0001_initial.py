@@ -272,6 +272,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=127)),
                 ('desc', models.TextField(help_text='Describe what is the goal of the workshop, props necessary, etc.', verbose_name='Description')),
                 ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')])),
+                ('capacity', models.PositiveIntegerField(default=12, help_text='How many people can fit in?', verbose_name='Capacity')),
             ],
             options={
                 'abstract': False,
