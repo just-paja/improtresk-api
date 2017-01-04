@@ -18,23 +18,23 @@ class Migration(migrations.Migration):
             name='Text',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('createdAt', models.DateTimeField(auto_now_add=True)),
-                ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=127, verbose_name='Name')),
                 ('slug', models.SlugField(verbose_name='Identifier')),
                 ('text', models.TextField(verbose_name='Name')),
             ],
             options={
-                'verbose_name_plural': 'Text items',
                 'verbose_name': 'Text item',
+                'verbose_name_plural': 'Text items',
             },
         ),
         migrations.CreateModel(
             name='TextPhoto',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('createdAt', models.DateTimeField(auto_now_add=True)),
-                ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
                 ('image', models.ImageField(upload_to='var/photos')),
                 ('desc', models.CharField(blank=True, max_length=255, null=True, verbose_name='Description')),
                 ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')])),
