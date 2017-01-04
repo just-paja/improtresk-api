@@ -13,7 +13,7 @@ PAYMENT = """
     Číslo účtu: {senderAccount}/{senderBank}
     Variabilní symbol: {symvar}
     Přijato bankou: {received}
-    Zpracováno: {updatedAt}
+    Zpracováno: {updated_at}
 """
 
 ACCOUNT_INFO = """

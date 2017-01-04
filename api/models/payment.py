@@ -57,7 +57,7 @@ class Payment(Base):
         verbose_name=_("Currency"),
         help_text=_("Currency of the payment"),
     )
-    received = models.DateTimeField(
+    received_at = models.DateTimeField(
         blank=True,
         null=True,
         verbose_name=_("Date Time received"),
