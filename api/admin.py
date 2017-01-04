@@ -195,3 +195,9 @@ class TeamAdmin(BaseAdminModel):
     """Admin model for Teams."""
 
     pass
+
+@admin.register(models.Rules)
+class RulesAdmin(BaseAdminModel):
+    """Define admin model for Rules."""
+
+    pass
