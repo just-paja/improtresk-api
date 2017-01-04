@@ -4,12 +4,12 @@ from datetime import datetime
 
 
 class Base(models.Model):
-    """Base for all models, adds createdAt and updatedAt attributes."""
+    """Base for all models, adds created_at and updated_at attributes."""
 
     class Meta:
         """Makes the model abstract."""
 
         abstract = True
 
-    createdAt = models.DateTimeField(auto_now_add=True)
-    updatedAt = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

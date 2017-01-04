@@ -46,4 +46,4 @@ class Order(Base):
 
     def __str__(self):
         """Return name as string representation."""
-        return "%s at %s" % (self.participant.name, self.createdAt)
+        return "%s at %s" % (self.participant.name, self.created_at)

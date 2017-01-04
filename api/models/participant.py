@@ -38,17 +38,17 @@ class Participant(Base, auth.models.AbstractBaseUser):
     newsletter = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
 
-    assignedWorkshop = models.ForeignKey(Workshop, blank=True, null=True)
+    assigned_workshop = models.ForeignKey(Workshop, blank=True, null=True)
 
     def __str__(self):
         """Return name and status as string representation."""
-        status = 'assigned' if self.assignedWorkshop else 'unassigned'
+        status = 'assigned' if self.assigned_workshop else 'unassigned'
         return "%s (%s)" % (self.name, status)
 
     def __init__(self, *args, **kwargs):
         """Store initial asssignment."""
         super().__init__(*args, **kwargs)
-        self.initialAssignment = self.assignedWorkshop
+        self.initialAssignment = self.assigned_workshop
 
     def save(self, *args, **kwargs):
         """Save and notify about changes."""
@@ -59,18 +59,18 @@ class Participant(Base, auth.models.AbstractBaseUser):
         """Reconcile what e-mail template will be used."""
         template = None
 
-        if not self.initialAssignment and self.assignedWorkshop:
+        if not self.initialAssignment and self.assigned_workshop:
             template = (
                 templates.ASSIGNED_SUBJECT,
                 templates.ASSIGNED_BODY,
             )
-        elif self.initialAssignment and not self.assignedWorkshop:
+        elif self.initialAssignment and not self.assigned_workshop:
             template = (
                 templates.REMOVED_SUBJECT,
                 templates.REMOVED_BODY,
             )
-        elif (self.initialAssignment and self.assignedWorkshop and
-                self.initialAssignment != self.assignedWorkshop):
+        elif (self.initialAssignment and self.assigned_workshop and
+                self.initialAssignment != self.assigned_workshop):
             template = (
                 templates.REASSIGNED_SUBJECT,
                 templates.REASSIGNED_BODY,
@@ -89,10 +89,10 @@ class Participant(Base, auth.models.AbstractBaseUser):
                 'lectorName': self.initialAssignment.lector.name,
             })
 
-        if self.assignedWorkshop:
+        if self.assigned_workshop:
             currentWorkshop = formatWorkshop({
-                'name': self.assignedWorkshop.name,
-                'lectorName': self.assignedWorkshop.lector.name,
+                'name': self.assigned_workshop.name,
+                'lectorName': self.assigned_workshop.lector.name,
             })
 
         return formatMail(template, {
