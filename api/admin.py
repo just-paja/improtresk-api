@@ -4,7 +4,7 @@ from django.contrib import admin
 from . import models
 
 
-DEFAULT_READONLY = ['createdAt', 'updatedAt']
+DEFAULT_READONLY = ['created_at', 'updated_at']
 
 
 class BaseAdminModel(admin.ModelAdmin):
