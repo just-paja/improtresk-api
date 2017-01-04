@@ -2,6 +2,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from .accomodation import Accomodation
 from .base import Base
 from .food import Food
 from .meal import Meal
@@ -29,6 +30,10 @@ class Reservation(Base):
         Meal,
         verbose_name=_("Meals"),
         through='MealReservation',
+    )
+    accomodation = models.ForeignKey(
+        Accomodation,
+        verbose_name=_("Accomodation"),
     )
     ends_at = models.DateTimeField(
         verbose_name=_("Reservation is valid until"),
