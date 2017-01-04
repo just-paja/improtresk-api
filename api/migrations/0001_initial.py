@@ -237,6 +237,18 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='Rules',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('createdAt', models.DateTimeField(auto_now_add=True)),
+                ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('text', models.TextField(verbose_name='Rules, terms and conditions')),
+            ],
+            options={
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
             name='Team',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -351,6 +363,11 @@ class Migration(migrations.Migration):
             model_name='workshop',
             name='lectors',
             field=models.ManyToManyField(related_name='workshops', through='api.WorkshopLector', to='api.Lector'),
+        ),
+        migrations.AddField(
+            model_name='rules',
+            name='year',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Year', verbose_name='Year'),
         ),
         migrations.AddField(
             model_name='reservation',
