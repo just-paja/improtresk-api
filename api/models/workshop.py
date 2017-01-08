@@ -1,4 +1,6 @@
 """Import Django models."""
+from api_textual.models.workshopLocation import WorkshopLocation
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -22,6 +24,10 @@ class Workshop(CapacityMixin, Base):
     difficulty = models.ForeignKey(
         WorkshopDifficulty,
         verbose_name=_("Difficulty"),
+    )
+    location = models.ForeignKey(
+        WorkshopLocation,
+        verbose_name=_("Location"),
     )
     visibility = models.PositiveIntegerField(choices=VISIBILITY_CHOICES)
     lectors = models.ManyToManyField(Lector, related_name='workshops', through=WorkshopLector)
