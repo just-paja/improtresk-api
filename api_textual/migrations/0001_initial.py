@@ -22,11 +22,12 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=127, verbose_name='Name')),
                 ('slug', models.SlugField(verbose_name='Identifier')),
-                ('text', models.TextField(verbose_name='Name')),
+                ('text', models.TextField(verbose_name='Text')),
             ],
             options={
-                'verbose_name': 'Text item',
+                'abstract': False,
                 'verbose_name_plural': 'Text items',
+                'verbose_name': 'Text item',
             },
         ),
         migrations.CreateModel(
@@ -39,6 +40,37 @@ class Migration(migrations.Migration):
                 ('desc', models.CharField(blank=True, max_length=255, null=True, verbose_name='Description')),
                 ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')])),
                 ('text', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='photos', to='api_textual.Text', verbose_name='Text')),
+            ],
+            options={
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
+            name='WorkshopLocation',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('name', models.CharField(max_length=127, verbose_name='Name')),
+                ('slug', models.SlugField(verbose_name='Identifier')),
+                ('text', models.TextField(verbose_name='Text')),
+                ('address', models.TextField(verbose_name='Address')),
+            ],
+            options={
+                'verbose_name': 'Workshop location',
+                'verbose_name_plural': 'Workshop locations',
+            },
+        ),
+        migrations.CreateModel(
+            name='WorkshopLocationPhoto',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('image', models.ImageField(upload_to='var/photos')),
+                ('desc', models.CharField(blank=True, max_length=255, null=True, verbose_name='Description')),
+                ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')])),
+                ('text', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='photos', to='api_textual.WorkshopLocation', verbose_name='Workshop Location')),
             ],
             options={
                 'abstract': False,
