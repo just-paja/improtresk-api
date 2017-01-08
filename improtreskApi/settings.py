@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_nose',
     'storages',
+    'django_markdown',
     'api',
     'api_textual',
 ]

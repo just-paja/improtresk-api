@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 import django.db.models.deletion
+import django_markdown.models
 
 
 class Migration(migrations.Migration):
@@ -22,10 +23,9 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=127, verbose_name='Name')),
                 ('slug', models.SlugField(verbose_name='Identifier')),
-                ('text', models.TextField(verbose_name='Text')),
+                ('text', django_markdown.models.MarkdownField(verbose_name='Text')),
             ],
             options={
-                'abstract': False,
                 'verbose_name_plural': 'Text items',
                 'verbose_name': 'Text item',
             },
@@ -53,12 +53,12 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=127, verbose_name='Name')),
                 ('slug', models.SlugField(verbose_name='Identifier')),
-                ('text', models.TextField(verbose_name='Text')),
+                ('text', django_markdown.models.MarkdownField(verbose_name='Text')),
                 ('address', models.TextField(verbose_name='Address')),
             ],
             options={
-                'verbose_name': 'Workshop location',
                 'verbose_name_plural': 'Workshop locations',
+                'verbose_name': 'Workshop location',
             },
         ),
         migrations.CreateModel(
