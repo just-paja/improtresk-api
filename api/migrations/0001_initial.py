@@ -113,8 +113,8 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(verbose_name='Identifier')),
             ],
             options={
-                'verbose_name': 'Lectors role at workshop',
                 'verbose_name_plural': 'Lectors roles at workshop',
+                'verbose_name': 'Lectors role at workshop',
             },
         ),
         migrations.CreateModel(
@@ -131,8 +131,8 @@ class Migration(migrations.Migration):
                 ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')])),
             ],
             options={
-                'verbose_name': 'Meal',
                 'verbose_name_plural': 'Meals',
+                'verbose_name': 'Meal',
             },
         ),
         migrations.CreateModel(
@@ -145,8 +145,8 @@ class Migration(migrations.Migration):
                 ('meal', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Meal', verbose_name='Meal')),
             ],
             options={
-                'verbose_name': 'Meal reservation',
                 'verbose_name_plural': 'Meal reservations',
+                'verbose_name': 'Meal reservation',
             },
         ),
         migrations.CreateModel(
@@ -246,8 +246,8 @@ class Migration(migrations.Migration):
                 ('text', models.TextField(verbose_name='Rules, terms and conditions')),
             ],
             options={
-                'verbose_name': 'Rules, terms and conditions',
                 'verbose_name_plural': 'Rules, terms and conditions',
+                'verbose_name': 'Rules, terms and conditions',
             },
         ),
         migrations.CreateModel(
@@ -290,8 +290,8 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True, verbose_name='Description')),
             ],
             options={
-                'verbose_name': 'Workshop difficulty',
                 'verbose_name_plural': 'Workshop difficulties',
+                'verbose_name': 'Workshop difficulty',
             },
         ),
         migrations.CreateModel(
@@ -305,8 +305,8 @@ class Migration(migrations.Migration):
                 ('workshop', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Workshop', verbose_name='Workshop')),
             ],
             options={
-                'verbose_name': 'Workshop lector',
                 'verbose_name_plural': 'Workshop lectors',
+                'verbose_name': 'Workshop lector',
             },
         ),
         migrations.CreateModel(
