@@ -12,7 +12,7 @@ class BaseAdminModel(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         """Define default readonly fields."""
-        return DEFAULT_READONLY + self.readonly_fields
+        return DEFAULT_READONLY + list(self.readonly_fields)
 
 
 class BaseInlineAdminModel(admin.TabularInline):
@@ -20,7 +20,7 @@ class BaseInlineAdminModel(admin.TabularInline):
 
     def get_readonly_fields(self, request, obj=None):
         """Define default readonly fields."""
-        return DEFAULT_READONLY + self.readonly_fields
+        return DEFAULT_READONLY + list(self.readonly_fields)
 
 
 class LectorPhotoAdmin(BaseInlineAdminModel):

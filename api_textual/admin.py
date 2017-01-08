@@ -19,3 +19,19 @@ class TextAdmin(BaseAdminModel):
     inlines = [
         TextPhotoInlineAdmin,
     ]
+
+
+class WorkshopLocationPhotoInlineAdmin(BaseInlineAdminModel):
+    """Admin model for WorkshopLocation photos."""
+
+    model = models.WorkshopLocationPhoto
+
+
+@admin.register(models.WorkshopLocation)
+class WorkshopLocationAdmin(BaseAdminModel):
+    """Admin model for Workshop location."""
+
+    prepopulated_fields = {'slug': ('name',)}
+    inlines = [
+        WorkshopLocationPhotoInlineAdmin,
+    ]

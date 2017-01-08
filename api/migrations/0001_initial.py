@@ -11,6 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        ('api_textual', '0001_initial'),
     ]
 
     operations = [
@@ -112,8 +113,8 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(verbose_name='Identifier')),
             ],
             options={
-                'verbose_name_plural': 'Lectors roles at workshop',
                 'verbose_name': 'Lectors role at workshop',
+                'verbose_name_plural': 'Lectors roles at workshop',
             },
         ),
         migrations.CreateModel(
@@ -245,7 +246,8 @@ class Migration(migrations.Migration):
                 ('text', models.TextField(verbose_name='Rules, terms and conditions')),
             ],
             options={
-                'abstract': False,
+                'verbose_name': 'Rules, terms and conditions',
+                'verbose_name_plural': 'Rules, terms and conditions',
             },
         ),
         migrations.CreateModel(
@@ -362,6 +364,11 @@ class Migration(migrations.Migration):
             model_name='workshop',
             name='lectors',
             field=models.ManyToManyField(related_name='workshops', through='api.WorkshopLector', to='api.Lector'),
+        ),
+        migrations.AddField(
+            model_name='workshop',
+            name='location',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api_textual.WorkshopLocation', verbose_name='Location'),
         ),
         migrations.AddField(
             model_name='rules',
