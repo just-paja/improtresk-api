@@ -51,8 +51,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('createdAt', models.DateTimeField(auto_now_add=True)),
                 ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('capacity', models.PositiveIntegerField(blank=True, help_text='How many people can fit in', null=True, verbose_name='Capacity')),
                 ('name', models.CharField(help_text='eg. Fish and chips', max_length=127, verbose_name='Name')),
-                ('capacity', models.PositiveIntegerField(blank=True, default=None, null=True, verbose_name='Capacity')),
                 ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')])),
             ],
             options={
@@ -112,8 +112,8 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(verbose_name='Identifier')),
             ],
             options={
-                'verbose_name': 'Lectors role at workshop',
                 'verbose_name_plural': 'Lectors roles at workshop',
+                'verbose_name': 'Lectors role at workshop',
             },
         ),
         migrations.CreateModel(
@@ -122,12 +122,12 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('createdAt', models.DateTimeField(auto_now_add=True)),
                 ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('capacity', models.PositiveIntegerField(blank=True, help_text='How many people can fit in', null=True, verbose_name='Capacity')),
                 ('name', models.CharField(help_text='eg. Friday lunch', max_length=127, verbose_name='Name of meal')),
                 ('course', models.PositiveIntegerField(choices=[(1, 'Soup'), (2, 'Main course')], verbose_name='Course')),
                 ('price', models.PositiveIntegerField(verbose_name='Price')),
                 ('date', models.DateField(verbose_name='Date')),
                 ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')])),
-                ('capacity', models.PositiveIntegerField(default=12)),
             ],
             options={
                 'verbose_name': 'Meal',
@@ -168,6 +168,8 @@ class Migration(migrations.Migration):
             name='Participant',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('password', models.CharField(max_length=128, verbose_name='password')),
+                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
                 ('createdAt', models.DateTimeField(auto_now_add=True)),
                 ('updatedAt', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=255)),
@@ -254,6 +256,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('createdAt', models.DateTimeField(auto_now_add=True)),
                 ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('capacity', models.PositiveIntegerField(blank=True, help_text='How many people can fit in', null=True, verbose_name='Capacity')),
                 ('name', models.CharField(max_length=127)),
                 ('desc', models.TextField(help_text='Describe what is the goal of the workshop, props necessary, etc.', verbose_name='Description')),
                 ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')])),

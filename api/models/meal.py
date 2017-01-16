@@ -3,6 +3,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
+from .capacityMixin import CapacityMixin
+from .reservation import Reservation
 from ..fields import VISIBILITY_CHOICES
 
 FOOD_CHOICES = (
@@ -11,7 +13,7 @@ FOOD_CHOICES = (
 )
 
 
-class Meal(Base):
+class Meal(CapacityMixin, Base):
     """Stores meal."""
 
     class Meta:
@@ -34,7 +36,12 @@ class Meal(Base):
         verbose_name=_("Date"),
     )
     visibility = models.PositiveIntegerField(choices=VISIBILITY_CHOICES)
-    capacity = models.PositiveIntegerField(default=12)
+
+    def get_reservations_query(self):
+        """
+        Returns query path from reservation to self.
+        """
+        return Reservation.objects.filter(mealreservation__meal=self)
 
     def __str__(self):
         """Return name as string representation."""

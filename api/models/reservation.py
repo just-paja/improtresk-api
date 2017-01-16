@@ -4,30 +4,26 @@ from django.utils.translation import ugettext_lazy as _
 
 from .accomodation import Accomodation
 from .base import Base
-from .food import Food
-from .meal import Meal
-from .order import Order
-from .workshopPrice import WorkshopPrice
 
 
 class Reservation(Base):
     """Stores workshop reservations."""
 
     workshop_price = models.ForeignKey(
-        WorkshopPrice,
+        'WorkshopPrice',
         verbose_name=_("Workshop price"),
     )
     order = models.ForeignKey(
-        Order,
+        'Order',
         verbose_name=_("Order"),
     )
     foods = models.ManyToManyField(
-        Food,
+        'Food',
         verbose_name=_("Foods"),
         through='MealReservation',
     )
     meals = models.ManyToManyField(
-        Meal,
+        'Meal',
         verbose_name=_("Meals"),
         through='MealReservation',
     )
