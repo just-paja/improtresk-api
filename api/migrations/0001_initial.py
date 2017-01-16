@@ -227,6 +227,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('ends_at', models.DateTimeField(verbose_name='Reservation is valid until')),
+                ('accomodation', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Accomodation', verbose_name='Accomodation')),
                 ('foods', models.ManyToManyField(through='api.MealReservation', to='api.Food', verbose_name='Foods')),
                 ('meals', models.ManyToManyField(through='api.MealReservation', to='api.Meal', verbose_name='Meals')),
                 ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Order', verbose_name='Order')),
