@@ -25,4 +25,4 @@ class Rules(Base):
 
     def __str__(self):
         """Return created at as string representation."""
-        return "%s (%s)" % (_("Rules"), self.createdAt)
+        return "%s (%s)" % (_("Rules"), self.created_at)
