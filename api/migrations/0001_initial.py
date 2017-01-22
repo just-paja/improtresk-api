@@ -240,8 +240,8 @@ class Migration(migrations.Migration):
             name='Rules',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('createdAt', models.DateTimeField(auto_now_add=True)),
-                ('updatedAt', models.DateTimeField(auto_now=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
                 ('text', models.TextField(verbose_name='Rules, terms and conditions')),
             ],
             options={
