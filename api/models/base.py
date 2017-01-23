@@ -1,6 +1,5 @@
 """Base model class."""
 from django.db import models
-from datetime import datetime
 
 
 class Base(models.Model):

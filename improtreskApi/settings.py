@@ -11,14 +11,18 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
-import ldap
 
-from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
+from django_auth_ldap.config import GroupOfNamesType, LDAPSearch
+
+import ldap
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', ')zbzb++_y*p)2m*cqm)yz^@2sl^sa+%8$dwl$iex7=ai$42cw$')
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    ')zbzb++_y*p)2m*cqm)yz^@2sl^sa+%8$dwl$iex7=ai$42cw$',
+)
 
 AWS_ACCESS_KEY_ID = os.environ.get('DJANGO_AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('DJANGO_AWS_SECRET_ACCESS_KEY')
@@ -89,7 +93,7 @@ DATABASES = {
         'USER': os.environ.get('DJANGO_DB_USER', ''),
         'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', ''),
         'HOST': os.environ.get('DJANGO_DB_HOST', ''),
-    }
+    },
 }
 
 
@@ -163,7 +167,7 @@ AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="cn")
 AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
     AUTH_LDAP_USER_SEARCH_BASE,
     ldap.SCOPE_SUBTREE,
-    "(objectClass=groupOfNames)"
+    "(objectClass=groupOfNames)",
 )
 
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {
@@ -172,7 +176,7 @@ AUTH_LDAP_USER_FLAGS_BY_GROUP = {
 }
 
 try:
-    from local_settings import * # noqa
+    from local_settings import *  # noqa
 except ImportError:
     pass
 

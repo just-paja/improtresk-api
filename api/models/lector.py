@@ -1,5 +1,6 @@
 """Import Django models."""
 from django.db import models
+
 from .base import Base
 
 
