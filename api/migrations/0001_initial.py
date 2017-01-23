@@ -178,7 +178,7 @@ class Migration(migrations.Migration):
                 ('email', models.EmailField(max_length=255)),
                 ('phone', models.CharField(max_length=255)),
                 ('birthday', models.DateField(verbose_name='Date of birthday')),
-                ('rules', models.BooleanField(default=False)),
+                ('rules_accepted', models.BooleanField(default=False, help_text='Does the participant accepted the rules of the festival?', verbose_name='Are rules accepted?')),
                 ('newsletter', models.BooleanField(default=False)),
                 ('paid', models.BooleanField(default=False)),
             ],
