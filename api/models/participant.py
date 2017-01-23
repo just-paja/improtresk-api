@@ -91,13 +91,13 @@ class Participant(Base, auth.models.AbstractBaseUser):
         if self.initialAssignment:
             prevWorkshop = formatWorkshop({
                 'name': self.initialAssignment.name,
-                'lectorName': self.initialAssignment.lector.name,
+                'lectorName': self.initialAssignment.lector_names(),
             })
 
         if self.assigned_workshop:
             currentWorkshop = formatWorkshop({
                 'name': self.assigned_workshop.name,
-                'lectorName': self.assigned_workshop.lector.name,
+                'lectorName': self.assigned_workshop.lector_names(),
             })
 
         return formatMail(
