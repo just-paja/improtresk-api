@@ -34,7 +34,11 @@ class Participant(Base, auth.models.AbstractBaseUser):
         verbose_name=_("Date of birthday"),
     )
 
-    rules = models.BooleanField(default=False)
+    rules_accepted = models.BooleanField(
+        default=False,
+        verbose_name=_("Are rules accepted?"),
+        help_text=_("Does the participant accepted the rules of the festival?"),
+    )
     newsletter = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
 
