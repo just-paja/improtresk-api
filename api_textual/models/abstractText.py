@@ -15,7 +15,7 @@ class AbstractText(Base):
         max_length=127,
     )
     slug = models.SlugField(
-        verbose_name=_("Identifier"),
+        verbose_name=_("Identifier in URL"),
     )
     text = MarkdownField(
         verbose_name=_("Text"),

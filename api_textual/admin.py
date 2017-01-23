@@ -5,6 +5,12 @@ from django.contrib import admin
 from . import models
 
 
+class AbstractTextAdmin(BaseAdminModel):
+    """Admin model for Abstract Text."""
+
+    prepopulated_fields = {'slug': ('name',)}
+
+
 class TextPhotoInlineAdmin(BaseInlineAdminModel):
     """Admin model for Food photos."""
 
@@ -12,10 +18,9 @@ class TextPhotoInlineAdmin(BaseInlineAdminModel):
 
 
 @admin.register(models.Text)
-class TextAdmin(BaseAdminModel):
+class TextAdmin(AbstractTextAdmin):
     """Admin model for Text."""
 
-    prepopulated_fields = {'slug': ('name',)}
     inlines = [
         TextPhotoInlineAdmin,
     ]
@@ -28,10 +33,24 @@ class WorkshopLocationPhotoInlineAdmin(BaseInlineAdminModel):
 
 
 @admin.register(models.WorkshopLocation)
-class WorkshopLocationAdmin(BaseAdminModel):
+class WorkshopLocationAdmin(AbstractTextAdmin):
     """Admin model for Workshop location."""
 
-    prepopulated_fields = {'slug': ('name',)}
     inlines = [
         WorkshopLocationPhotoInlineAdmin,
+    ]
+
+
+class TravelingTipPhotoInlineAdmin(BaseInlineAdminModel):
+    """Admin model for TravelingTip photos."""
+
+    model = models.TravelingTipPhoto
+
+
+@admin.register(models.TravelingTip)
+class TravelingTipAdmin(AbstractTextAdmin):
+    """Admin model for Workshop location."""
+
+    inlines = [
+        TravelingTipPhotoInlineAdmin,
     ]
