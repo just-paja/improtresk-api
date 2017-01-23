@@ -1,7 +1,8 @@
 """Import Django models."""
 from django.db import models
-from .workshop import Workshop
+
 from .photo import Photo
+from .workshop import Workshop
 
 
 class WorkshopPhoto(Photo):

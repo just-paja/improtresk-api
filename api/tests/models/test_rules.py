@@ -1,11 +1,11 @@
 """Tests for reservation model."""
-from api.models import Rules, Year
+from api.models import Rules
 
 from django.test import TestCase
 
 
-class YearTest(TestCase):
-    """Test year methods."""
+class RulesTest(TestCase):
+    """Test rules methods."""
 
     def test_string_representation(self):
         """Test that reservation turns to string properly."""

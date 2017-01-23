@@ -1,6 +1,7 @@
 """Tests for PriceLevel model."""
-from django.test import TestCase
 from api.models.priceLevel import PriceLevel
+
+from django.test import TestCase
 
 
 class PriceLevelTest(TestCase):

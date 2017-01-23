@@ -10,18 +10,18 @@ from .lectorRole import LectorRole
 from .meal import Meal
 from .mealReservation import MealReservation
 from .order import Order
-from .payment import Payment
 from .participant import Participant
-from .team import Team
+from .payment import Payment
 from .priceLevel import PriceLevel
 from .reservation import Reservation
 from .rules import Rules
+from .team import Team
 from .workshop import Workshop
+from .workshopDifficulty import WorkshopDifficulty
 from .workshopLector import WorkshopLector
 from .workshopPhoto import WorkshopPhoto
 from .workshopPrice import WorkshopPrice
 from .year import Year
-from .workshopDifficulty import WorkshopDifficulty
 
 __all__ = (
     Accomodation,
@@ -34,15 +34,16 @@ __all__ = (
     Meal,
     MealReservation,
     Order,
-    Payment,
     Participant,
+    Payment,
     PriceLevel,
     Reservation,
     Rules,
+    Team,
     Workshop,
+    WorkshopDifficulty,
     WorkshopLector,
     WorkshopPhoto,
     WorkshopPrice,
     Year,
-    WorkshopDifficulty,
 )

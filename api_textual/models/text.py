@@ -1,5 +1,4 @@
 """Import Django models."""
-from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .abstractText import AbstractText

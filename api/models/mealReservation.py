@@ -18,8 +18,8 @@ class MealReservation(Base):
     food = models.ForeignKey(
         Food,
         verbose_name=_("Food"),
-		null=True,
-		blank=True,
+        null=True,
+        blank=True,
     )
     meal = models.ForeignKey(
         Meal,

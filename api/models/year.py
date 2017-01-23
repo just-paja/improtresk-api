@@ -29,4 +29,3 @@ class Year(Base):
     current = models.BooleanField(
         verbose_name=_("Is this year current?"),
     )
-

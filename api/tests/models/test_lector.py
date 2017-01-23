@@ -1,6 +1,7 @@
 """Tests for workshop model."""
-from django.test import TestCase
 from api.models.lector import Lector
+
+from django.test import TestCase
 
 
 class LectorTest(TestCase):
