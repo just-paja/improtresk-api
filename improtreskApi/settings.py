@@ -157,7 +157,7 @@ AUTH_LDAP_CACHE_GROUPS = True
 AUTH_LDAP_GROUP_CACHE_TIMEOUT = 300
 AUTH_LDAP_ALWAYS_UPDATE_USER = True
 AUTH_LDAP_FIND_GROUP_PERMS = True
-AUTH_LDAP_USER_ATTR_MAP = { "email": "mail" }
+AUTH_LDAP_USER_ATTR_MAP = {"email": "mail"}
 
 AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="cn")
 AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
@@ -172,7 +172,7 @@ AUTH_LDAP_USER_FLAGS_BY_GROUP = {
 }
 
 try:
-    from local_settings import *
+    from local_settings import * # noqa
 except ImportError:
     pass
 
@@ -187,6 +187,6 @@ if 'DJANGO_AWS_ACCESS_KEY_ID' in os.environ:
     STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 if not DEBUG:
-  X_FRAME_OPTIONS = 'DENY'
-  SECURE_BROWSER_XSS_FILTER = True
-  SESSION_COOKIE_SECURE = True
+    X_FRAME_OPTIONS = 'DENY'
+    SECURE_BROWSER_XSS_FILTER = True
+    SESSION_COOKIE_SECURE = True
