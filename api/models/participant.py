@@ -5,11 +5,11 @@ from django.core import mail
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ..mail import signup as templates
-from ..mail.common import formatMail, formatWorkshop
 from .base import Base
 from .team import Team
 from .workshop import Workshop
+from ..mail import signup as templates
+from ..mail.common import formatMail, formatWorkshop
 
 
 class Participant(Base, auth.models.AbstractBaseUser):
@@ -99,11 +99,14 @@ class Participant(Base, auth.models.AbstractBaseUser):
                 'lectorName': self.assigned_workshop.lector.name,
             })
 
-        return formatMail(template, {
-            'prevWorkshop': prevWorkshop,
-            'currentWorkshop': currentWorkshop,
-            'workshopPreferences': 'foo',
-        })
+        return formatMail(
+            template,
+            {
+                'prevWorkshop': prevWorkshop,
+                'currentWorkshop': currentWorkshop,
+                'workshopPreferences': 'foo',
+            },
+        )
 
     def mailReassignment(self):
         """E-mail changes to the participant assignment."""

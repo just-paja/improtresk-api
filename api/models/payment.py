@@ -2,8 +2,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .order import Order
 from .base import Base
+from .order import Order
 
 
 class Payment(Base):
@@ -73,5 +73,5 @@ class Payment(Base):
         blank=True,
         null=True,
         verbose_name=_("Order"),
-        help_text=_("Which order is this payment related to?")
+        help_text=_("Which order is this payment related to?"),
     )
