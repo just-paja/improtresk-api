@@ -31,7 +31,7 @@ class Order(Base):
         default=False,
         verbose_name=_("Is paid?"),
     )
-    overPaid = models.BooleanField(default=False)
+    over_paid = models.BooleanField(default=False)
     canceled = models.BooleanField(
         verbose_name=_("Is canceled?"),
     )
