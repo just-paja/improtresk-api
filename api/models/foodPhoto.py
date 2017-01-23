@@ -1,5 +1,6 @@
 """Import Django models."""
 from django.db import models
+
 from .food import Food
 from .photo import Photo
 

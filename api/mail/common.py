@@ -51,7 +51,7 @@ def formatWorkshopList(workshops):
 def formatMail(template, data):
     """Format e-mail body to be sent."""
     config = {
-     'year': settings.YEAR,
+        'year': settings.YEAR,
     }
     replace = {**data, **config}
     body = template + MAIL_FOOTER

@@ -1,8 +1,9 @@
 """Order model."""
+from datetime import datetime
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from datetime import datetime
 from .base import Base
 from .participant import Participant
 

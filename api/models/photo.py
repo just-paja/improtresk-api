@@ -2,8 +2,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ..fields import VISIBILITY_CHOICES
 from .base import Base
+from ..fields import VISIBILITY_CHOICES
 
 
 class Photo(Base):

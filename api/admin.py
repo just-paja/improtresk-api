@@ -57,6 +57,7 @@ class WorkshopDifficultyAdmin(BaseAdminModel):
 
     prepopulated_fields = {'slug': ('name',)}
 
+
 class WorkshopLectorInlineAdmin(BaseInlineAdminModel):
     """Inline admin model for Workshop lectors."""
 
@@ -146,7 +147,7 @@ class PaymentAdmin(BaseAdminModel):
             ]
         return super(PaymentAdmin, self).get_readonly_fields(
             request,
-            obj
+            obj,
         )
 
 
@@ -195,6 +196,7 @@ class TeamAdmin(BaseAdminModel):
     """Admin model for Teams."""
 
     pass
+
 
 @admin.register(models.Rules)
 class RulesAdmin(BaseAdminModel):

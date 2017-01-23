@@ -1,6 +1,7 @@
 """Tests for team model."""
-from django.test import TestCase
 from api.models.team import Team
+
+from django.test import TestCase
 
 
 class TeamTest(TestCase):

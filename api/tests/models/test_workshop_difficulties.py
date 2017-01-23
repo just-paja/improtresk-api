@@ -1,6 +1,7 @@
 """Tests for workshop model."""
-from django.test import TestCase
 from api.models.workshop import WorkshopDifficulty
+
+from django.test import TestCase
 
 
 class WorkshopDifficultyTest(TestCase):

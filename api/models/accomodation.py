@@ -14,7 +14,7 @@ class Accomodation(CapacityMixin, Base):
     name = models.CharField(
         verbose_name=_("Accomodation name"),
         help_text=_("eg. Hotel Stadion"),
-        max_length=127
+        max_length=127,
     )
     desc = models.TextField(
         verbose_name=_("Description formatted in Markdown"),
