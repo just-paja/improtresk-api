@@ -142,7 +142,7 @@ class PaymentAdmin(BaseAdminModel):
                 'bank',
                 'message',
                 'currency',
-                'received',
+                'received_at',
                 'message',
             ]
         return super(PaymentAdmin, self).get_readonly_fields(
