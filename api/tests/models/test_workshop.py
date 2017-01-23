@@ -53,3 +53,24 @@ class WorkshopTest(TestCase):
         workshop = reservation.workshop_price.workshop
         self.assertEqual(workshop.number_of_reservations(), 1)
         self.assertEqual(workshop.has_free_capacity(), False)
+
+    def test_lector_names(self):
+        """ Test, that Workshop.lector_names() works correctly with one lector """
+        workshop = mommy.make(
+            'api.Workshop',
+            lectors=[
+                mommy.make('api.Lector', name="Foo lector"),
+            ]
+        )
+        self.assertEqual(workshop.lector_names(), "Foo lector")
+
+    def test_lector_names_two(self):
+        """ Test, that Workshop.lector_names() works correctly with two lectors """
+        workshop = mommy.make(
+            'api.Workshop',
+            lectors=[
+                mommy.make('api.Lector', name="Foo lector"),
+                mommy.make('api.Lector', name="Bar lector"),
+            ]
+        )
+        self.assertEqual(workshop.lector_names(), "Foo lector, Bar lector")
