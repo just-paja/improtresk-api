@@ -6,6 +6,9 @@ machine:
     version: 3.5.1
 
 compile:
+  override:
+    - (cd api; django-admin compilemessages)
+    - (cd api_textual; django-admin compilemessages)
   post:
     - python setup.py sdist
     - mv dist/* $CIRCLE_ARTIFACTS/

@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-01-23 14:52+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: models/abstractText.py:14
+msgid "Name"
+msgstr ""
+
+#: models/abstractText.py:18
+msgid "Identifier in URL"
+msgstr ""
+
+#: models/abstractText.py:21 models/textPhoto.py:15
+msgid "Text"
+msgstr ""
+
+#: models/abstractText.py:25 models/text.py:11
+msgid "Text item"
+msgstr ""
+
+#: models/abstractText.py:26 models/text.py:12
+msgid "Text items"
+msgstr ""
+
+#: models/travelingTip.py:11 models/travelingTipPhoto.py:15
+msgid "Traveling tip"
+msgstr ""
+
+#: models/travelingTip.py:12
+msgid "Traveling tips"
+msgstr ""
+
+#: models/workshopLocation.py:12
+msgid "Address"
+msgstr ""
+
+#: models/workshopLocation.py:16
+msgid "Workshop location"
+msgstr ""
+
+#: models/workshopLocation.py:17
+msgid "Workshop locations"
+msgstr ""
+
+#: models/workshopLocationPhoto.py:15
+msgid "Workshop Location"
+msgstr ""
