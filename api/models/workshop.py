@@ -38,6 +38,9 @@ class Workshop(CapacityMixin, Base):
         """
         return Reservation.objects.filter(workshop_price__workshop=self)
 
+    def lector_names(self):
+        return ", ".join(self.lectors.values_list('name', flat=True))
+
     def __str__(self):
         """Return name as string representation."""
         return self.name
