@@ -15,6 +15,7 @@ from ..mail.common import formatMail, formatWorkshop
 class Participant(Base, auth.models.AbstractBaseUser):
     """Stores participants."""
 
+    USERNAME_FIELD = 'name'
     name = models.CharField(max_length=255)
     address = models.CharField(
         verbose_name=_("Address"),
