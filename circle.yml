@@ -25,7 +25,7 @@ test:
 
 deployment:
   staging:
-    branch: staging
+    branch: master
     commands:
       - ./bin/deploy staging
   release:
