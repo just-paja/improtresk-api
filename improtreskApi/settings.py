@@ -186,7 +186,7 @@ if AUTH_LDAP_SERVER_URI:
         'django.contrib.auth.backends.ModelBackend',
     )
 
-if 'DJANGO_AWS_ACCESS_KEY_ID' in os.environ:
+if AWS_ACCESS_KEY_ID:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
     STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
