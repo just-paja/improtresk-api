@@ -25,6 +25,8 @@ class Year(Base):
     )
     start_date_of_signups = models.DateTimeField(
         verbose_name=_("Date and time when signups are starting"),
+        null=True,
+        blank=True,
     )
     current = models.BooleanField(
         verbose_name=_("Is this year current?"),
