@@ -151,11 +151,8 @@ AUTH_LDAP_BIND_DN = os.environ.get('DJANGO_LDAP_BIND_DN', '')
 AUTH_LDAP_BIND_PASSWORD = os.environ.get('DJANGO_LDAP_BIND_PASSWORD', '')
 AUTH_LDAP_USER_SEARCH_BASE = os.environ.get('DJANGO_LDAP_USER_SEARCH_BASE', '')
 AUTH_LDAP_USER_SEARCH_FORMAT = os.environ.get('DJANGO_LDAP_USER_SEARCH_FORMAT', '')
-AUTH_LDAP_USER_SEARCH = LDAPSearch(
-    AUTH_LDAP_USER_SEARCH_BASE,
-    ldap.SCOPE_SUBTREE,
-    AUTH_LDAP_USER_SEARCH_FORMAT,
-)
+AUTH_LDAP_GROUP_SUPERUSER = os.environ.get('DJANGO_LDAP_GROUP_SUPERUSER', '')
+AUTH_LDAP_GROUP_STAFF = os.environ.get('DJANGO_LDAP_GROUP_STAFF', '')
 
 AUTH_LDAP_CACHE_GROUPS = True
 AUTH_LDAP_GROUP_CACHE_TIMEOUT = 300
@@ -164,16 +161,6 @@ AUTH_LDAP_FIND_GROUP_PERMS = True
 AUTH_LDAP_USER_ATTR_MAP = {"email": "mail"}
 
 AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="cn")
-AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
-    AUTH_LDAP_USER_SEARCH_BASE,
-    ldap.SCOPE_SUBTREE,
-    "(objectClass=groupOfNames)",
-)
-
-AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-    "is_superuser": os.environ.get('DJANGO_LDAP_GROUP_SUPERUSER', ''),
-    "is_staff": os.environ.get('DJANGO_LDAP_GROUP_STAFF', ''),
-}
 
 try:
     from local_settings import *  # noqa
@@ -181,6 +168,23 @@ except ImportError:
     pass
 
 if AUTH_LDAP_SERVER_URI:
+    AUTH_LDAP_USER_SEARCH = LDAPSearch(
+        AUTH_LDAP_USER_SEARCH_BASE,
+        ldap.SCOPE_SUBTREE,
+        AUTH_LDAP_USER_SEARCH_FORMAT,
+    )
+
+    AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
+        AUTH_LDAP_USER_SEARCH_BASE,
+        ldap.SCOPE_SUBTREE,
+        "(objectClass=groupOfNames)",
+    )
+
+    AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+        "is_superuser": AUTH_LDAP_GROUP_SUPERUSER,
+        "is_staff": AUTH_LDAP_GROUP_STAFF,
+    }
+
     AUTHENTICATION_BACKENDS = (
         'django_auth_ldap.backend.LDAPBackend',
         'django.contrib.auth.backends.ModelBackend',
