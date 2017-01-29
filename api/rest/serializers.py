@@ -6,7 +6,7 @@ from ..models import Year
 class YearSerializer(serializers.HyperlinkedModelSerializer):
     startDate = serializers.DateField(source='start_date')
     endDate = serializers.DateField(source='end_date')
-    startSignupsAt = serializers.DateField(source='start_date_of_signups')
+    startSignupsAt = serializers.DateTimeField(source='start_date_of_signups')
 
     class Meta:
         model = Year
