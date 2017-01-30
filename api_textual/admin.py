@@ -54,3 +54,10 @@ class TravelingTipAdmin(AbstractTextAdmin):
     inlines = [
         TravelingTipPhotoInlineAdmin,
     ]
+
+
+@admin.register(models.News)
+class NewsAdmin(AbstractTextAdmin):
+    """Define admin model for News."""
+
+    pass
