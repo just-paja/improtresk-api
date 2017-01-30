@@ -1,4 +1,4 @@
-from rest_framework import permissions, routers, serializers, viewsets
+from rest_framework import permissions, serializers, viewsets
 
 from ..models import Year
 
@@ -22,12 +22,7 @@ class YearSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class YearSet(viewsets.ModelViewSet):
-    def get_queryset(self):
-        return Year.objects.all()
+    queryset = Year.objects.all()
     serializer_class = YearSerializer
     permission_classes = [permissions.AllowAny]
     allowed_methods = ('GET',)
-
-
-router = routers.DefaultRouter()
-router.register(r'years', YearSet, base_name="gpxfile")
