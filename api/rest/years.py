@@ -21,7 +21,7 @@ class YearSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
-class YearSet(viewsets.ModelViewSet):
+class YearViewSet(viewsets.ModelViewSet):
     queryset = Year.objects.all()
     serializer_class = YearSerializer
     permission_classes = [permissions.AllowAny]
