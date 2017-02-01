@@ -8,6 +8,7 @@ class TextSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Text
+        lookup_field = 'slug'
         fields = (
             'id',
             'name',
@@ -20,3 +21,4 @@ class TextSerializer(serializers.HyperlinkedModelSerializer):
 class TextViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Text.objects.all()
     serializer_class = TextSerializer
+    lookup_field = 'slug'
