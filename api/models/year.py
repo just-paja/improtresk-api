@@ -31,3 +31,7 @@ class Year(Base):
     current = models.BooleanField(
         verbose_name=_("Is this year current?"),
     )
+
+    def __str__(self):
+        """Return name as string representation."""
+        return "Year %s" % self.year

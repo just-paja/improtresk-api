@@ -29,3 +29,7 @@ class MealReservation(Base):
         Reservation,
         verbose_name=_("Reservation"),
     )
+
+    def __str__(self):
+        """Return name as string representation."""
+        return "Reservation of %s for %s" % (self.food, self.meal)
