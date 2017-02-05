@@ -24,4 +24,4 @@ class WorkshopPrice(Base):
 
     def __str__(self):
         """Return name as string representation."""
-        return "%s - %s (%s)" % (self.workshop, self.price_level, self.price)
+        return "%s - %s (%s,-)" % (self.workshop, self.price_level.name, self.price)
