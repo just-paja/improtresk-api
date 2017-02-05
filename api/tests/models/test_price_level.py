@@ -1,7 +1,7 @@
 """Tests for PriceLevel model."""
-from api.models.priceLevel import PriceLevel
-
 from django.test import TestCase
+
+from model_mommy import mommy
 
 
 class PriceLevelTest(TestCase):
@@ -9,5 +9,9 @@ class PriceLevelTest(TestCase):
 
     def test_string_representation(self):
         """Test that PriceLevel turns to string properly."""
-        entry = PriceLevel(name="Foo PriceLevel")
-        self.assertEqual(str(entry), 'Foo PriceLevel')
+        entry = mommy.make(
+            'PriceLevel',
+            name="Foo PriceLevel",
+            year__year="1234",
+        )
+        self.assertEqual(str(entry), 'Foo PriceLevel (1234)')

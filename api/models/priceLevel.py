@@ -23,4 +23,4 @@ class PriceLevel(Base):
 
     def __str__(self):
         """Return name as string representation."""
-        return self.name
+        return "%s (%s)" % (self.name, self.year.year)

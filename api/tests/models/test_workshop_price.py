@@ -12,4 +12,4 @@ class WorkshopPriceTest(TestCase):
         workshop = Workshop(name="Foo workshop")
         price_level = PriceLevel(name="Foo price level")
         entry = WorkshopPrice(price=123, workshop=workshop, price_level=price_level)
-        self.assertEqual(str(entry), 'Foo workshop - Foo price level (123)')
+        self.assertEqual(str(entry), 'Foo workshop - Foo price level (123,-)')
