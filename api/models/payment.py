@@ -75,3 +75,7 @@ class Payment(Base):
         verbose_name=_("Order"),
         help_text=_("Which order is this payment related to?"),
     )
+
+    def __str__(self):
+        """Return name as string representation."""
+        return "Payment from %s" % self.received_at
