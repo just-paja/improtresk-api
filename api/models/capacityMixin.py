@@ -36,6 +36,12 @@ class CapacityMixin(models.Model):
             return self.number_of_reservations() < self.capacity
         return True
 
+    def available_capacity(self):
+        """
+        Returns number of avaliable places
+        """
+        return self.capacity - self.number_of_reservations()
+
     class Meta:
         """Makes the model abstract."""
 
