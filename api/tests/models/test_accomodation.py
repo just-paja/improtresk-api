@@ -28,6 +28,7 @@ class AccomodationTest(TestCase):
         )
         accomodation = reservation.accomodation
         self.assertEqual(accomodation.number_of_reservations(), 1)
+        self.assertEqual(accomodation.available_capacity(), 0)
         self.assertEqual(accomodation.has_free_capacity(), False)
 
     @freeze_time("2017-2-1")
@@ -40,6 +41,7 @@ class AccomodationTest(TestCase):
         )
         accomodation = reservation.accomodation
         self.assertEqual(accomodation.number_of_reservations(), 0)
+        self.assertEqual(accomodation.available_capacity(), 1)
         self.assertEqual(accomodation.has_free_capacity(), True)
 
     @freeze_time("2017-2-1")
@@ -52,4 +54,5 @@ class AccomodationTest(TestCase):
         )
         accomodation = reservation.accomodation
         self.assertEqual(accomodation.number_of_reservations(), 1)
+        self.assertEqual(accomodation.available_capacity(), 0)
         self.assertEqual(accomodation.has_free_capacity(), False)
