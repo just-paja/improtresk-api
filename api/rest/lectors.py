@@ -1,4 +1,4 @@
-from rest_framework import permissions, serializers, viewsets
+from rest_framework import serializers, viewsets
 
 from ..models import Lector, LectorPhoto
 
@@ -29,5 +29,3 @@ class LectorSerializer(serializers.HyperlinkedModelSerializer):
 class LectorViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Lector.objects.all()
     serializer_class = LectorSerializer
-    permission_classes = [permissions.AllowAny]
-    allowed_methods = ('GET',)
