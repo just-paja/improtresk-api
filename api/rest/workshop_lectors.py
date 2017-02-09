@@ -1,11 +1,14 @@
 from rest_framework import serializers, viewsets
 
-from .lectors import LectorSerializer
 from ..models import WorkshopLector
 
 
 class WorkshopLectorSerializer(serializers.ModelSerializer):
-    lector = LectorSerializer()
+    lector = serializers.SlugRelatedField(
+        many=False,
+        read_only=True,
+        slug_field='name',
+    )
     role = serializers.SlugRelatedField(
         many=False,
         read_only=True,
