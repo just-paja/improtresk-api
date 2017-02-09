@@ -13,6 +13,7 @@ class WorkshopPrice(Base):
     price_level = models.ForeignKey(
         PriceLevel,
         verbose_name=_("Price level"),
+        related_name="workshop_prices",
     )
     price = models.PositiveIntegerField(
         verbose_name=_("Price in CZK"),
@@ -20,6 +21,7 @@ class WorkshopPrice(Base):
     workshop = models.ForeignKey(
         Workshop,
         verbose_name=_("Workshop"),
+        related_name="prices",
     )
 
     def __str__(self):
