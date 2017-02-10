@@ -14,7 +14,13 @@ class Photo(Base):
 
         abstract = True
 
-    image = models.ImageField(upload_to='var/photos')
+    image = models.ImageField(
+        height_field="height",
+        width_field="width",
+        upload_to='var/photos'
+    )
+    height = models.PositiveIntegerField(null=True, blank=True, editable=False, default=100)
+    width = models.PositiveIntegerField(null=True, blank=True, editable=False, default=100)
     desc = models.CharField(
         verbose_name=_("Description"),
         max_length=255,

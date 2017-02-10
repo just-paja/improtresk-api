@@ -9,6 +9,8 @@ class NewsPhotoSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'image',
             'desc',
+            'height',
+            'width',
         )
 
 
