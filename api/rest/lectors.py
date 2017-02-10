@@ -10,6 +10,8 @@ class LectorPhotoSerializer(serializers.HyperlinkedModelSerializer):
             'id',
             'image',
             'desc',
+            'height',
+            'width',
         )
 
 
