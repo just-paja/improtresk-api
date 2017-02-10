@@ -196,7 +196,10 @@ if AWS_ACCESS_KEY_ID:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
     STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
-if not DEBUG:
+if DEBUG:
+    MEDIA_ROOT = '/var/tmp/improtresk-api'
+    MEDIA_URL = '/media/'
+else:
     X_FRAME_OPTIONS = 'DENY'
     SECURE_BROWSER_XSS_FILTER = True
     SESSION_COOKIE_SECURE = True
