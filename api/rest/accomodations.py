@@ -10,6 +10,8 @@ class AccomodationPhotoSerializer(serializers.HyperlinkedModelSerializer):
             'id',
             'image',
             'desc',
+            'height',
+            'width',
         )
 
 
