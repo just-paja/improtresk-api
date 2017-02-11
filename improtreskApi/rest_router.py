@@ -1,10 +1,17 @@
 from rest_framework import routers
 
-from api.rest import accomodations, lector_roles, lectors, rules, workshops,\
-    workshop_difficulties, years
+from api.rest import accomodations, lector_roles, lectors, participants, rules,\
+    workshop_difficulties, workshops, years
 from api_textual.rest import news, performers, texts, workshop_locations
 
-router = routers.DefaultRouter()
+from rest_framework_extensions.routers import NestedRouterMixin
+
+
+class NestedDefaultRouter(NestedRouterMixin, routers.DefaultRouter):
+    pass
+
+
+router = NestedDefaultRouter()
 router.register(r'lectorRoles', lector_roles.LectorRoleViewSet)
 router.register(r'lectors', lectors.LectorViewSet)
 router.register(r'news', news.NewsViewSet)
@@ -15,6 +22,11 @@ router.register(
     r'years/(?P<year>[0-9]{4})/workshops',
     workshops.WorkshopViewSet,
     base_name='workshops',
+).register(
+    r'participants',
+    participants.ParticipantViewSet,
+    base_name='workshops-participants',
+    parents_query_lookups=['assigned_workshop'],
 )
 router.register(
     r'years/(?P<year>[0-9]{4})/locations',
