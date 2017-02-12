@@ -1,9 +1,11 @@
 """Year model."""
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from api_textual.models import WorkshopLocation
 
 from .base import Base
 from .workshop import Workshop
+from ..fields import VISIBILITY_PUBLIC
 
 
 class Year(Base):
@@ -44,4 +46,12 @@ class Year(Base):
         ]
         return Workshop.objects\
             .distinct()\
-            .filter(prices__id__in=price_level_ids)
+            .filter(prices__id__in=price_level_ids)\
+            .filter(visibility=VISIBILITY_PUBLIC)
+
+    def get_locations(self):
+        location_ids = [
+            workshop.location_id for workshop in self.get_workshops()
+        ]
+
+        return WorkshopLocation.objects.distinct().filter(id__in=location_ids)
