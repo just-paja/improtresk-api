@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
+from .workshop import Workshop
 
 
 class Year(Base):
@@ -35,3 +36,12 @@ class Year(Base):
     def __str__(self):
         """Return name as string representation."""
         return "Year %s" % self.year
+
+    def get_workshops(self):
+        price_level_ids = [
+            price.id for price in
+            self.price_levels.prefetch_related('workshop_prices')
+        ]
+        return Workshop.objects\
+            .distinct()\
+            .filter(prices__id__in=price_level_ids)\
