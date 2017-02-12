@@ -1,5 +1,9 @@
+VISIBILITY_PRIVATE = 1
+VISIBILITY_PUBLIC = 2
+VISIBILITY_DELETED = 3
+
 VISIBILITY_CHOICES = (
-    (1, 'Private'),
-    (2, 'Public'),
-    (3, 'Deleted'),
+    (VISIBILITY_PRIVATE, 'Private'),
+    (VISIBILITY_PUBLIC, 'Public'),
+    (VISIBILITY_DELETED, 'Deleted'),
 )
