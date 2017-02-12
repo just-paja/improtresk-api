@@ -1,13 +1,11 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers, viewsets
 
-from .workshop_difficulties import WorkshopDifficultySerializer
 from .workshop_lectors import WorkshopLectorSerializer
 from ..models import Workshop, Year
 
 
-class WorkshopSerializer(serializers.HyperlinkedModelSerializer):
-    difficulty = WorkshopDifficultySerializer()
+class WorkshopSerializer(serializers.ModelSerializer):
     lectors = WorkshopLectorSerializer(
         source='workshoplector_set',
         many=True,
