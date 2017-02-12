@@ -8,5 +8,9 @@ router.register(r'lectors', lectors.LectorViewSet)
 router.register(r'news', news.NewsViewSet)
 router.register(r'texts', texts.TextViewSet)
 router.register(r'years', years.YearViewSet)
-router.register(r'workshops', workshops.WorkshopViewSet)
+router.register(
+    r'years/(?P<year>[0-9]{4})/workshops',
+    workshops.WorkshopViewSet,
+    base_name='workshops',
+)
 router.register(r'accomodations', accomodations.AccomodationViewSet)

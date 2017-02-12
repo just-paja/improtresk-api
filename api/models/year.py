@@ -44,4 +44,4 @@ class Year(Base):
         ]
         return Workshop.objects\
             .distinct()\
-            .filter(prices__id__in=price_level_ids)\
+            .filter(prices__id__in=price_level_ids)
