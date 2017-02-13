@@ -40,22 +40,12 @@ class Year(Base):
         return "Year %s" % self.year
 
     def get_workshops(self):
-        price_ids = []
-        for price_level in self.price_levels.all():
-            prices = price_level.workshop_prices.all()
-            price_ids = price_ids + [
-                price.id for price in prices
-            ]
-
-        print("%s" % price_ids)
-        return Workshop.objects\
-            .distinct()\
-            .filter(prices__id__in=price_ids)\
-            .filter(visibility=VISIBILITY_PUBLIC)
+        return Workshop.objects.distinct().filter(
+            prices__price_level__in=self.price_levels.all(),
+            visibility=VISIBILITY_PUBLIC,
+        )
 
     def get_locations(self):
-        location_ids = [
-            workshop.location_id for workshop in self.get_workshops()
-        ]
-
-        return WorkshopLocation.objects.distinct().filter(id__in=location_ids)
+        return WorkshopLocation.objects.distinct().filter(
+            workshop__in=self.get_workshops(),
+        )
