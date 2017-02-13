@@ -1,6 +1,7 @@
 from rest_framework import routers
 
-from api.rest import accomodations, lector_roles, lectors, workshops, workshop_difficulties, years
+from api.rest import accomodations, lector_roles, lectors, rules, workshops,\
+    workshop_difficulties, years
 from api_textual.rest import news, texts, workshop_locations
 
 router = routers.DefaultRouter()
@@ -19,5 +20,10 @@ router.register(
     r'years/(?P<year>[0-9]{4})/locations',
     workshop_locations.WorkshopLocationViewSet,
     base_name='locations',
+)
+router.register(
+    r'years/(?P<year>[0-9]{4})/rules',
+    rules.RulesViewSet,
+    base_name='rules',
 )
 router.register(r'accomodations', accomodations.AccomodationViewSet)
