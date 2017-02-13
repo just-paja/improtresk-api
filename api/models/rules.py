@@ -12,6 +12,7 @@ class Rules(Base):
     year = models.ForeignKey(
         Year,
         verbose_name=_("Year"),
+        related_name='rules',
     )
     text = models.TextField(
         verbose_name=_("Rules, terms and conditions"),
