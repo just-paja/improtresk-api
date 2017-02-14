@@ -12,6 +12,11 @@ FOOD_CHOICES = (
     (2, _('Main course')),
 )
 
+MEAL_NAME_CHOICES = (
+    ('lunch', _('Lunch')),
+    ('dinner', _('Dinner')),
+)
+
 
 class Meal(CapacityMixin, Base):
     """Stores meal and course, for example Friday lunch soup."""
@@ -21,9 +26,9 @@ class Meal(CapacityMixin, Base):
         verbose_name_plural = _("Meals")
 
     name = models.CharField(
-        verbose_name=_("Name of meal"),
-        help_text=_("eg. Friday lunch"),
         max_length=127,
+        default='lunch',
+        choices=MEAL_NAME_CHOICES,
     )
     course = models.PositiveIntegerField(
         verbose_name=_("Course"),
