@@ -8,8 +8,8 @@ from .reservation import Reservation
 from ..fields import VISIBILITY_CHOICES
 
 FOOD_CHOICES = (
-    (1, 'Soup'),
-    (2, 'Main course'),
+    (1, _('Soup')),
+    (2, _('Main course')),
 )
 
 
