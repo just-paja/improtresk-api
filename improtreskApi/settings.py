@@ -24,6 +24,11 @@ SECRET_KEY = os.environ.get(
     ')zbzb++_y*p)2m*cqm)yz^@2sl^sa+%8$dwl$iex7=ai$42cw$',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'api.auth.participant_backend.ParticipantBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 AWS_ACCESS_KEY_ID = os.environ.get('DJANGO_AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('DJANGO_AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('DJANGO_AWS_STORAGE_BUCKET_NAME')
@@ -189,8 +194,7 @@ if AUTH_LDAP_SERVER_URI:
 
     AUTHENTICATION_BACKENDS = (
         'django_auth_ldap.backend.LDAPBackend',
-        'django.contrib.auth.backends.ModelBackend',
-    )
+    ) + AUTHENTICATION_BACKENDS
 
 if AWS_ACCESS_KEY_ID:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
