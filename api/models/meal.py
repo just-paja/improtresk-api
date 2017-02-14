@@ -14,7 +14,7 @@ FOOD_CHOICES = (
 
 
 class Meal(CapacityMixin, Base):
-    """Stores meal."""
+    """Stores meal and course, for example Friday lunch soup."""
 
     class Meta:
         verbose_name = _("Meal")
