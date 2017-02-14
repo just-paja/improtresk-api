@@ -15,7 +15,6 @@ from ..mail.common import formatMail, formatWorkshop
 class Participant(Base, auth.models.AbstractBaseUser):
     """Stores participants."""
 
-    USERNAME_FIELD = 'name'
     name = models.CharField(max_length=255)
     address = models.CharField(
         verbose_name=_("Address"),
@@ -44,6 +43,7 @@ class Participant(Base, auth.models.AbstractBaseUser):
     paid = models.BooleanField(default=False)
 
     assigned_workshop = models.ForeignKey(Workshop, blank=True, null=True)
+    is_staff = False
 
     def __str__(self):
         """Return name and status as string representation."""
