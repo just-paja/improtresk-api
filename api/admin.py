@@ -94,6 +94,8 @@ class AccomodationAdmin(BaseAdminModel):
     inlines = [
         AccomodationPhotoAdmin,
     ]
+    list_display = ('name', 'capacity', 'price', 'visibility')
+    list_filter = ('visibility',)
 
 
 class FoodPhotoAdmin(BaseInlineAdminModel):
@@ -160,6 +162,8 @@ class ParticipantAdmin(BaseAdminModel):
         'last_login',
         'paid',
     ]
+    list_display = ('name', 'team', 'assigned_workshop', 'newsletter', 'created_at')
+    list_filter = ('team', 'assigned_workshop', 'newsletter')
 
 
 @admin.register(models.Reservation)
@@ -189,6 +193,8 @@ class YearAdmin(BaseAdminModel):
     inlines = [
         PriceLevelInlineAdmin,
     ]
+    list_display = ('year', 'topic', 'current', 'start_date', 'end_date')
+    list_filter = ('current',)
 
 
 @admin.register(models.Team)
@@ -202,4 +208,5 @@ class TeamAdmin(BaseAdminModel):
 class RulesAdmin(BaseAdminModel):
     """Define admin model for Rules."""
 
-    pass
+    list_display = ('year', 'created_at')
+    list_filter = ('year',)
