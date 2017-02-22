@@ -9,6 +9,7 @@ class AbstractTextAdmin(BaseAdminModel):
     """Admin model for Abstract Text."""
 
     prepopulated_fields = {'slug': ('name',)}
+    list_display = ('name', 'updated_at')
 
 
 class TextPhotoInlineAdmin(BaseInlineAdminModel):
@@ -39,6 +40,7 @@ class WorkshopLocationAdmin(AbstractTextAdmin):
     inlines = [
         WorkshopLocationPhotoInlineAdmin,
     ]
+    list_display = ('name', 'address', 'updated_at')
 
 
 class TravelingTipPhotoInlineAdmin(BaseInlineAdminModel):
