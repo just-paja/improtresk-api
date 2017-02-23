@@ -15,6 +15,7 @@ from .payment import Payment
 from .priceLevel import PriceLevel
 from .reservation import Reservation
 from .rules import Rules
+from .scheduleEvent import ScheduleEvent
 from .team import Team
 from .workshop import Workshop
 from .workshopDifficulty import WorkshopDifficulty
@@ -39,6 +40,7 @@ __all__ = (
     PriceLevel,
     Reservation,
     Rules,
+    ScheduleEvent,
     Team,
     Workshop,
     WorkshopDifficulty,
