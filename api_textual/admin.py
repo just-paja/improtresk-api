@@ -69,3 +69,19 @@ class NewsAdmin(AbstractTextAdmin):
     inlines = [
         NewsPhotoInlineAdmin,
     ]
+
+
+class PerformerPhotoInlineAdmin(BaseInlineAdminModel):
+    """Admin model for TravelingTip photos."""
+
+    model = models.PerformerPhoto
+
+
+@admin.register(models.Performer)
+class PerformerAdmin(AbstractTextAdmin):
+    """Define admin model for Performer."""
+
+    list_display = ('name', 'year', 'visibility')
+    inlines = [
+        PerformerPhotoInlineAdmin,
+    ]
