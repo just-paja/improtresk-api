@@ -210,3 +210,10 @@ class RulesAdmin(BaseAdminModel):
 
     list_display = ('year', 'created_at')
     list_filter = ('year',)
+
+
+@admin.register(models.ScheduleEvent)
+class ScheduleEventAdmin(BaseAdminModel):
+    """Define admin model for Rules."""
+
+    list_display = ('name', 'year', 'start_at', 'end_at')
