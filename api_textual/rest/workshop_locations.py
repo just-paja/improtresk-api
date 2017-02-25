@@ -1,6 +1,8 @@
-from django.shortcuts import get_object_or_404
-from rest_framework import serializers, viewsets
 from api.models import Year
+
+from django.shortcuts import get_object_or_404
+
+from rest_framework import serializers, viewsets
 
 from .. import models
 
