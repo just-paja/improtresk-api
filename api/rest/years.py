@@ -1,13 +1,27 @@
 from rest_framework import serializers, viewsets
 
 from .workshops import WorkshopSerializer
-from ..models import Year
+from ..models import PriceLevel, Year
+
+
+class PriceLevelSerializer(serializers.ModelSerializer):
+    takesEffectOn = serializers.DateTimeField(source='takes_effect_on')
+
+    class Meta:
+        model = PriceLevel
+        fields = (
+            'id',
+            'name',
+            'year',
+            'takesEffectOn',
+        )
 
 
 class YearSerializer(serializers.HyperlinkedModelSerializer):
     startDate = serializers.DateField(source='start_date')
     endDate = serializers.DateField(source='end_date')
     startSignupsAt = serializers.DateTimeField(source='start_date_of_signups')
+    priceLevels = PriceLevelSerializer(source='price_levels', many=True)
 
     class Meta:
         model = Year
@@ -19,6 +33,7 @@ class YearSerializer(serializers.HyperlinkedModelSerializer):
             'endDate',
             'startSignupsAt',
             'current',
+            'priceLevels',
         )
 
 
