@@ -17,7 +17,7 @@ class Photo(Base):
     image = models.ImageField(
         height_field="height",
         width_field="width",
-        upload_to='var/photos'
+        upload_to='var/photos',
     )
     height = models.PositiveIntegerField(null=True, blank=True, editable=False, default=100)
     width = models.PositiveIntegerField(null=True, blank=True, editable=False, default=100)
