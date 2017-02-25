@@ -60,7 +60,7 @@ class WorkshopTest(TestCase):
             'api.Workshop',
             lectors=[
                 mommy.make('api.Lector', name="Foo lector"),
-            ]
+            ],
         )
         self.assertEqual(workshop.lector_names(), "Foo lector")
 
@@ -71,6 +71,6 @@ class WorkshopTest(TestCase):
             lectors=[
                 mommy.make('api.Lector', name="Foo lector"),
                 mommy.make('api.Lector', name="Bar lector"),
-            ]
+            ],
         )
         self.assertEqual(workshop.lector_names(), "Foo lector, Bar lector")

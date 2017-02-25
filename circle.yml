@@ -20,6 +20,7 @@ dependencies:
 test:
   pre:
     - pylama
+    - flake8
   post:
     - codeclimate-test-reporter
 

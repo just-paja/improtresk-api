@@ -33,7 +33,7 @@ class ParticipantBackendTest(TestCase):
             'api.Participant',
             id=1,
             email='user@localhost',
-            password='test'
+            password='test',
         )
         user_returned = self.backend.authenticate('user@localhost', 'badPassword')
         self.assertEqual(user_returned, None)
@@ -44,7 +44,8 @@ class ParticipantBackendTest(TestCase):
             'api.Participant',
             id=1,
             email='user@localhost',
-            password='pbkdf2_sha256$30000$X7Z52JrOXt7N$DJ/wi15DOP+zi9yI/aJQIXKQEBovydyyTJ3v3zORmT0='
+            password='pbkdf2_sha256'
+            '$30000$X7Z52JrOXt7N$DJ/wi15DOP+zi9yI/aJQIXKQEBovydyyTJ3v3zORmT0=',
         )
         user_returned = self.backend.authenticate('user@localhost', '3CX3Fe5hNI')
         self.assertEqual(user_returned, user_expected)

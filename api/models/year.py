@@ -1,7 +1,8 @@
 """Year model."""
+from api_textual.models import WorkshopLocation
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from api_textual.models import WorkshopLocation
 
 from .base import Base
 from .workshop import Workshop

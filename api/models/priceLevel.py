@@ -12,7 +12,7 @@ class PriceLevel(Base):
     year = models.ForeignKey(
         Year,
         verbose_name=_("Year"),
-        related_name="price_levels"
+        related_name="price_levels",
     )
     name = models.CharField(
         verbose_name=_("Name"),
