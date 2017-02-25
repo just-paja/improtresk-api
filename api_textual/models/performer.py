@@ -1,8 +1,8 @@
 """Import Django models."""
+from api.fields import VISIBILITY_CHOICES, VISIBILITY_PUBLIC
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
-from api.fields import VISIBILITY_PUBLIC, VISIBILITY_CHOICES
 
 from .abstractText import AbstractText
 

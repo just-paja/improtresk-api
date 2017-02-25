@@ -1,8 +1,8 @@
-from rest_framework import routers
-
 from api.rest import accomodations, lector_roles, lectors, participants, rules,\
     workshop_difficulties, workshops, years
 from api_textual.rest import news, performers, texts, workshop_locations
+
+from rest_framework import routers
 
 from rest_framework_extensions.routers import NestedRouterMixin
 
