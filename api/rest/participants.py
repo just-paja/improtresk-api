@@ -11,7 +11,7 @@ from ..models import Participant, Team
 
 def is_true(value):
     if not value:
-        raise serializers.ValidationError('Field is required')
+        raise serializers.ValidationError('Field must be checked')
 
 
 def is_eighteen(value):
