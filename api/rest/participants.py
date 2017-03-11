@@ -79,3 +79,14 @@ class ParticipantViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
 class RegistrationViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Participant.objects.all()
     serializer_class = ParticipantSerializer
+
+
+class WhoAmIViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
+    queryset = Participant.objects.none()
+    serializer_class = ParticipantSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        if isinstance(user, Participant):
+            return Participant.objects.filter(pk=user.pk)
