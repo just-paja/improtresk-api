@@ -12,6 +12,7 @@ class Team(Base):
     name = models.CharField(
         verbose_name=_("Team name"),
         max_length=127,
+        unique=True,
     )
     desc = models.TextField(
         verbose_name=_("Team description"),

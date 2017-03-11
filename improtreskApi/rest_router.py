@@ -19,6 +19,7 @@ router.register(r'orders', orders.OrderViewSet)
 router.register(r'texts', texts.TextViewSet)
 router.register(r'workshopDifficulties', workshop_difficulties.WorkshopDifficultyViewSet)
 router.register(r'years', years.YearViewSet)
+router.register(r'register', participants.RegistrationViewSet)
 router.register(
     r'years/(?P<year>[0-9]{4})/workshops',
     workshops.WorkshopViewSet,
