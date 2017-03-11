@@ -12,7 +12,7 @@ class Reservation(Base):
         'WorkshopPrice',
         verbose_name=_("Workshop price"),
     )
-    order = models.ForeignKey(
+    order = models.OneToOneField(
         'Order',
         verbose_name=_("Order"),
     )
