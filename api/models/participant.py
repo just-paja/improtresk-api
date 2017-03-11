@@ -28,7 +28,10 @@ class Participant(Base, auth.models.AbstractBaseUser):
         blank=True,
         null=True,
     )
-    email = models.EmailField(max_length=255)
+    email = models.EmailField(
+        max_length=255,
+        unique=True,
+    )
     phone = models.CharField(max_length=255)
     birthday = models.DateField(
         verbose_name=_("Date of birthday"),
@@ -59,6 +62,14 @@ class Participant(Base, auth.models.AbstractBaseUser):
         """Save and notify about changes."""
         super().save(*args, **kwargs)
         self.mailReassignment()
+
+    @property
+    def team_name(self):
+        return self.team.name
+
+    @team_name.setter
+    def team_name(self, name):
+        self.team, _ = Team.objects.get_or_create(name=name)
 
     def getReassignmentTemplate(self):
         """Reconcile what e-mail template will be used."""

@@ -162,7 +162,7 @@ class ParticipantAdmin(BaseAdminModel):
         'last_login',
         'paid',
     ]
-    list_display = ('name', 'team', 'assigned_workshop', 'newsletter', 'created_at')
+    list_display = ('name', 'team', 'email', 'assigned_workshop', 'newsletter', 'created_at')
     list_filter = ('team', 'assigned_workshop', 'newsletter')
 
 
