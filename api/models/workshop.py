@@ -32,6 +32,9 @@ class Workshop(CapacityMixin, Base):
     visibility = models.PositiveIntegerField(choices=VISIBILITY_CHOICES)
     lectors = models.ManyToManyField(Lector, related_name='workshops', through=WorkshopLector)
 
+    def get_actual_workshop_price(self, year):
+        return self.prices.get(price_level=year.get_actual_price_level())
+
     def get_reservations_query(self):
         """
         Returns query with reservations associated to self.

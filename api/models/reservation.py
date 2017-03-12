@@ -1,4 +1,7 @@
 """Payment model."""
+import datetime
+
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -42,3 +45,9 @@ class Reservation(Base):
             self.workshop_price.price,
             self.ends_at,
         )
+
+    def save(self, *args, **kwargs):
+        """Set ends_at field."""
+        if not self.ends_at:
+            self.ends_at = datetime.datetime.now() + settings.RESERVATION_DURATION_SHORT
+        super().save(*args, **kwargs)

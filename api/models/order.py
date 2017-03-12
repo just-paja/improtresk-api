@@ -35,6 +35,7 @@ class Order(Base):
     over_paid = models.BooleanField(default=False)
     canceled = models.BooleanField(
         verbose_name=_("Is canceled?"),
+        default=False,
     )
 
     def save(self, *args, **kwargs):
