@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
+import datetime
+
 import os
 
 from django_auth_ldap.config import GroupOfNamesType, LDAPSearch
@@ -165,6 +167,7 @@ NOSE_ARGS = [
 EMAIL_SENDER = 'info@improtresk.cz'
 
 YEAR = 2017
+RESERVATION_DURATION_SHORT = datetime.timedelta(hours=3)
 
 AUTH_LDAP_SERVER_URI = os.environ.get('DJANGO_LDAP_SERVERI_URI', '')
 AUTH_LDAP_BIND_DN = os.environ.get('DJANGO_LDAP_BIND_DN', '')
