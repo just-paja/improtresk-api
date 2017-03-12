@@ -2,11 +2,14 @@ from rest_framework import permissions, serializers, viewsets
 
 from .reservations import ReservationSerializer
 
-from ..models import Order, Participant
+from ..models import Order
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
-    reservation_set = ReservationSerializer(many=True, read_only=True)
+    reservation = ReservationSerializer(
+        many=False,
+        read_only=True,
+    )
 
     class Meta:
         model = Order
@@ -17,7 +20,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
             'price',
             'paid',
             'canceled',
-            'reservation_set',
+            'reservation',
         )
 
 
@@ -30,5 +33,7 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
         user = self.request.user
         if user.is_staff:
             return Order.objects.all()
-        if isinstance(user, Participant):
-            return Order.objects.filter(participant=user)
+        if user.participant:
+            return Order.objects\
+                .filter(participant=user.participant)\
+                .prefetch_related('reservation')
