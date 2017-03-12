@@ -162,6 +162,16 @@ class ParticipantAdmin(BaseAdminModel):
         'last_login',
         'paid',
     ]
+    exclude = [
+        'is_superuser',
+        'groups',
+        'user_permissions',
+        'username',
+        'first_name',
+        'last_name',
+        'is_staff',
+        'is_active',
+    ]
     list_display = ('name', 'team', 'email', 'assigned_workshop', 'newsletter', 'created_at')
     list_filter = ('team', 'assigned_workshop', 'newsletter')
 
