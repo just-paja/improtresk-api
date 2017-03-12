@@ -15,7 +15,7 @@ class Reservation(Base):
     order = models.OneToOneField(
         'Order',
         verbose_name=_("Order"),
-        related_name="reservation"
+        related_name="reservation",
     )
     foods = models.ManyToManyField(
         'Food',
