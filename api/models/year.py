@@ -1,4 +1,6 @@
 """Year model."""
+import datetime
+
 from api_textual.models import WorkshopLocation
 
 from django.db import models
@@ -50,3 +52,9 @@ class Year(Base):
         return WorkshopLocation.objects.distinct().filter(
             workshop__in=self.get_workshops(),
         )
+
+    def get_actual_price_level(self):
+        price_levels = self.price_levels
+        price_levels = price_levels.filter(takes_effect_on__lte=datetime.date.today())
+        price_levels = price_levels.order_by('takes_effect_on').first()
+        return price_levels
