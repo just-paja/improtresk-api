@@ -12,8 +12,9 @@ from ..mail import signup as templates
 from ..mail.common import formatMail, formatWorkshop
 
 
-class Participant(Base, auth.models.AbstractBaseUser):
+class Participant(Base, auth.models.User):
     """Stores participants."""
+    USERNAME_FIELD = 'email'
 
     name = models.CharField(max_length=255)
     address = models.CharField(
@@ -28,10 +29,6 @@ class Participant(Base, auth.models.AbstractBaseUser):
         blank=True,
         null=True,
     )
-    email = models.EmailField(
-        max_length=255,
-        unique=True,
-    )
     phone = models.CharField(max_length=255)
     birthday = models.DateField(
         verbose_name=_("Date of birthday"),
@@ -40,7 +37,9 @@ class Participant(Base, auth.models.AbstractBaseUser):
     rules_accepted = models.BooleanField(
         default=False,
         verbose_name=_("Are rules accepted?"),
-        help_text=_("Does the participant accepted the rules of the festival?"),
+        help_text=_(
+            "Does the participant accepted the rules of the festival?"
+        ),
     )
     newsletter = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
