@@ -6,7 +6,7 @@ from ..models import Order, Participant
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
-    reservation_set = ReservationSerializer(many=True, read_only=True)
+    reservation = ReservationSerializer(many=False, read_only=True)
 
     class Meta:
         model = Order
@@ -17,7 +17,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
             'price',
             'paid',
             'canceled',
-            'reservation_set',
+            'reservation',
         )
 
 
