@@ -1,6 +1,10 @@
 from datetime import date
 
+from django.core.exceptions import ValidationError
+
 from rest_framework import mixins, permissions, serializers, viewsets
+
+from rest_framework.response import Response
 
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
@@ -18,6 +22,12 @@ def is_eighteen(value):
 
     if age < 18:
         raise serializers.ValidationError('Must be older than 18 years')
+
+
+def is_email_unique(value):
+    exists = Participant.objects.filter(email=value)
+    if exists:
+        raise ValidationError("Email address already exists, must be unique")
 
 
 class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
@@ -39,6 +49,9 @@ class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
     )
     rules_accepted = serializers.BooleanField(
         validators=[is_true],
+    )
+    email = serializers.EmailField(
+        validators=[is_email_unique],
     )
 
     class Meta:
@@ -64,6 +77,7 @@ class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
         }
 
     def create(self, validated_data):
+        validated_data['username'] = validated_data['email']
         participant = super().create(validated_data)
         participant.set_password(validated_data['password'])
         participant.save()
@@ -82,11 +96,10 @@ class RegistrationViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
 
 class WhoAmIViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
-    queryset = Participant.objects.none()
+    queryset = Participant.objects
     serializer_class = ParticipantSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def get_queryset(self):
-        user = self.request.user
-        if isinstance(user, Participant):
-            return Participant.objects.filter(pk=user.pk)
+    def list(self, request):
+        serializer = self.get_serializer(request.user.participant)
+        return Response(serializer.data)
