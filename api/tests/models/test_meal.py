@@ -15,8 +15,12 @@ class MealTest(TestCase):
 
     def test_string_representation(self):
         """Test that meal turns to string properly."""
-        entry = Meal(name="Foo Meal")
-        self.assertEqual(str(entry), 'Foo Meal')
+        entry = Meal(
+            name="Foo Meal",
+            course=1,
+            date="2017-02-01",
+        )
+        self.assertEqual(str(entry), 'Foo Meal Soup at 2017-02-01')
 
     @freeze_time("2017-02-01")
     def test_capacity(self):
