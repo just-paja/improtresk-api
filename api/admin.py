@@ -117,7 +117,13 @@ class FoodAdmin(BaseAdminModel):
 class MealAdmin(BaseAdminModel):
     """Admin model for Meal."""
 
-    pass
+    list_display = (
+        'name',
+        'course',
+        'price',
+        'date',
+        'visibility',
+    )
 
 
 @admin.register(models.MealReservation)
