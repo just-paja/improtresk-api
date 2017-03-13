@@ -29,6 +29,7 @@ class WorkshopSerializer(serializers.ModelSerializer):
         model = Workshop
         fields = (
             'id',
+            'capacity',
             'name',
             'desc',
             'difficulty',
