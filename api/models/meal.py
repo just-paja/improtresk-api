@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from .base import Base
 from .capacityMixin import CapacityMixin
 from .reservation import Reservation
+from .year import Year
 from ..fields import VISIBILITY_CHOICES
 
 MEAL_NAME_CHOICES = (
@@ -32,6 +33,7 @@ class Meal(CapacityMixin, Base):
         verbose_name=_("Date"),
     )
     visibility = models.PositiveIntegerField(choices=VISIBILITY_CHOICES)
+    year = models.ForeignKey(Year, related_name="meals")
 
     def get_reservations_query(self):
         """
