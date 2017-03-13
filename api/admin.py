@@ -104,13 +104,30 @@ class FoodPhotoAdmin(BaseInlineAdminModel):
     model = models.FoodPhoto
 
 
+class AbstractFoodAdminMixin():
+    list_display = (
+        'name',
+        'meal',
+        'capacity',
+        'created_at',
+        'visibility',
+    )
+
+
 @admin.register(models.Food)
-class FoodAdmin(BaseAdminModel):
+class FoodAdmin(AbstractFoodAdminMixin, BaseAdminModel):
     """Admin model for Food and its photos."""
 
     inlines = [
         FoodPhotoAdmin,
     ]
+
+
+@admin.register(models.Soup)
+class SoupAdmin(AbstractFoodAdminMixin, BaseAdminModel):
+    """Admin model for Food and its photos."""
+
+    pass
 
 
 @admin.register(models.Meal)
@@ -119,7 +136,6 @@ class MealAdmin(BaseAdminModel):
 
     list_display = (
         'name',
-        'course',
         'price',
         'date',
         'visibility',

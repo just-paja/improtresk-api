@@ -2,7 +2,7 @@
 
 from .accomodation import Accomodation
 from .accomodationPhoto import AccomodationPhoto
-from .food import Food
+from .food import Food, Soup
 from .foodPhoto import FoodPhoto
 from .lector import Lector
 from .lectorPhoto import LectorPhoto
@@ -41,6 +41,7 @@ __all__ = (
     Reservation,
     Rules,
     ScheduleEvent,
+    Soup,
     Team,
     Workshop,
     WorkshopDifficulty,
