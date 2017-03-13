@@ -22,6 +22,7 @@ router.register(r'teams', teams.TeamsViewSet)
 router.register(r'texts', texts.TextViewSet)
 router.register(r'whoAmI', participants.WhoAmIViewSet)
 router.register(r'workshopDifficulties', workshop_difficulties.WorkshopDifficultyViewSet)
+router.register(r'workshopCapacity', workshops.WorkshopCapacityViewSet)
 router.register(r'years', years.YearViewSet)
 router.register(r'register', participants.RegistrationViewSet)
 router.register(

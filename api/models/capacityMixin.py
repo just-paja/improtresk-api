@@ -22,12 +22,26 @@ class CapacityMixin(models.Model):
         """
         return NotImplemented
 
+    def number_of_unpaid_reservations(self):
+        """
+        Returns number of participants who reserved this object, but doesn't paid.
+        """
+        from .participant import Participant
+        return Participant.objects.filter(
+            orders__reservation__ends_at__gt=datetime.datetime.now(),
+            orders__reservation__in=self.get_reservations_query(),
+        ).exclude(
+            orders__paid=True,
+        ).distinct().count()
+
     def number_of_reservations(self):
         """
-        Returns number of reservations to this objet.
+        Returns number of participants who reserved this object.
         """
-        return self.get_reservations_query().filter(
-            Q(order__paid=True) | Q(ends_at__gt=datetime.datetime.now()),
+        from .participant import Participant
+        return Participant.objects.filter(
+            (Q(orders__paid=True) | Q(orders__reservation__ends_at__gt=datetime.datetime.now())) &
+            Q(orders__reservation__in=self.get_reservations_query()),
         ).distinct().count()
 
     def has_free_capacity(self):
