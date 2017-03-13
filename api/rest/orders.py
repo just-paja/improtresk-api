@@ -1,4 +1,5 @@
 from django.db.models import Sum
+from django.shortcuts import get_object_or_404
 
 from rest_framework import mixins, permissions, response, serializers, status, viewsets
 
@@ -62,7 +63,11 @@ class CreateOrderSerializer(serializers.Serializer):
         return order
 
 
-class OrderViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+class OrderViewSet(
+        mixins.DestroyModelMixin,
+        mixins.RetrieveModelMixin,
+        mixins.ListModelMixin,
+        viewsets.GenericViewSet):
     queryset = Order.objects.none()
     permission_classes = [permissions.IsAuthenticated]
 
@@ -101,3 +106,14 @@ class OrderViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.Ge
                 OrderSerializer(instance=serializer.instance, context={'request': request}).data,
             )
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk=None):
+        order = get_object_or_404(Order, pk=pk)
+        if order.participant == request.user:
+            order.canceled = True
+            order.save()
+            return response.Response(status=status.HTTP_200_OK)
+        return response.Response("Can't cancell this order", status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
