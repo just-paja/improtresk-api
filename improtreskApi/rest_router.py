@@ -1,4 +1,4 @@
-from api.rest import accomodations, lector_roles, lectors, orders,\
+from api.rest import accomodations, lector_roles, lectors, meals, orders,\
     participants, payments, rules, schedule, teams, workshop_difficulties,\
     workshops, years
 from api_textual.rest import news, performers, texts, workshop_locations
@@ -40,6 +40,11 @@ router.register(
     r'years/(?P<year>[0-9]{4})/locations',
     workshop_locations.WorkshopLocationViewSet,
     base_name='locations',
+)
+router.register(
+    r'years/(?P<year>[0-9]{4})/meals',
+    meals.MealViewSet,
+    base_name='meals',
 )
 router.register(
     r'years/(?P<year>[0-9]{4})/rules',
