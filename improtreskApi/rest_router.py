@@ -1,5 +1,5 @@
 from api.rest import accomodations, lector_roles, lectors, orders,\
-    participants, rules, schedule, teams, workshop_difficulties,\
+    participants, payments, rules, schedule, teams, workshop_difficulties,\
     workshops, years
 from api_textual.rest import news, performers, texts, workshop_locations
 
@@ -18,6 +18,7 @@ router.register(r'lectorRoles', lector_roles.LectorRoleViewSet)
 router.register(r'lectors', lectors.LectorViewSet)
 router.register(r'news', news.NewsViewSet)
 router.register(r'orders', orders.OrderViewSet)
+router.register(r'payments', payments.PaymentViewSet)
 router.register(r'teams', teams.TeamsViewSet)
 router.register(r'texts', texts.TextViewSet)
 router.register(r'whoAmI', participants.WhoAmIViewSet)
