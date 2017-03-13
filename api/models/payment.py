@@ -5,6 +5,12 @@ from django.utils.translation import ugettext_lazy as _
 from .base import Base
 from .order import Order
 
+STATUS_CHOICES = (
+    ('in_progress', _('In progress')),
+    ('paid', _('Paid')),
+    ('cancelled', _('Cancelled')),
+)
+
 
 class Payment(Base):
     """Stores payments."""
@@ -19,6 +25,7 @@ class Payment(Base):
     symvar = models.CharField(
         max_length=255,
         blank=True,
+        unique=True,
         verbose_name=_("Variable symbol"),
         help_text=_("Variable symbol of the transaction"),
     )
@@ -67,6 +74,11 @@ class Payment(Base):
         max_length=255,
         blank=True,
         verbose_name=_("Message"),
+    )
+    status = models.CharField(
+        max_length=255,
+        default='in_progress',
+        choices=STATUS_CHOICES,
     )
     order = models.ForeignKey(
         Order,
