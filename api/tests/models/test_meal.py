@@ -53,6 +53,7 @@ class MealTest(TestCase):
             reservation__ends_at=datetime.datetime(year=2017, month=1, day=1),
             meal__capacity=1,
             reservation__order__paid=True,
+            reservation__order__participant__name="Foo participant",
         )
         meal = meal_reservation.meal
         self.assertEqual(meal.number_of_reservations(), 1)

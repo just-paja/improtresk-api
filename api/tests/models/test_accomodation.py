@@ -51,6 +51,7 @@ class AccomodationTest(TestCase):
             ends_at=datetime.datetime(year=2017, month=1, day=1),
             accomodation__capacity=1,
             order__paid=True,
+            order__participant__name="Foo participant",
         )
         accomodation = reservation.accomodation
         self.assertEqual(accomodation.number_of_reservations(), 1)

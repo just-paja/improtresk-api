@@ -49,6 +49,7 @@ class WorkshopTest(TestCase):
             ends_at=datetime.datetime(year=2017, month=1, day=1),
             workshop_price__workshop__capacity=1,
             order__paid=True,
+            order__participant__name="Foo participant",
         )
         workshop = reservation.workshop_price.workshop
         self.assertEqual(workshop.number_of_reservations(), 1)
