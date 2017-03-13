@@ -13,6 +13,7 @@ class NestedDefaultRouter(NestedRouterMixin, routers.DefaultRouter):
 
 
 router = NestedDefaultRouter()
+router.register(r'accomodationCapacity', accomodations.AccomodationCapacityViewSet)
 router.register(r'createOrders', orders.CreateOrderViewSet, base_name="createOrders")
 router.register(r'lectorRoles', lector_roles.LectorRoleViewSet)
 router.register(r'lectors', lectors.LectorViewSet)
