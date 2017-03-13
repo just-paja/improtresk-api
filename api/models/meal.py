@@ -7,11 +7,6 @@ from .capacityMixin import CapacityMixin
 from .reservation import Reservation
 from ..fields import VISIBILITY_CHOICES
 
-FOOD_CHOICES = (
-    (1, _('Soup')),
-    (2, _('Main course')),
-)
-
 MEAL_NAME_CHOICES = (
     ('lunch', _('Lunch')),
     ('dinner', _('Dinner')),
@@ -30,10 +25,6 @@ class Meal(CapacityMixin, Base):
         default='lunch',
         choices=MEAL_NAME_CHOICES,
     )
-    course = models.PositiveIntegerField(
-        verbose_name=_("Course"),
-        choices=FOOD_CHOICES,
-    )
     price = models.PositiveIntegerField(
         verbose_name=_("Price"),
     )
@@ -50,4 +41,4 @@ class Meal(CapacityMixin, Base):
 
     def __str__(self):
         """Return name as string representation."""
-        return "%s %s at %s" % (self.name, self.get_course_display(), self.date)
+        return "%s at %s" % (self.name, self.date)

@@ -14,7 +14,7 @@ FOOD_CHOICES = (
 )
 
 
-class Food(CapacityMixin, Base):
+class AbstractFood(CapacityMixin, Base):
     """Stores food types."""
 
     name = models.CharField(
@@ -37,3 +37,11 @@ class Food(CapacityMixin, Base):
     def __str__(self):
         """Return name as string representation."""
         return self.name
+
+
+class Food(AbstractFood):
+    pass
+
+
+class Soup(AbstractFood):
+    pass
