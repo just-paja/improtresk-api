@@ -27,33 +27,16 @@ class Migration(migrations.Migration):
                 'abstract': False,
             },
         ),
-        migrations.RemoveField(
-            model_name='food',
-            name='capacity',
-        ),
-        migrations.RemoveField(
-            model_name='food',
-            name='created_at',
-        ),
-        migrations.RemoveField(
-            model_name='food',
-            name='id',
-        ),
-        migrations.RemoveField(
-            model_name='food',
-            name='meal',
-        ),
-        migrations.RemoveField(
-            model_name='food',
-            name='name',
-        ),
-        migrations.RemoveField(
-            model_name='food',
-            name='updated_at',
-        ),
-        migrations.RemoveField(
-            model_name='food',
-            name='visibility',
+        migrations.DeleteModel('Food'),
+        migrations.CreateModel(
+            name='Food',
+            fields=[
+                ('abstractfood_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='api.AbstractFood')),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=('api.abstractfood',),
         ),
         migrations.RemoveField(
             model_name='meal',
@@ -78,12 +61,6 @@ class Migration(migrations.Migration):
             model_name='abstractfood',
             name='meal',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.Meal', verbose_name='Meal'),
-        ),
-        migrations.AddField(
-            model_name='food',
-            name='abstractfood_ptr',
-            field=models.OneToOneField(auto_created=True, default=None, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='api.AbstractFood'),
-            preserve_default=False,
         ),
         migrations.AddField(
             model_name='mealreservation',
