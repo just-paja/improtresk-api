@@ -193,6 +193,7 @@ class ReservationAdmin(BaseAdminModel):
 class OrderAdmin(BaseAdminModel):
     """Admin model for Orders."""
 
+    list_display = ('participant', 'created_at', 'price', 'canceled', 'paid', 'over_paid')
     readonly_fields = ['symvar', 'paid', 'price']
 
 
