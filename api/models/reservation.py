@@ -1,8 +1,7 @@
 """Payment model."""
-import datetime
-
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
@@ -49,5 +48,10 @@ class Reservation(Base):
     def save(self, *args, **kwargs):
         """Set ends_at field."""
         if not self.ends_at:
-            self.ends_at = datetime.datetime.now() + settings.RESERVATION_DURATION_SHORT
+            self.ends_at = timezone.now() + settings.RESERVATION_DURATION_SHORT
         super().save(*args, **kwargs)
+
+    def extend_reservation(self):
+        """ Payment was created, extend validity of this reservation """
+        if self.ends_at >= timezone.now():
+            self.ends_at = timezone.now() + settings.RESERVATION_DURATION_PAYMENT
