@@ -32,8 +32,27 @@ class AccomodationSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
+class AccomodationCapacitySerializer(serializers.ModelSerializer):
+    available_capacity = serializers.Field
+
+    class Meta:
+        model = Accomodation
+        fields = (
+            'id',
+            'capacity',
+            'available_capacity',
+            'number_of_unpaid_reservations',
+            'number_of_reservations',
+        )
+
+
 class AccomodationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Accomodation.objects.all()
     serializer_class = AccomodationSerializer
     permission_classes = [permissions.AllowAny]
     allowed_methods = ('GET',)
+
+
+class AccomodationCapacityViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Accomodation.objects.all()
+    serializer_class = AccomodationCapacitySerializer
