@@ -2,6 +2,7 @@ from django.db.models import Sum
 
 from rest_framework import mixins, permissions, response, serializers, status, viewsets
 
+from .payments import PaymentSerializer
 from .reservations import ReservationSerializer
 
 from ..models import Meal, MealReservation, Order, Reservation, Workshop, Year
@@ -10,6 +11,11 @@ from ..models import Meal, MealReservation, Order, Reservation, Workshop, Year
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
     reservation = ReservationSerializer(
         many=False,
+        read_only=True,
+    )
+    payments = PaymentSerializer(
+        source="payment_set",
+        many=True,
         read_only=True,
     )
 
@@ -23,6 +29,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
             'paid',
             'canceled',
             'reservation',
+            'payments',
         )
 
 
@@ -72,6 +79,18 @@ class OrderViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.Ge
             return Order.objects\
                 .filter(participant=user.participant)\
                 .prefetch_related('reservation')
+
+    def retrieve(self, request, *args, **kwargs):
+        order = self.get_object()
+        if order.participant != request.user:
+            return response.Response(
+                "Requested object doesn't belong to authentificated user",
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if 'confirm' in request.GET:
+            order.confirm()
+            order.refresh_from_db()
+        return super().retrieve(request, *args, **kwargs)
 
     def create(self, request):
         serializer = CreateOrderSerializer(data=request.data)
