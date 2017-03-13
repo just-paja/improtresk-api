@@ -12,10 +12,10 @@ class MealReservationTest(TestCase):
         meal_reservation = mommy.make(
             'MealReservation',
             food__name="Foo food",
+            soup__name="Foo soup",
             meal__name="lunch",
-            meal__course=2,
         )
         self.assertEqual(
             str(meal_reservation),
-            'Reservation of Foo food for lunch Main course at 2017-03-13',
+            'Reservation of Foo food and Foo soup for lunch at 2017-03-13',
         )

@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from .workshops import WorkshopPriceSerializer
 
-from ..models import Food, Meal, MealReservation, Reservation
+from ..models import Food, Meal, MealReservation, Reservation, Soup
 
 
 class MealSerializer(serializers.HyperlinkedModelSerializer):
@@ -10,7 +10,6 @@ class MealSerializer(serializers.HyperlinkedModelSerializer):
         model = Meal
         fields = (
             'name',
-            'course',
             'price',
             'date',
         )
@@ -28,18 +27,32 @@ class FoodSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
+class SoupSerializer(serializers.HyperlinkedModelSerializer):
+    meal = MealSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Soup
+        fields = (
+            'id',
+            'name',
+            'meal',
+        )
+
+
 class MealReservationSerializer(serializers.HyperlinkedModelSerializer):
     food = FoodSerializer(many=False, read_only=True)
+    soup = SoupSerializer(many=False, read_only=True)
 
     class Meta:
         model = MealReservation
         fields = (
             'id',
             'food',
+            'soup',
         )
 
 
-class ReservationSerializer(serializers.ModelSerializer):
+class ReservationSerializer(serializers.HyperlinkedModelSerializer):
     endsAt = serializers.DateTimeField(source='ends_at')
     mealReservation = MealReservationSerializer(
         source='meals',

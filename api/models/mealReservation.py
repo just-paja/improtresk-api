@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
-from .food import Food
+from .food import Food, Soup
 from .meal import Meal
 from .reservation import Reservation
 
@@ -21,6 +21,12 @@ class MealReservation(Base):
         null=True,
         blank=True,
     )
+    soup = models.ForeignKey(
+        Soup,
+        verbose_name=_("Soup"),
+        null=True,
+        blank=True,
+    )
     meal = models.ForeignKey(
         Meal,
         verbose_name=_("Meal"),
@@ -32,4 +38,4 @@ class MealReservation(Base):
 
     def __str__(self):
         """Return name as string representation."""
-        return "Reservation of %s for %s" % (self.food, self.meal)
+        return "Reservation of %s and %s for %s" % (self.food, self.soup, self.meal)
