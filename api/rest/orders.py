@@ -1,6 +1,6 @@
 from django.db.models import Sum
 
-from rest_framework import permissions, response, serializers, status, viewsets
+from rest_framework import mixins, permissions, response, serializers, status, viewsets
 
 from .reservations import ReservationSerializer
 
@@ -24,21 +24,6 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
             'canceled',
             'reservation',
         )
-
-
-class OrderViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Order.objects.none()
-    serializer_class = OrderSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        user = self.request.user
-        if user.is_staff:
-            return Order.objects.all()
-        if user.participant:
-            return Order.objects\
-                .filter(participant=user.participant)\
-                .prefetch_related('reservation')
 
 
 class CreateOrderSerializer(serializers.Serializer):
@@ -70,8 +55,23 @@ class CreateOrderSerializer(serializers.Serializer):
         return order
 
 
-class CreateOrderViewSet(viewsets.ViewSet):
-    serializer_class = CreateOrderSerializer
+class OrderViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = Order.objects.none()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreateOrderSerializer
+        return OrderSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return Order.objects.all()
+        if user.participant:
+            return Order.objects\
+                .filter(participant=user.participant)\
+                .prefetch_related('reservation')
 
     def create(self, request):
         serializer = CreateOrderSerializer(data=request.data)
