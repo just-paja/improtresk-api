@@ -23,6 +23,7 @@ class Order(Base):
         verbose_name=_("Variable symbol"),
         max_length=63,
         blank=True,
+        unique=True,
     )
     price = models.PositiveIntegerField(
         verbose_name=_("Definitive price"),
@@ -49,3 +50,15 @@ class Order(Base):
     def __str__(self):
         """Return name as string representation."""
         return "%s at %s" % (self.participant.name, self.created_at)
+
+    def confirm(self):
+        self.reservation.extend_reservation()
+        self.reservation.save()
+
+        from .payment import Payment
+        payment, _ = Payment.objects.get_or_create(
+            symvar=self.symvar,
+            defaults={
+                'order': self,
+            },
+        )
