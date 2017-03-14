@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
-from ..fields import VISIBILITY_CHOICES
+from ..fields import VISIBILITY_CHOICES, VISIBILITY_PUBLIC
 
 
 class Team(Base):
@@ -21,7 +21,7 @@ class Team(Base):
     )
     visibility = models.PositiveIntegerField(
         verbose_name=_("Visibility"),
-        default=2,
+        default=VISIBILITY_PUBLIC,
         choices=VISIBILITY_CHOICES,
     )
 

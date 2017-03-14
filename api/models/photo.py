@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
-from ..fields import VISIBILITY_CHOICES
+from ..fields import VISIBILITY_CHOICES, VISIBILITY_PUBLIC
 
 
 class Photo(Base):
@@ -27,4 +27,7 @@ class Photo(Base):
         null=True,
         blank=True,
     )
-    visibility = models.PositiveIntegerField(choices=VISIBILITY_CHOICES)
+    visibility = models.PositiveIntegerField(
+        choices=VISIBILITY_CHOICES,
+        default=VISIBILITY_PUBLIC,
+    )
