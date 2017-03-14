@@ -10,7 +10,7 @@ from .lector import Lector
 from .reservation import Reservation
 from .workshopDifficulty import WorkshopDifficulty
 from .workshopLector import WorkshopLector
-from ..fields import VISIBILITY_CHOICES
+from ..fields import VISIBILITY_CHOICES, VISIBILITY_PUBLIC
 
 
 class Workshop(CapacityMixin, Base):
@@ -29,7 +29,10 @@ class Workshop(CapacityMixin, Base):
         WorkshopLocation,
         verbose_name=_("Location"),
     )
-    visibility = models.PositiveIntegerField(choices=VISIBILITY_CHOICES)
+    visibility = models.PositiveIntegerField(
+        choices=VISIBILITY_CHOICES,
+        default=VISIBILITY_PUBLIC,
+    )
     lectors = models.ManyToManyField(Lector, related_name='workshops', through=WorkshopLector)
 
     def get_actual_workshop_price(self, year):

@@ -6,7 +6,7 @@ from .base import Base
 from .capacityMixin import CapacityMixin
 from .reservation import Reservation
 from .year import Year
-from ..fields import VISIBILITY_CHOICES
+from ..fields import VISIBILITY_CHOICES, VISIBILITY_PUBLIC
 
 MEAL_NAME_CHOICES = (
     ('lunch', _('Lunch')),
@@ -32,7 +32,10 @@ class Meal(CapacityMixin, Base):
     date = models.DateField(
         verbose_name=_("Date"),
     )
-    visibility = models.PositiveIntegerField(choices=VISIBILITY_CHOICES)
+    visibility = models.PositiveIntegerField(
+        choices=VISIBILITY_CHOICES,
+        default=VISIBILITY_PUBLIC,
+    )
     year = models.ForeignKey(Year, related_name="meals")
 
     def get_reservations_query(self):

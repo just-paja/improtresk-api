@@ -6,7 +6,7 @@ from .base import Base
 from .capacityMixin import CapacityMixin
 from .meal import Meal
 from .reservation import Reservation
-from ..fields import VISIBILITY_CHOICES
+from ..fields import VISIBILITY_CHOICES, VISIBILITY_PUBLIC
 
 FOOD_CHOICES = (
     (1, 'Soup'),
@@ -26,7 +26,10 @@ class AbstractFood(CapacityMixin, Base):
         Meal,
         verbose_name=_("Meal"),
     )
-    visibility = models.PositiveIntegerField(choices=VISIBILITY_CHOICES)
+    visibility = models.PositiveIntegerField(
+        choices=VISIBILITY_CHOICES,
+        default=VISIBILITY_PUBLIC,
+    )
 
     def get_reservations_query(self):
         """
