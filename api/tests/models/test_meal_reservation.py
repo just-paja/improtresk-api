@@ -14,7 +14,7 @@ class MealReservationTest(TestCase):
             food__name="Foo food",
             soup__name="Foo soup",
             meal__name="lunch",
-            meal__date="2016-12-23"
+            meal__date="2016-12-23",
         )
         self.assertEqual(
             str(meal_reservation),
