@@ -1,4 +1,5 @@
-from api.rest import accomodations, lector_roles, lectors, meals, orders,\
+from api.rest import accomodations, capacity, lector_roles, lectors, meals,\
+    orders,\
     participants, payments, rules, schedule, teams, workshop_difficulties,\
     workshops, years
 from api_textual.rest import news, performers, texts, workshop_locations
@@ -13,7 +14,6 @@ class NestedDefaultRouter(NestedRouterMixin, routers.DefaultRouter):
 
 
 router = NestedDefaultRouter()
-router.register(r'accomodationCapacity', accomodations.AccomodationCapacityViewSet)
 router.register(r'lectorRoles', lector_roles.LectorRoleViewSet)
 router.register(r'lectors', lectors.LectorViewSet)
 router.register(r'news', news.NewsViewSet)
@@ -22,8 +22,10 @@ router.register(r'payments', payments.PaymentViewSet)
 router.register(r'teams', teams.TeamsViewSet)
 router.register(r'texts', texts.TextViewSet)
 router.register(r'whoAmI', participants.WhoAmIViewSet)
-router.register(r'workshopDifficulties', workshop_difficulties.WorkshopDifficultyViewSet)
-router.register(r'workshopCapacity', workshops.WorkshopCapacityViewSet)
+router.register(
+    r'workshopDifficulties',
+    workshop_difficulties.WorkshopDifficultyViewSet,
+)
 router.register(r'years', years.YearViewSet)
 router.register(r'register', participants.RegistrationViewSet)
 router.register(
@@ -61,4 +63,10 @@ router.register(
     schedule.ScheduleEventViewSet,
     base_name='schedule',
 )
+router.register(
+    r'years/(?P<year>[0-9]{4})/capacity',
+    capacity.CapacityViewSet,
+    base_name='capacity',
+)
+
 router.register(r'accomodations', accomodations.AccomodationViewSet)
