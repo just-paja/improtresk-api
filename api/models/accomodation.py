@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from .base import Base
 from .capacityMixin import CapacityMixin
 from .reservation import Reservation
-from ..fields import VISIBILITY_CHOICES
+from ..fields import VISIBILITY_CHOICES, VISIBILITY_PUBLIC
 
 
 class Accomodation(CapacityMixin, Base):
@@ -24,7 +24,10 @@ class Accomodation(CapacityMixin, Base):
         verbose_name=_("Price"),
         help_text=_("Price per night in CZK"),
     )
-    visibility = models.PositiveIntegerField(choices=VISIBILITY_CHOICES)
+    visibility = models.PositiveIntegerField(
+        choices=VISIBILITY_CHOICES,
+        default=VISIBILITY_PUBLIC,
+    )
     capacity = models.PositiveIntegerField(
         default=12,
         verbose_name=_("Capacity"),
