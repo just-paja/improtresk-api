@@ -167,8 +167,8 @@ NOSE_ARGS = [
 EMAIL_SENDER = 'info@improtresk.cz'
 
 YEAR = 2017
-RESERVATION_DURATION_SHORT = datetime.timedelta(hours=3)
-RESERVATION_DURATION_PAYMENT = datetime.timedelta(days=3)
+RESERVATION_DURATION_SHORT = datetime.timedelta(hours=2)
+RESERVATION_DURATION_PAYMENT = datetime.timedelta(days=4)
 
 AUTH_LDAP_SERVER_URI = os.environ.get('DJANGO_LDAP_SERVERI_URI', '')
 AUTH_LDAP_BIND_DN = os.environ.get('DJANGO_LDAP_BIND_DN', '')
