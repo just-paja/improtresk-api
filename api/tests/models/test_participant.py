@@ -29,7 +29,7 @@ class ParticipantTest(TestCase):
             'Prev workshop: Foo workshop, '
             'Current workshop: Foo workshop, '
             'Workshop preferences foo\n'
-            'Organizační tým Improtřesku 2017\n'
+            'Organizační tým Improtřesku\n'
             'http://improtresk.cz\n'
             'info@improtresk.cz\n'
             '\n'

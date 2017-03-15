@@ -27,17 +27,15 @@ ORDER_CONFIRMED_BODY = """Ahoj,
 
 Přijali jsme tvojí přihlášku. Na workshop tě však zařadíme až v \
 momentě kdy bude zaplacena. Rezervujeme ti místo na workshopu do \
-{validUntil}, pokud nám od tebe nepřijde platba včas, tak tvoje \
-místo na workshopu nabídneme ostatním.
+{validUntil:{datetime_format}}, pokud nám od tebe nepřijde platba včas, \
+tak tvoje místo na workshopu nabídneme ostatním.
 
 O zařazení na workshop a potvrzení platby ti přijde oznámení e-mailem.
 
-Číslo účtu: 2800754192/2010
-Částka k zaplacení: {price} Kč
-Variabilní symbol: {symvar}
+Detaily platby:{accountInfo}
 
 Objednaný workshop: {workshop}
-Čas propadnutí rezervace: {validUntil}
+Čas propadnutí rezervace: {validUntil:{datetime_format}}
 
     -----
 
@@ -46,39 +44,38 @@ Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontak
 
 
 ORDER_PAID_SUBJECT = "Přihláška zaplacena"
-ORDER_PAID_BODY = """
-Hurá, tvoje přihláška je zaplacena. V tento okamžik jsi byl(a) zařazen(a) \
+ORDER_PAID_BODY = """Hurá!
+
+Tvoje přihláška je zaplacena. V tento okamžik jsi byl(a) zařazen(a) \
 do fronty na workshop podle tvých preferencí. Zařazování na workshopy \
 probíhá částečně manuálně a částečně automaticky - někde u počítače sedí \
 člověk, který potvrzuje kdo kam půjde podle toho kdo dřív zaplatil. \
 Může to tedy chvíli trvat. Jakmile tě zařadíme, okamžitě se ti ozveme.
 
-Celkem zaplaceno: {paidAmmount} Kč
+Celkem zaplaceno: {amountPaid} Kč
 
 Spárované platby:
-    {payments}
+{payments}
 
     -----
 
 Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontaktovat.
 """
 
-ORDER_UPDATE_NOT_PAID_SUBJECT = "Aktualizace stavu přihlášky"
-ORDER_UPDATE_NOT_PAID_BODY = """
-Ahoj,
+ORDER_UPDATE_SUBJECT = "Aktualizace stavu přihlášky"
+ORDER_UPDATE_BODY = """Ahoj,
 
 dorazila nám na účet od tebe platba. Posíláme ti touto cestou aktualizaci \
 tvojí přihlášky na Improtřesk {year}.
 
-Přihláška stále není zaplacena, chybí nám od tebe {missingAmount} Kč. \
+Přihláška stále není zaplacena, chybí nám od tebe {amountLeft} Kč. \
 Pošli je prosím na náš účet bankovním převodem.
-
 {accountInfo}
 
-Celkem zaplaceno: {paidAmmount} Kč
+Celkem zaplaceno: {amountPaid} Kč
 
 Spárované platby:
-    {payments}
+{payments}
 
     -----
 
