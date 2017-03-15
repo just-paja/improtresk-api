@@ -17,7 +17,7 @@ from ..mail.common import formatAccountInfo, formatMail, formatPayments, \
 
 def generate_symvar():
     """Generate variable symbol for a new order."""
-    today = datetime.now().strftime('%y%m%d%H%M')
+    today = datetime.now().strftime('%Y')
     total = Order.objects.count()
     return "%s%s" % (today, total)
 
