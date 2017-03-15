@@ -2,7 +2,7 @@
 
 from django.conf import settings
 
-WORKSHOP = "{lectorName}: {name}"
+WORKSHOP = "{name}"
 
 WORKSHOP_LIST_ITEM = """
     {order}. {lectorName}: {name}

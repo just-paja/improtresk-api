@@ -26,8 +26,8 @@ class ParticipantTest(TestCase):
 
         self.assertEquals(
             participant.getReassignmentMailBody(template),
-            'Prev workshop: Foo lector: Foo workshop, '
-            'Current workshop: Foo lector: Foo workshop, '
+            'Prev workshop: Foo workshop, '
+            'Current workshop: Foo workshop, '
             'Workshop preferences foo\n'
             'Organizační tým Improtřesku 2017\n'
             'http://improtresk.cz\n'
