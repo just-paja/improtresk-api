@@ -3,7 +3,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
-from .order import Order
 
 STATUS_CHOICES = (
     ('in_progress', _('In progress')),
@@ -81,7 +80,7 @@ class Payment(Base):
         choices=STATUS_CHOICES,
     )
     order = models.ForeignKey(
-        Order,
+        'Order',
         blank=True,
         null=True,
         verbose_name=_("Order"),

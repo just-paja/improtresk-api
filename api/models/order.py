@@ -5,7 +5,10 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
+from .payment import Payment
 from .participant import Participant
+from ..mail import signup as templates
+from ..mail.common import formatMail, formatWorkshop
 
 
 def generate_symvar():
@@ -55,16 +58,38 @@ class Order(Base):
         """Return name as string representation."""
         return "%s at %s" % (self.participant.name, self.created_at)
 
-    def confirm(self):
-        self.confirmed = True
-        self.reservation.extend_reservation()
-        self.reservation.save()
-        self.save()
 
-        from .payment import Payment
-        payment, _ = Payment.objects.get_or_create(
-            symvar=self.symvar,
-            defaults={
-                'order': self,
+    def get_mail_confirm_body(self):
+        """Format template body to be emailed."""
+
+        if self.reservation.workshop:
+            workshop = formatWorkshop({
+                'name': self.reservation.workshop.name,
+                'lectorName': self.reservation.workshop.lector_names(),
+            })
+
+        return formatMail(
+            template,
+            {
+                'price': self.price,
+                'symvar': self.symvarq,
+                'validUntil': self.reservation.endsAt,
+                'workshop': workshop,
             },
         )
+
+
+    def confirm(self):
+        if not self.confirmed:
+            self.confirmed = True
+            self.reservation.extend_reservation()
+            self.reservation.save()
+            self.save()
+
+            payment, _ = Payment.objects.get_or_create(
+                symvar=self.symvar,
+                defaults={
+                    'order': self,
+                },
+            )
+            self.mail_confirm()
