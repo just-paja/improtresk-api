@@ -88,7 +88,7 @@ class Payment(Base):
         null=True,
         verbose_name=_("Order"),
         help_text=_("Which order is this payment related to?"),
-        related_name='payments'
+        related_name='payments',
     )
 
     def __str__(self):
@@ -99,5 +99,5 @@ class Payment(Base):
         """Update order when paid."""
         super().save(*args, **kwargs)
 
-        if self.status == STATUS_PAID and self.order:
+        if self.order:
             self.order.update_paid_status()
