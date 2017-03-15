@@ -28,18 +28,21 @@ class Payment(Base):
     symvar = models.CharField(
         max_length=255,
         blank=True,
+        null=True,
         verbose_name=_("Variable symbol"),
         help_text=_("Variable symbol of the transaction"),
     )
     symcon = models.CharField(
         max_length=255,
         blank=True,
+        null=True,
         verbose_name=_("Constant symbol"),
         help_text=_("Constant symbol of the transaction"),
     )
     symspc = models.CharField(
         max_length=255,
         blank=True,
+        null=True,
         verbose_name=_("Specific symbol"),
         help_text=_("Specific symbol of the transaction"),
     )
@@ -75,12 +78,19 @@ class Payment(Base):
     message = models.TextField(
         max_length=255,
         blank=True,
+        null=True,
         verbose_name=_("Message"),
     )
     status = models.CharField(
         max_length=255,
         default='in_progress',
         choices=STATUS_CHOICES,
+    )
+    user_identification = models.CharField(
+        verbose_name=_("User identification"),
+        help_text=_("User identification given by the bank"),
+        max_length=255,
+        null=True,
     )
     order = models.ForeignKey(
         'Order',
