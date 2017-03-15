@@ -11,6 +11,7 @@ from ..models import Meal, MealReservation, Order, Reservation, Workshop, Year
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    accomodationInfo = serializers.BooleanField(source='accomodation_info')
     reservation = ReservationSerializer(
         many=False,
         read_only=True,
@@ -32,6 +33,7 @@ class OrderSerializer(serializers.ModelSerializer):
             'paid',
             'canceled',
             'reservation',
+            'accomodationInfo',
             'payments',
         )
 
@@ -41,8 +43,10 @@ class CreateOrderSerializer(serializers.Serializer):
     meals = serializers.ListField()
     accomodation = serializers.IntegerField()
     year = serializers.IntegerField()
+    accomodationInfo = serializers.BooleanField(required=False)
 
     def create(self, validated_data):
+        print(validated_data)
         workshop = Workshop.objects.get(id=validated_data['workshop'])
         year = Year.objects.get(year=validated_data['year'])
         workshop_price = workshop.get_actual_workshop_price(year)
@@ -55,6 +59,7 @@ class CreateOrderSerializer(serializers.Serializer):
         order = Order.objects.create(
             participant=self.user.participant,
             price=workshop_price.price + meals_price,
+            accomodation_info=validated_data.get('accomodationInfo', False),
         )
         reservation = Reservation.objects.create(
             accomodation_id=validated_data['accomodation'],
