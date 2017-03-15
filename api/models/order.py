@@ -11,7 +11,8 @@ from .participant import Participant
 from .payment import STATUS_PAID
 
 from ..mail import signup as templates
-from ..mail.common import formatMail, formatWorkshop
+from ..mail.common import formatAccountInfo, formatMail, formatPayments, \
+    formatWorkshop
 
 
 def generate_symvar():
@@ -23,6 +24,11 @@ def generate_symvar():
 
 class Order(Base):
     """Stores orders types."""
+
+    def __init__(self, *args, **kwargs):
+        """Store initial paid status."""
+        super().__init__(*args, **kwargs)
+        self.initialPaid = self.paid
 
     participant = models.ForeignKey(Participant, related_name="orders")
     symvar = models.CharField(
@@ -61,29 +67,52 @@ class Order(Base):
         """Return name as string representation."""
         return "%s at %s" % (self.participant.name, self.created_at)
 
-    def get_mail_confirm_body(self):
-        """Format template body to be emailed."""
+    def get_workshop_formatted(self):
         workshop = self.reservation.workshop_price.workshop
-        workshopFormatted = formatWorkshop({
+        return formatWorkshop({
             'name': workshop.name,
             'lectorName': workshop.lector_names(),
         })
 
+    def get_mail_body(self, template):
+        """Format template body to be emailed."""
         return formatMail(
-            templates.ORDER_CONFIRMED_BODY,
+            template,
             {
+                'accountInfo': formatAccountInfo({
+                    'price': self.amount_left(),
+                    'symvar': self.symvar,
+                }),
+                'amountPaid': self.total_amount_received(),
+                'amountLeft': self.amount_left(),
                 'price': self.price,
+                'payments': formatPayments(self.payments.values()),
                 'symvar': self.symvar,
                 'validUntil': self.reservation.ends_at,
-                'workshop': workshopFormatted,
+                'workshop': self.get_workshop_formatted(),
             },
         )
 
     def mail_confirm(self):
-        body = self.get_mail_confirm_body()
         mail.send_mail(
             templates.ORDER_CONFIRMED_SUBJECT,
-            body,
+            self.get_mail_body(templates.ORDER_CONFIRMED_BODY),
+            settings.EMAIL_SENDER,
+            [self.participant.email],
+        )
+
+    def mail_paid(self):
+        mail.send_mail(
+            templates.ORDER_PAID_SUBJECT,
+            self.get_mail_body(templates.ORDER_PAID_BODY),
+            settings.EMAIL_SENDER,
+            [self.participant.email],
+        )
+
+    def mail_update(self):
+        mail.send_mail(
+            templates.ORDER_UPDATE_SUBJECT,
+            self.get_mail_body(templates.ORDER_UPDATE_BODY),
             settings.EMAIL_SENDER,
             [self.participant.email],
         )
@@ -96,14 +125,21 @@ class Order(Base):
             self.save()
             self.mail_confirm()
 
+    def amount_left(self):
+        return max(0, self.price - self.total_amount_received())
+
     def total_amount_received(self):
         paid = self.payments\
             .filter(status=STATUS_PAID)\
             .aggregate(total=models.Sum('amount'))
-        return paid['total']
+        return paid['total'] if paid['total'] else 0
 
     def update_paid_status(self):
         paid = self.total_amount_received()
         self.paid = paid >= self.price
         self.over_paid = paid > self.price
         self.save()
+        if self.paid:
+            self.mail_paid()
+        else:
+            self.mail_update()
