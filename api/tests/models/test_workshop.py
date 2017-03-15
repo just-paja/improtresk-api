@@ -24,7 +24,7 @@ class WorkshopTest(TestCase):
             'api.Reservation',
             ends_at=datetime.datetime(year=2017, month=3, day=1),
             workshop_price__workshop__capacity=1,
-            order__paid=False,
+            order__paid=True,
         )
         workshop = reservation.workshop_price.workshop
         self.assertEqual(workshop.number_of_reservations(), 1)

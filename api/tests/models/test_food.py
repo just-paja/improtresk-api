@@ -24,7 +24,7 @@ class FoodTest(TestCase):
             'api.MealReservation',
             reservation__ends_at=datetime.datetime(year=2017, month=3, day=1),
             food__capacity=1,
-            reservation__order__paid=False,
+            reservation__order__paid=True,
         )
         food = meal_reservation.food
         self.assertEqual(food.number_of_reservations(), 1)

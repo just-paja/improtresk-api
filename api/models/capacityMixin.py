@@ -48,7 +48,9 @@ class CapacityMixin(models.Model):
     def has_free_capacity(self):
         """ Returns if the object has still a free capacity and other reservations can be add. """
         if self.capacity:
-            return self.number_of_reservations() < self.capacity
+            total = self.number_of_unpaid_reservations() + \
+                self.number_of_reservations()
+            return total < self.capacity
         return True
 
     def available_capacity(self):
