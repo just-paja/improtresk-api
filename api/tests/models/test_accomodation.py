@@ -24,7 +24,7 @@ class AccomodationTest(TestCase):
             'api.Reservation',
             ends_at=datetime.datetime(year=2017, month=3, day=1),
             accomodation__capacity=1,
-            order__paid=False,
+            order__paid=True,
         )
         accomodation = reservation.accomodation
         self.assertEqual(accomodation.number_of_reservations(), 1)
