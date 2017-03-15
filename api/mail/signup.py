@@ -23,8 +23,8 @@ Do zprávy prosím uveď pro kontrolu svoje jméno.
 
 
 ORDER_CONFIRMED_SUBJECT = "Tvoje přihláška"
-ORDER_CONFIRMED_BODY = """
-....
+ORDER_CONFIRMED_BODY = """Ahoj,
+
 Přijali jsme tvojí přihlášku. Na workshop tě však zařadíme až v \
 momentě kdy bude zaplacena. Rezervujeme ti místo na workshopu do \
 {validUntil}, pokud nám od tebe nepřijde platba včas, tak tvoje \
