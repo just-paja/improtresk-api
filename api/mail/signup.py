@@ -22,6 +22,29 @@ Do zprávy prosím uveď pro kontrolu svoje jméno.
 """
 
 
+ORDER_CONFIRMED_SUBJECT = "Tvoje přihláška"
+ORDER_CONFIRMED_BODY = """
+....
+Přijali jsme tvojí přihlášku. Na workshop tě však zařadíme až v \
+momentě kdy bude zaplacena. Rezervujeme ti místo na workshopu do \
+{validUntil}, pokud nám od tebe nepřijde platba včas, tak tvoje \
+místo na workshopu nabídneme ostatním.
+
+O zařazení na workshop a potvrzení platby ti přijde oznámení e-mailem.
+
+Číslo účtu: 2800754192/2010
+Částka k zaplacení: {price} Kč
+Variabilní symbol: {symvar}
+
+Objednaný workshop: {workshop}
+Čas propadnutí rezervace: {validUntil}
+
+    -----
+
+Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontaktovat.
+"""
+
+
 ORDER_PAID_SUBJECT = "Přihláška zaplacena"
 ORDER_PAID_BODY = """
 Hurá, tvoje přihláška je zaplacena. V tento okamžik jsi byl(a) zařazen(a) \
