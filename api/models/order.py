@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
 from .participant import Participant
-from .payment import Payment
+from .payment import STATUS_PAID
 
 from ..mail import signup as templates
 from ..mail.common import formatMail, formatWorkshop
@@ -94,11 +94,16 @@ class Order(Base):
             self.reservation.extend_reservation()
             self.reservation.save()
             self.save()
-
-            payment, _ = Payment.objects.get_or_create(
-                symvar=self.symvar,
-                defaults={
-                    'order': self,
-                },
-            )
             self.mail_confirm()
+
+    def total_amount_received(self):
+        paid = self.payments\
+            .filter(status=STATUS_PAID)\
+            .aggregate(total=models.Sum('amount'))
+        return paid['total']
+
+    def update_paid_status(self):
+        paid = self.total_amount_received()
+        self.paid = paid >= self.price
+        self.over_paid = paid > self.price
+        self.save()
