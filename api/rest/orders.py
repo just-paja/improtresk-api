@@ -105,15 +105,20 @@ class OrderViewSet(
 
     def create(self, request):
         serializer = CreateOrderSerializer(data=request.data)
-        serializer.user = request.user
+        serializer.user = request.user.participant
         if serializer.user.participant and serializer.is_valid():
-            serializer.save()
-            return response.Response(
-                OrderSerializer(
-                    instance=serializer.instance,
-                    context={'request': request},
-                ).data,
-            )
+            openOrders = Order.objects.filter(
+                canceled=False,
+                participant=request.user.participant
+            ).count()
+            if openOrders == 0:
+                serializer.save()
+                return response.Response(
+                    OrderSerializer(
+                        instance=serializer.instance,
+                        context={'request': request},
+                    ).data,
+                )
         return response.Response(
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST,
