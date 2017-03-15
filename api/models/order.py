@@ -7,8 +7,9 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
-from .payment import Payment
 from .participant import Participant
+from .payment import Payment
+
 from ..mail import signup as templates
 from ..mail.common import formatMail, formatWorkshop
 
@@ -84,7 +85,7 @@ class Order(Base):
             templates.ORDER_CONFIRMED_SUBJECT,
             body,
             settings.EMAIL_SENDER,
-            [self.participant.email]
+            [self.participant.email],
         )
 
     def confirm(self):

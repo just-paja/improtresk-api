@@ -10,10 +10,12 @@ class OrderTest(TestCase):
         workshop_price = mommy.make(
             'api.WorkshopPrice',
             workshop__name="Foo workshop",
-            workshop__lectors=[mommy.make(
-                'api.Lector',
-                name="Foo Lector",
-            )],
+            workshop__lectors=[
+                mommy.make(
+                    'api.Lector',
+                    name="Foo Lector",
+                ),
+            ],
         )
         self.order = mommy.make(
             'api.Order',
@@ -53,5 +55,5 @@ info@improtresk.cz
 --
 
 Tato zpráva byla vyžádána v rámci placené přihlášky na Improtřesk 2017.
-"""
+""",
         )
