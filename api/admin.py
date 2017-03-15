@@ -212,6 +212,7 @@ class OrderAdmin(BaseAdminModel):
     fields = [
         'participant',
         'symvar',
+        'accomodation_info',
         'confirmed',
         'canceled',
         'paid',
