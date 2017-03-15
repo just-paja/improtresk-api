@@ -54,6 +54,10 @@ class Order(Base):
         verbose_name=_("Is canceled?"),
         default=False,
     )
+    accomodation_info = models.BooleanField(
+        verbose_name=_("Send extra info about accomodation"),
+        default=False,
+    )
 
     def save(self, *args, **kwargs):
         """Generate variable symbol if not available yet."""
