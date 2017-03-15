@@ -121,10 +121,10 @@ class OrderViewSet(
 
     def destroy(self, request, pk=None):
         order = get_object_or_404(Order, pk=pk)
-        if order.participant == request.user:
+        if order.participant == request.user.participant and not order.paid:
             order.canceled = True
             order.save()
-            return response.Response(status=status.HTTP_200_OK)
+            return response.Response(status=status.HTTP_204_NO_CONTENT)
         return response.Response(
             {
                 "messages": ["cannot-cancel"],
