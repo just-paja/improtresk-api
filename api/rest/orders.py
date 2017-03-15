@@ -114,7 +114,7 @@ class OrderViewSet(
         if serializer.user.participant and serializer.is_valid():
             openOrders = Order.objects.filter(
                 canceled=False,
-                participant=request.user.participant
+                participant=request.user.participant,
             ).count()
             if openOrders == 0:
                 serializer.save()
