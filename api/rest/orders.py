@@ -1,7 +1,8 @@
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 
-from rest_framework import mixins, permissions, response, serializers, status, viewsets
+from rest_framework import mixins, permissions, response, serializers,\
+    status, viewsets
 
 from .payments import PaymentSerializer
 from .reservations import ReservationSerializer
@@ -9,7 +10,7 @@ from .reservations import ReservationSerializer
 from ..models import Meal, MealReservation, Order, Reservation, Workshop, Year
 
 
-class OrderSerializer(serializers.HyperlinkedModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     reservation = ReservationSerializer(
         many=False,
         read_only=True,
@@ -46,8 +47,12 @@ class CreateOrderSerializer(serializers.Serializer):
         workshop_price = workshop.get_actual_workshop_price(year)
         meals = Meal.objects.filter(id__in=validated_data['meals'])
         meals_price = meals.aggregate(Sum('price'))['price__sum']
+
+        if not meals_price:
+            meals_price = 0
+
         order = Order.objects.create(
-            participant=self.user,
+            participant=self.user.participant,
             price=workshop_price.price + meals_price,
         )
         reservation = Reservation.objects.create(
@@ -103,9 +108,15 @@ class OrderViewSet(
         if serializer.user.participant and serializer.is_valid():
             serializer.save()
             return response.Response(
-                OrderSerializer(instance=serializer.instance, context={'request': request}).data,
+                OrderSerializer(
+                    instance=serializer.instance,
+                    context={'request': request},
+                ).data,
             )
-        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return response.Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
     def destroy(self, request, pk=None):
         order = get_object_or_404(Order, pk=pk)
@@ -113,7 +124,12 @@ class OrderViewSet(
             order.canceled = True
             order.save()
             return response.Response(status=status.HTTP_200_OK)
-        return response.Response("Can't cancell this order", status=status.HTTP_400_BAD_REQUEST)
+        return response.Response(
+            {
+                "messages": ["cannot-cancel"],
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
