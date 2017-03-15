@@ -17,6 +17,7 @@ djangorestframework==3.5.3
 docopt==0.6.2
 drf-extensions==0.3.1
 enum-compat==0.0.2
+fiobank==1.2.0
 flake8==3.2.1
 flake8-import-order==0.12
 flake8-strict==0.1.4
