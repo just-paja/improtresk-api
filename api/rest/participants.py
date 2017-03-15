@@ -68,12 +68,10 @@ class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
             'birthday',
             'rules_accepted',
             'newsletter',
-            'paid',
             'assigned_workshop',
         )
         extra_kwargs = {
             'password': {'write_only': True},
-            'paid': {'read_only': True},
         }
 
     def create(self, validated_data):
