@@ -59,6 +59,7 @@ class Order(Base):
         self.confirmed = True
         self.reservation.extend_reservation()
         self.reservation.save()
+        self.save()
 
         from .payment import Payment
         payment, _ = Payment.objects.get_or_create(
