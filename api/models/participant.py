@@ -42,8 +42,6 @@ class Participant(Base, auth.models.User):
         ),
     )
     newsletter = models.BooleanField(default=False)
-    paid = models.BooleanField(default=False)
-
     assigned_workshop = models.ForeignKey(Workshop, blank=True, null=True)
     is_staff = False
 

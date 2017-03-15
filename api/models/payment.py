@@ -4,10 +4,14 @@ from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
 
+STATUS_IN_PROGRESS = 'in_progress'
+STATUS_PAID = 'paid'
+STATUS_CANCELLED = 'cancelled'
+
 STATUS_CHOICES = (
-    ('in_progress', _('In progress')),
-    ('paid', _('Paid')),
-    ('cancelled', _('Cancelled')),
+    (STATUS_IN_PROGRESS, _('In progress')),
+    (STATUS_PAID, _('Paid')),
+    (STATUS_CANCELLED, _('Cancelled')),
 )
 
 
@@ -85,8 +89,16 @@ class Payment(Base):
         null=True,
         verbose_name=_("Order"),
         help_text=_("Which order is this payment related to?"),
+        related_name='payments'
     )
 
     def __str__(self):
         """Return name as string representation."""
         return "Payment from %s" % self.received_at
+
+    def save(self, *args, **kwargs):
+        """Update order when paid."""
+        super().save(*args, **kwargs)
+
+        if self.status == STATUS_PAID and self.order:
+            self.order.update_paid_status()

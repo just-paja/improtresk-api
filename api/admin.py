@@ -182,7 +182,6 @@ class ParticipantAdmin(BaseAdminModel):
     readonly_fields = [
         'password',
         'last_login',
-        'paid',
     ]
     exclude = [
         'is_superuser',
@@ -210,7 +209,24 @@ class OrderAdmin(BaseAdminModel):
     """Admin model for Orders."""
 
     list_display = ('participant', 'created_at', 'price', 'canceled', 'paid', 'over_paid')
-    readonly_fields = ['symvar', 'paid', 'price']
+    fields = [
+        'participant',
+        'symvar',
+        'confirmed',
+        'canceled',
+        'paid',
+        'over_paid',
+        'price',
+        'total_amount_received',
+        'created_at',
+        'updated_at',
+    ]
+    readonly_fields = [
+        'participant',
+        'symvar',
+        'price',
+        'total_amount_received',
+    ] + DEFAULT_READONLY
 
 
 class PriceLevelInlineAdmin(BaseInlineAdminModel):
