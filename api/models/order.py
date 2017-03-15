@@ -1,6 +1,8 @@
 """Order model."""
 from datetime import datetime
 
+from django.conf import settings
+from django.core import mail
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -58,26 +60,32 @@ class Order(Base):
         """Return name as string representation."""
         return "%s at %s" % (self.participant.name, self.created_at)
 
-
     def get_mail_confirm_body(self):
         """Format template body to be emailed."""
-
-        if self.reservation.workshop:
-            workshop = formatWorkshop({
-                'name': self.reservation.workshop.name,
-                'lectorName': self.reservation.workshop.lector_names(),
-            })
+        workshop = self.reservation.workshop_price.workshop
+        workshopFormatted = formatWorkshop({
+            'name': workshop.name,
+            'lectorName': workshop.lector_names(),
+        })
 
         return formatMail(
-            template,
+            templates.ORDER_CONFIRMED_BODY,
             {
                 'price': self.price,
-                'symvar': self.symvarq,
-                'validUntil': self.reservation.endsAt,
-                'workshop': workshop,
+                'symvar': self.symvar,
+                'validUntil': self.reservation.ends_at,
+                'workshop': workshopFormatted,
             },
         )
 
+    def mail_confirm(self):
+        body = self.get_mail_confirm_body()
+        mail.send_mail(
+            templates.ORDER_CONFIRMED_SUBJECT,
+            body,
+            settings.EMAIL_SENDER,
+            [self.participant.email]
+        )
 
     def confirm(self):
         if not self.confirmed:
