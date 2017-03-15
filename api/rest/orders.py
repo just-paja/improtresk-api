@@ -93,7 +93,7 @@ class OrderViewSet(
 
     def retrieve(self, request, *args, **kwargs):
         order = self.get_object()
-        if order.participant != request.user:
+        if order.participant != request.user.participant:
             return response.Response(
                 "Requested object doesn't belong to authentificated user",
                 status=status.HTTP_400_BAD_REQUEST,
