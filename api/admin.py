@@ -152,6 +152,19 @@ class MealReservationAdmin(BaseAdminModel):
 @admin.register(models.Payment)
 class PaymentAdmin(BaseAdminModel):
     """Admin model for Food and its photos."""
+    list_display = (
+        'ident',
+        'user_identification',
+        'symvar',
+        'symcon',
+        'symspc',
+        'amount',
+        'sender',
+        'bank',
+        'message',
+        'currency',
+        'received_at',
+    )
 
     def get_readonly_fields(self, request, obj=None):
         """Define all read only fields."""
@@ -167,7 +180,6 @@ class PaymentAdmin(BaseAdminModel):
                 'message',
                 'currency',
                 'received_at',
-                'message',
             ]
         return super(PaymentAdmin, self).get_readonly_fields(
             request,

@@ -170,6 +170,8 @@ YEAR = 2017
 RESERVATION_DURATION_SHORT = datetime.timedelta(hours=3)
 RESERVATION_DURATION_PAYMENT = datetime.timedelta(days=3)
 
+FIO_TOKEN = os.environ.get('DJANGO_FIO_TOKEN', '')
+
 AUTH_LDAP_SERVER_URI = os.environ.get('DJANGO_LDAP_SERVERI_URI', '')
 AUTH_LDAP_BIND_DN = os.environ.get('DJANGO_LDAP_BIND_DN', '')
 AUTH_LDAP_BIND_PASSWORD = os.environ.get('DJANGO_LDAP_BIND_PASSWORD', '')
