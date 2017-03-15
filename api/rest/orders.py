@@ -25,6 +25,7 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = (
             'id',
+            'confirmed',
             'participant',
             'symvar',
             'price',
