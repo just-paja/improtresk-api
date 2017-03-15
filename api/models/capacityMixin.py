@@ -28,6 +28,7 @@ class CapacityMixin(models.Model):
         """
         from .participant import Participant
         return Participant.objects.filter(
+            orders__canceled=False,
             orders__reservation__ends_at__gt=datetime.datetime.now(),
             orders__reservation__in=self.get_reservations_query(),
         ).exclude(
@@ -40,7 +41,7 @@ class CapacityMixin(models.Model):
         """
         from .participant import Participant
         return Participant.objects.filter(
-            (Q(orders__paid=True) | Q(orders__reservation__ends_at__gt=datetime.datetime.now())) &
+            Q(orders__paid=True) &
             Q(orders__reservation__in=self.get_reservations_query()),
         ).distinct().count()
 
