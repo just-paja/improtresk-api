@@ -28,7 +28,6 @@ class Payment(Base):
     symvar = models.CharField(
         max_length=255,
         blank=True,
-        unique=True,
         verbose_name=_("Variable symbol"),
         help_text=_("Variable symbol of the transaction"),
     )
