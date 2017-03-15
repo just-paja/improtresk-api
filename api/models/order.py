@@ -33,6 +33,10 @@ class Order(Base):
         default=False,
         verbose_name=_("Is paid?"),
     )
+    confirmed = models.BooleanField(
+        default=False,
+        verbose_name=_("Is confirmed?"),
+    )
     over_paid = models.BooleanField(default=False)
     canceled = models.BooleanField(
         verbose_name=_("Is canceled?"),
@@ -52,6 +56,7 @@ class Order(Base):
         return "%s at %s" % (self.participant.name, self.created_at)
 
     def confirm(self):
+        self.confirmed = True
         self.reservation.extend_reservation()
         self.reservation.save()
 
