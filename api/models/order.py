@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from .base import Base
 from .participant import Participant
 from .payment import STATUS_PAID
+from .workshop import Workshop
 
 from ..mail import signup as templates
 from ..mail.common import formatAccountInfo, formatMail, formatPayments, \
@@ -144,6 +145,42 @@ class Order(Base):
         self.over_paid = paid > self.price
         self.save()
         if self.paid:
-            self.mail_paid()
+            if not self.initialPaid:
+                self.mail_paid()
+
+            if not self.participant.assigned_workshop:
+                self.try_to_assign()
         else:
             self.mail_update()
+
+    def try_to_assign(self):
+        ambiguous = ambiguous_orders()
+        ambiguous_count = ambiguous.count()
+
+        if ambiguous_count == 0:
+            self.participant.assigned_workshop = self.reservation.workshop()
+            self.participant.save()
+
+
+def unassigned_orders():
+    return Order.objects.filter(
+        paid=True,
+        participant__assigned_workshop__isnull=True,
+    )
+
+
+def workshops_at_capacity():
+    return Workshop.objects\
+        .annotate(assignees=models.Count('participant'))\
+        .filter(assignees__gte=models.F('capacity'))
+
+
+def ambiguous_orders():
+    """
+        Get orders that cannot be really assigned because their destination
+        workshop is full.
+    """
+    workshops_full = workshops_at_capacity()
+    return unassigned_orders().filter(
+        reservation__workshop_price__workshop__in=workshops_full,
+    )
