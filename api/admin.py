@@ -80,6 +80,9 @@ class WorkshopAdmin(BaseAdminModel):
         WorkshopPriceInlineAdmin,
     ]
 
+    list_display = ('name', 'desc', 'difficulty', 'visibility')
+    list_filter = ('visibility', 'difficulty')
+
 
 class AccomodationPhotoAdmin(BaseInlineAdminModel):
     """Admin model for Accomodation photos."""
@@ -118,6 +121,7 @@ class AbstractFoodAdminMixin():
 class FoodAdmin(AbstractFoodAdminMixin, BaseAdminModel):
     """Admin model for Food and its photos."""
 
+    list_filter = ('meal',)
     inlines = [
         FoodPhotoAdmin,
     ]
@@ -127,7 +131,10 @@ class FoodAdmin(AbstractFoodAdminMixin, BaseAdminModel):
 class SoupAdmin(AbstractFoodAdminMixin, BaseAdminModel):
     """Admin model for Food and its photos."""
 
-    pass
+    list_filter = ('meal',)
+    inlines = [
+        FoodPhotoAdmin,
+    ]
 
 
 @admin.register(models.Meal)
@@ -140,13 +147,6 @@ class MealAdmin(BaseAdminModel):
         'date',
         'visibility',
     )
-
-
-@admin.register(models.MealReservation)
-class MealReservationAdmin(BaseAdminModel):
-    """Admin model for MealReservation."""
-
-    pass
 
 
 @admin.register(models.Payment)
@@ -165,6 +165,7 @@ class PaymentAdmin(BaseAdminModel):
         'currency',
         'received_at',
     )
+    list_filter = ('bank',)
 
     def get_readonly_fields(self, request, obj=None):
         """Define all read only fields."""
@@ -205,13 +206,30 @@ class ParticipantAdmin(BaseAdminModel):
         'is_staff',
         'is_active',
     ]
-    list_display = ('name', 'team', 'email', 'assigned_workshop', 'newsletter', 'created_at')
+    list_display = (
+        'name',
+        'team',
+        'email',
+        'assigned_workshop',
+        'newsletter',
+        'created_at',
+    )
     list_filter = ('team', 'assigned_workshop', 'newsletter')
+
+
+class MealReservationInlineAdmin(BaseInlineAdminModel):
+    """Admin model for MealReservation."""
+
+    model = models.MealReservation
 
 
 @admin.register(models.Reservation)
 class ReservationAdmin(BaseAdminModel):
     """Admin model for Reservations."""
+    readonly_fields = ('workshop', 'participant', 'price', 'is_valid')
+    list_display = ('workshop', 'participant', 'price', 'ends_at', 'is_valid')
+
+    inlines = [MealReservationInlineAdmin]
 
     pass
 
@@ -220,7 +238,15 @@ class ReservationAdmin(BaseAdminModel):
 class OrderAdmin(BaseAdminModel):
     """Admin model for Orders."""
 
-    list_display = ('participant', 'created_at', 'price', 'canceled', 'paid', 'over_paid')
+    list_display = (
+        'participant',
+        'created_at',
+        'price',
+        'canceled',
+        'paid',
+        'over_paid',
+    )
+    list_filter = ('paid', 'over_paid', 'canceled')
     fields = [
         'participant',
         'symvar',
