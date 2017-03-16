@@ -11,6 +11,7 @@ from .participant import Participant
 from .payment import STATUS_PAID
 from .workshop import Workshop
 
+from ..mail import report as templatesReport
 from ..mail import signup as templates
 from ..mail.common import formatAccountInfo, formatMail, formatPayments, \
     formatWorkshop
@@ -160,6 +161,23 @@ class Order(Base):
         if ambiguous_count == 0:
             self.participant.assigned_workshop = self.reservation.workshop()
             self.participant.save()
+        else:
+            formatConfig = {
+                'order': self.id,
+                'participant': self.participant.name,
+                'workshop': self.reservation.workshop().name,
+            }
+            mail.send_mail(
+                templatesReport.ASSIGNMENT_FAILED_SUBJECT.format(
+                    **formatConfig,
+                ),
+                formatMail(
+                    templatesReport.ASSIGNMENT_FAILED_BODY,
+                    formatConfig,
+                ),
+                settings.EMAIL_SENDER,
+                [settings.EMAIL_TECH],
+            )
 
 
 def unassigned_orders():

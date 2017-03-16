@@ -165,6 +165,7 @@ NOSE_ARGS = [
 ]
 
 EMAIL_SENDER = 'info@improtresk.cz'
+EMAIL_TECH = 'tech@improliga.cz'
 
 YEAR = 2017
 RESERVATION_DURATION_SHORT = datetime.timedelta(hours=2)
