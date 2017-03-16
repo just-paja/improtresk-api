@@ -37,11 +37,23 @@ class Reservation(Base):
         verbose_name=_("Reservation is valid until"),
     )
 
+    def workshop(self):
+        return self.workshop_price.workshop
+
+    def participant(self):
+        return self.order.participant
+
+    def price(self):
+        return self.workshop_price.price
+
+    def is_valid(self):
+        return timezone.now() < self.ends_at and not self.order.canceled
+
     def __str__(self):
         """Return name as string representation."""
         return "%s for %s ends at %s" % (
-            self.workshop_price.workshop,
-            self.workshop_price.price,
+            self.workshop().name,
+            self.price(),
             self.ends_at,
         )
 
