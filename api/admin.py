@@ -289,7 +289,12 @@ class YearAdmin(BaseAdminModel):
 class TeamAdmin(BaseAdminModel):
     """Admin model for Teams."""
 
-    pass
+    list_display = (
+        'id',
+        'name',
+        'visibility',
+        'desc',
+    )
 
 
 @admin.register(models.Rules)

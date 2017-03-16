@@ -33,6 +33,7 @@ def is_email_unique(value):
 class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
     team_name = serializers.CharField(
         write_only=True,
+        allow_blank=True,
     )
     team = serializers.SlugRelatedField(
         many=False,
