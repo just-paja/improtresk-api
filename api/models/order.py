@@ -141,9 +141,9 @@ class Order(Base):
         return paid['total'] if paid['total'] else 0
 
     def update_paid_status(self):
-        paid = self.total_amount_received()
-        self.paid = paid >= self.price
-        self.over_paid = paid > self.price
+        paid_price = self.total_amount_received()
+        self.paid = paid_price >= self.price
+        self.over_paid = paid_price > self.price
         self.save()
         if self.paid:
             if not self.initialPaid:
