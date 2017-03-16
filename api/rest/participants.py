@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from rest_framework import mixins, permissions, serializers, viewsets
@@ -25,8 +26,9 @@ def is_eighteen(value):
 
 
 def is_email_unique(value):
-    exists = Participant.objects.filter(email=value)
-    if exists:
+    participant_exists = Participant.objects.filter(email=value)
+    user_exists = User.objects.filter(email=value)
+    if participant_exists or user_exists:
         raise ValidationError("Email address already exists, must be unique")
 
 
