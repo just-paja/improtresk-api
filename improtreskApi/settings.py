@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django_nose',
     'storages',
     'django_markdown',
+    'dbbackup',
     'api',
     'api_textual',
 ]
@@ -219,6 +220,12 @@ if AUTH_LDAP_SERVER_URI:
 if AWS_ACCESS_KEY_ID:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
     STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    DBBACKUP_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    DBBACKUP_STORAGE_OPTIONS = {
+        'access_key': AWS_ACCESS_KEY_ID,
+        'secret_key': AWS_SECRET_ACCESS_KEY,
+        'bucket_name': AWS_STORAGE_BUCKET_NAME,
+    }
 
 if DEBUG:
     MEDIA_ROOT = '/var/tmp/improtresk-api'
