@@ -169,7 +169,7 @@ EMAIL_TECH = 'tech@improliga.cz'
 
 YEAR = 2017
 RESERVATION_DURATION_SHORT = datetime.timedelta(hours=2)
-RESERVATION_DURATION_PAYMENT = datetime.timedelta(days=4)
+RESERVATION_DURATION_PAYMENT = datetime.timedelta(days=5)
 
 FIO_TOKEN = os.environ.get('DJANGO_FIO_TOKEN', '')
 
