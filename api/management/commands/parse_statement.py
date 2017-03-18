@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 
 from fiobank import FioBank
 
-from ...models import Payment
+from ...models import Order, Payment
 
 
 class Command(BaseCommand):
@@ -29,12 +29,17 @@ class Command(BaseCommand):
         )
         for payment in gen:
             if payment['amount'] >= 0:
+                variable_symbol = payment['variable_symbol']
+                try:
+                    order = Order.objects.get(symvar=variable_symbol)
+                except Order.DoesNotExist:
+                    order = None
                 new_payment, created = Payment.objects.get_or_create(
                     ident=payment['transaction_id'],
                     defaults={
                         'message': payment['recipient_message'],
                         'symspc': payment['specific_symbol'],
-                        'symvar': payment['variable_symbol'],
+                        'symvar': variable_symbol,
                         'currency': payment['currency'],
                         'amount': payment['amount'],
                         'received_at': payment['date'],
@@ -42,5 +47,9 @@ class Command(BaseCommand):
                         'bank': payment['bank_name'],
                         'symcon': payment['constant_symbol'],
                         'sender': payment['account_number_full'],
+                        'status': 'paid',
+                        'order': order,
                     },
                 )
+                if created and order:
+                        order.update_paid_status()
