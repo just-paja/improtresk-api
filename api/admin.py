@@ -154,6 +154,7 @@ class PaymentAdmin(BaseAdminModel):
     """Admin model for Food and its photos."""
     list_display = (
         'ident',
+        'order',
         'user_identification',
         'symvar',
         'symcon',
@@ -241,6 +242,7 @@ class OrderAdmin(BaseAdminModel):
 
     list_display = (
         'participant',
+        'symvar',
         'created_at',
         'price',
         'canceled',
@@ -257,7 +259,6 @@ class OrderAdmin(BaseAdminModel):
         'paid',
         'over_paid',
         'price',
-        'total_amount_received',
         'created_at',
         'updated_at',
     ]
@@ -290,7 +291,12 @@ class YearAdmin(BaseAdminModel):
 class TeamAdmin(BaseAdminModel):
     """Admin model for Teams."""
 
-    pass
+    list_display = (
+        'id',
+        'name',
+        'visibility',
+        'desc',
+    )
 
 
 @admin.register(models.Rules)
