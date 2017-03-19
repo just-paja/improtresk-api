@@ -47,7 +47,9 @@ class Reservation(Base):
         return self.workshop_price.price
 
     def is_valid(self):
-        return timezone.now() < self.ends_at and not self.order.canceled
+        if self.ends_at:
+            return timezone.now() < self.ends_at and not self.order.canceled
+        return False
 
     def __str__(self):
         """Return name as string representation."""
