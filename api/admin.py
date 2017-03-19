@@ -265,7 +265,6 @@ class OrderAdmin(BaseAdminModel):
     readonly_fields = [
         'participant',
         'symvar',
-        'price',
         'total_amount_received',
     ] + DEFAULT_READONLY
 
