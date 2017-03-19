@@ -262,11 +262,19 @@ class OrderAdmin(BaseAdminModel):
         'created_at',
         'updated_at',
     ]
-    readonly_fields = [
-        'participant',
-        'symvar',
-        'total_amount_received',
-    ] + DEFAULT_READONLY
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return [
+                'participant',
+                'price',
+                'symvar',
+                'total_amount_received',
+            ] + DEFAULT_READONLY
+        return [
+            'symvar',
+            'total_amount_received',
+        ] + DEFAULT_READONLY
 
 
 class PriceLevelInlineAdmin(BaseInlineAdminModel):
