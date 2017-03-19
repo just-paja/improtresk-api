@@ -31,6 +31,7 @@ class Order(Base):
         """Store initial paid status."""
         super().__init__(*args, **kwargs)
         self.initialPaid = self.paid
+        self.initialConfirmed = self.confirmed
 
     participant = models.ForeignKey(Participant, related_name="orders")
     symvar = models.CharField(
@@ -68,6 +69,9 @@ class Order(Base):
         if not self.symvar:
             self.symvar = generate_symvar()
             self.save()
+
+        if not self.initialConfirmed and self.confirmed:
+            self.mail_confirm()
 
     def __str__(self):
         """Return name as string representation."""
@@ -129,7 +133,6 @@ class Order(Base):
             self.reservation.extend_reservation()
             self.reservation.save()
             self.save()
-            self.mail_confirm()
 
     def amount_left(self):
         return max(0, self.price - self.total_amount_received())
