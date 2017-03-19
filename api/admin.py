@@ -201,7 +201,6 @@ class ParticipantAdmin(BaseAdminModel):
         'is_superuser',
         'groups',
         'user_permissions',
-        'username',
         'first_name',
         'last_name',
         'is_staff',
