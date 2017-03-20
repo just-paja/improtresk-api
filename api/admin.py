@@ -227,8 +227,15 @@ class MealReservationInlineAdmin(BaseInlineAdminModel):
 class ReservationAdmin(BaseAdminModel):
     """Admin model for Reservations."""
     readonly_fields = ('workshop', 'participant', 'price', 'is_valid')
-    list_display = ('participant', 'workshop', 'accomodation', 'price', 'ends_at', 'is_valid')
-    list_filter = ('workshop_price', 'accomodation', 'meals')
+    list_display = (
+        'participant',
+        'workshop',
+        'accomodation',
+        'price',
+        'ends_at',
+        'is_valid',
+    )
+    list_filter = ('order__confirmed', 'order__paid', 'workshop_price', 'accomodation', 'meals')
 
     inlines = [MealReservationInlineAdmin]
 
