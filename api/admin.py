@@ -235,7 +235,14 @@ class ReservationAdmin(BaseAdminModel):
         'ends_at',
         'is_valid',
     )
-    list_filter = ('order__confirmed', 'order__paid', 'workshop_price', 'accomodation', 'meals')
+    list_filter = (
+        'order__confirmed',
+        'order__canceled',
+        'order__paid',
+        'workshop_price',
+        'accomodation',
+        'meals',
+    )
 
     inlines = [MealReservationInlineAdmin]
 
