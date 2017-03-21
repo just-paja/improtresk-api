@@ -1,9 +1,9 @@
 """Import all models."""
 
-from .link import Link
 from .news import News
 from .newsPhoto import NewsPhoto
 from .performer import Performer
+from .performerLink import PerformerLink
 from .performerPhoto import PerformerPhoto
 from .poll import Poll
 from .pollAnswer import PollAnswer
@@ -16,10 +16,10 @@ from .workshopLocation import WorkshopLocation
 from .workshopLocationPhoto import WorkshopLocationPhoto
 
 __all__ = (
-    Link,
     News,
     NewsPhoto,
     Performer,
+    PerformerLink,
     PerformerPhoto,
     Poll,
     PollAnswer,

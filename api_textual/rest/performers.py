@@ -1,5 +1,7 @@
 from api.models import Year
 
+from api.fields import VISIBILITY_PUBLIC
+
 from django.shortcuts import get_object_or_404
 
 from rest_framework import serializers, viewsets
@@ -38,4 +40,4 @@ class PerformerViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         year = get_object_or_404(Year, year=self.kwargs.get('year', None))
-        return year.performers
+        return year.performers.filter(visibility=VISIBILITY_PUBLIC)
