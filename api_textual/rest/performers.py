@@ -1,6 +1,6 @@
-from api.models import Year
-
 from api.fields import VISIBILITY_PUBLIC
+
+from api.models import Year
 
 from django.shortcuts import get_object_or_404
 
