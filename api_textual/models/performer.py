@@ -19,7 +19,6 @@ class Performer(AbstractText):
         verbose_name=_('Year'),
         related_name='performers',
     )
-    links = models.ManyToManyField('Link', related_name='performers')
     visibility = models.PositiveIntegerField(
         default=VISIBILITY_PUBLIC,
         choices=VISIBILITY_CHOICES,

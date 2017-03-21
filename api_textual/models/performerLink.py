@@ -15,13 +15,15 @@ YOUTUBE = 'youtube'
 SERVICE_CHOICES = (
     (BANDZONE, 'Bandzone'),
     (FACEBOOK, 'Facebook'),
-    (SOUNDCLOUND, 'Soundcloud'),
+    (SOUNDCLOUND, 'SoundCloud'),
     (YOUTUBE, 'YouTube'),
 )
 
 
-class Link(Base):
-    """Stores app links."""
+class PerformerLink(Base):
+    """Stores Performer Links."""
+
+    performer = models.ForeignKey('Performer', related_name='links')
 
     name = models.CharField(
         help_text=_("eg. Fish and chips"),
