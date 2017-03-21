@@ -78,7 +78,7 @@ class NewsAdmin(AbstractTextAdmin):
 class LinkInlineAdmin(BaseInlineAdminModel):
     """Admin model for Links."""
 
-    model = models.Link.performers.through
+    model = models.PerformerLink
 
 
 class PerformerPhotoInlineAdmin(BaseInlineAdminModel):
@@ -92,6 +92,7 @@ class PerformerAdmin(AbstractTextAdmin):
     """Define admin model for Performer."""
 
     list_display = ('name', 'year', 'visibility')
+    exclude = ('links',)
     inlines = [
         LinkInlineAdmin,
         PerformerPhotoInlineAdmin,
