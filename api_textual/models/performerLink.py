@@ -39,6 +39,11 @@ class PerformerLink(Base):
         verbose_name=_('Linked service'),
     )
 
+    address = models.URLField(
+        max_length=255,
+        verbose_name=_('URL'),
+    )
+
     def __str__(self):
         """Return name as string representation."""
         return self.name
