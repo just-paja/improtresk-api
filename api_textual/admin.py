@@ -4,6 +4,8 @@ from django.contrib import admin
 
 from . import models
 
+DEFAULT_READONLY = ['created_at', 'updated_at']
+
 
 class AbstractTextAdmin(BaseAdminModel):
     """Admin model for Abstract Text."""
@@ -73,6 +75,12 @@ class NewsAdmin(AbstractTextAdmin):
     ]
 
 
+class LinkInlineAdmin(BaseInlineAdminModel):
+    """Admin model for Links."""
+
+    model = models.Link.performers.through
+
+
 class PerformerPhotoInlineAdmin(BaseInlineAdminModel):
     """Admin model for TravelingTip photos."""
 
@@ -85,5 +93,37 @@ class PerformerAdmin(AbstractTextAdmin):
 
     list_display = ('name', 'year', 'visibility')
     inlines = [
+        LinkInlineAdmin,
         PerformerPhotoInlineAdmin,
     ]
+
+
+class PollAnswerInlineAdmin(BaseInlineAdminModel):
+    """Inline admin for Poll Answers."""
+
+    model = models.PollAnswer
+    readonly_fields = ['get_vote_count']
+
+
+@admin.register(models.Poll)
+class PollAdmin(BaseAdminModel):
+    """Admin for Polls."""
+
+    inlines = [
+        PollAnswerInlineAdmin,
+    ]
+    list_display = (
+        'question',
+        'closed',
+        'get_answer_count',
+        'get_vote_count',
+        'get_winning_answer',
+        'get_last_vote_date',
+        'updated_at',
+    )
+    readonly_fields = [
+        'get_answer_count',
+        'get_vote_count',
+        'get_winning_answer',
+        'get_last_vote_date',
+    ] + DEFAULT_READONLY

@@ -10,16 +10,17 @@ from .abstractText import AbstractText
 class Performer(AbstractText):
     """Stores performer data."""
 
+    class Meta:
+        verbose_name = _("Performer")
+        verbose_name_plural = _("Performers")
+
     year = models.ForeignKey(
         'api.Year',
         verbose_name=_('Year'),
         related_name='performers',
     )
+    links = models.ManyToManyField('Link', related_name='performers')
     visibility = models.PositiveIntegerField(
         default=VISIBILITY_PUBLIC,
         choices=VISIBILITY_CHOICES,
     )
-
-    class Meta:
-        verbose_name = _("Performer")
-        verbose_name_plural = _("Performers")
