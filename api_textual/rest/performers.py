@@ -9,10 +9,23 @@ from rest_framework import serializers, viewsets
 from .. import models
 
 
+class PerformerLinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PerformerLink
+        fields = (
+            'id',
+            'name',
+            'service',
+            'address',
+            'performer',
+        )
+
+
 class PerformerPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.PerformerPhoto
         fields = (
+            'id',
             'image',
             'desc',
             'height',
@@ -21,6 +34,7 @@ class PerformerPhotoSerializer(serializers.ModelSerializer):
 
 
 class PerformerSerializer(serializers.ModelSerializer):
+    links = PerformerLinkSerializer(many=True, read_only=True)
     photos = PerformerPhotoSerializer(many=True, read_only=True)
 
     class Meta:
@@ -28,6 +42,7 @@ class PerformerSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
+            'links',
             'photos',
             'slug',
             'text',
