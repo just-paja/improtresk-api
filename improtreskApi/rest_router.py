@@ -2,7 +2,7 @@ from api.rest import accomodations, capacity, lector_roles, lectors, meals,\
     orders,\
     participants, payments, rules, schedule, teams, workshop_difficulties,\
     workshops, years
-from api_textual.rest import news, performers, texts, workshop_locations
+from api_textual.rest import news, performers, polls, texts, workshop_locations
 
 from rest_framework import routers
 
@@ -19,6 +19,14 @@ router.register(r'lectors', lectors.LectorViewSet)
 router.register(r'news', news.NewsViewSet)
 router.register(r'orders', orders.OrderViewSet)
 router.register(r'payments', payments.PaymentViewSet)
+router\
+    .register(r'polls', polls.PollViewSet)\
+    .register(
+        r'vote',
+        polls.PollVoteViewSet,
+        base_name='poll-vote',
+        parents_query_lookups=['answer__poll'],
+    )
 router.register(r'teams', teams.TeamsViewSet)
 router.register(r'texts', texts.TextViewSet)
 router.register(r'whoAmI', participants.WhoAmIViewSet)
