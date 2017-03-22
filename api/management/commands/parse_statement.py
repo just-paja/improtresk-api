@@ -46,7 +46,7 @@ class Command(BaseCommand):
                         'user_identification': payment['user_identification'],
                         'bank': payment['bank_name'],
                         'symcon': payment['constant_symbol'],
-                        'sender': payment['account_number_full'],
+                        'sender': payment.get('account_number_full', 'unknown'),
                         'status': 'paid',
                         'order': order,
                     },
