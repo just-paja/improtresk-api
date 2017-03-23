@@ -1,9 +1,11 @@
 from rest_framework import serializers, viewsets
 
+from .polls import PollSerializer
+
 from .. import models
 
 
-class NewsPhotoSerializer(serializers.HyperlinkedModelSerializer):
+class NewsPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.NewsPhoto
         fields = (
@@ -14,9 +16,10 @@ class NewsPhotoSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
-class NewsSerializer(serializers.HyperlinkedModelSerializer):
+class NewsSerializer(serializers.ModelSerializer):
     createdAt = serializers.DateTimeField(source='created_at')
     photos = NewsPhotoSerializer(many=True, read_only=True)
+    poll = PollSerializer(many=False)
 
     class Meta:
         model = models.News
@@ -24,6 +27,7 @@ class NewsSerializer(serializers.HyperlinkedModelSerializer):
             'id',
             'name',
             'photos',
+            'poll',
             'slug',
             'text',
             'createdAt',
