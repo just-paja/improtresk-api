@@ -6,7 +6,7 @@ from ..models import ScheduleEvent, Year
 
 
 class ScheduleEventSerializer(serializers.ModelSerializer):
-    endAt = serializers.DateTimeField(source='start_at')
+    endAt = serializers.DateTimeField(source='end_at')
     startAt = serializers.DateTimeField(source='start_at')
 
     class Meta:
