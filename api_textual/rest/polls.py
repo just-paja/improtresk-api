@@ -2,6 +2,7 @@ from rest_framework import mixins, serializers, viewsets
 
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
+from .performers import PerformerSerializer
 from .. import models
 
 
@@ -18,6 +19,7 @@ class PollAnswerSerializer(serializers.ModelSerializer):
     answerCount = serializers.IntegerField(source='get_vote_count')
     createdAt = serializers.DateTimeField(source='created_at')
     updatedAt = serializers.DateTimeField(source='updated_at')
+    performer = PerformerSerializer(many=False)
 
     class Meta:
         model = models.PollAnswer
@@ -34,12 +36,14 @@ class PollAnswerSerializer(serializers.ModelSerializer):
 
 class PollSerializer(serializers.ModelSerializer):
     answers = PollAnswerSerializer(many=True)
+    answerCount = serializers.IntegerField(source='get_vote_count')
     createdAt = serializers.DateTimeField(source='created_at')
     updatedAt = serializers.DateTimeField(source='updated_at')
 
     class Meta:
         model = models.Poll
         fields = (
+            'answerCount',
             'answers',
             'closed',
             'createdAt',
