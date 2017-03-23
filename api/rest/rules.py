@@ -1,5 +1,5 @@
-from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 
 from rest_framework import serializers, viewsets
@@ -29,6 +29,8 @@ class RulesViewSet(viewsets.ReadOnlyModelViewSet):
     @list_route()
     def latest(self, request, *args, **kwargs):
         try:
-            return Response(RulesSerializer(self.get_queryset().latest('created_at')).data)
+            return Response(
+                RulesSerializer(self.get_queryset().latest('created_at')).data,
+            )
         except ObjectDoesNotExist:
             raise Http404
