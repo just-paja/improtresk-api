@@ -46,7 +46,6 @@ class CreateOrderSerializer(serializers.Serializer):
     accomodationInfo = serializers.BooleanField(required=False)
 
     def create(self, validated_data):
-        print(validated_data)
         workshop = Workshop.objects.get(id=validated_data['workshop'])
         year = Year.objects.get(year=validated_data['year'])
         workshop_price = workshop.get_actual_workshop_price(year)
