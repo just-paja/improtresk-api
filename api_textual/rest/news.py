@@ -18,6 +18,7 @@ class NewsPhotoSerializer(serializers.ModelSerializer):
 
 class NewsSerializer(serializers.ModelSerializer):
     createdAt = serializers.DateTimeField(source='created_at')
+    updatedAt = serializers.DateTimeField(source='updated_at')
     photos = NewsPhotoSerializer(many=True, read_only=True)
     poll = PollSerializer(many=False)
 
@@ -31,6 +32,7 @@ class NewsSerializer(serializers.ModelSerializer):
             'slug',
             'text',
             'createdAt',
+            'updatedAt',
         )
 
 
