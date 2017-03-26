@@ -1,6 +1,6 @@
-from django.http import HttpResponseForbidden
-
 from datetime import datetime, timedelta
+
+from django.http import HttpResponseForbidden
 
 from rest_framework import mixins, serializers, viewsets
 
@@ -34,10 +34,14 @@ class PollVoteSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data, *args, **kwargs):
-        return super().create({
-            'answer': validated_data['answer'],
-            'remote_addr': get_client_ip(self.context['request']),
-        }, *args, **kwargs)
+        return super().create(
+            {
+                'answer': validated_data['answer'],
+                'remote_addr': get_client_ip(self.context['request']),
+            },
+            *args,
+            **kwargs,
+        )
 
 
 class PollAnswerSerializer(serializers.ModelSerializer):
