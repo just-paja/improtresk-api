@@ -1,3 +1,7 @@
+from django.http import HttpResponseForbidden
+
+from datetime import datetime, timedelta
+
 from rest_framework import mixins, serializers, viewsets
 
 from rest_framework_extensions.mixins import NestedViewSetMixin
@@ -6,13 +10,34 @@ from .performers import PerformerSerializer
 from .. import models
 
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
 class PollVoteSerializer(serializers.ModelSerializer):
+    remoteAddr = serializers.CharField(
+        source='remote_addr',
+        required=False,
+    )
+
     class Meta:
         model = models.PollVote
         fields = (
             'id',
             'answer',
+            'remoteAddr',
         )
+
+    def create(self, validated_data, *args, **kwargs):
+        return super().create({
+            'answer': validated_data['answer'],
+            'remote_addr': get_client_ip(self.context['request']),
+        }, *args, **kwargs)
 
 
 class PollAnswerSerializer(serializers.ModelSerializer):
@@ -65,3 +90,17 @@ class PollVoteViewSet(
 ):
     queryset = models.PollVote.objects.all()
     serializer_class = PollVoteSerializer
+
+    def create(self, request, *args, **kwargs):
+        similar_votes = models.PollVote.objects\
+            .filter(
+                answer__poll=kwargs['parent_lookup_answer__poll'],
+                remote_addr=get_client_ip(request),
+                created_at__gt=datetime.now() - timedelta(hours=1),
+            )\
+            .count()
+
+        if similar_votes > 0:
+            return HttpResponseForbidden()
+
+        return super().create(request, *args, **kwargs)
