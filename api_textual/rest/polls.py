@@ -100,7 +100,7 @@ class PollVoteViewSet(
             .filter(
                 answer__poll=kwargs['parent_lookup_answer__poll'],
                 remote_addr=get_client_ip(request),
-                created_at__gt=datetime.now() - timedelta(hours=1),
+                created_at__gt=datetime.now() - timedelta(minutes=10),
             )\
             .count()
 
