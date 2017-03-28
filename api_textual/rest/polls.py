@@ -92,7 +92,7 @@ class PollVoteViewSet(
     viewsets.GenericViewSet,
     NestedViewSetMixin,
 ):
-    queryset = models.PollVote.objects.all()
+    queryset = models.PollVote.objects
     serializer_class = PollVoteSerializer
 
     def create(self, request, *args, **kwargs):
