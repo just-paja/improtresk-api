@@ -2,14 +2,17 @@ from datetime import date
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.http import Http404
+from django.utils.timezone import localtime, now
 
-from rest_framework import mixins, permissions, serializers, viewsets
+from rest_framework import mixins, permissions, serializers, status, viewsets
 
 from rest_framework.response import Response
 
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from ..models import Participant
+from ..models.participantToken import PASSWORD_RESET
 
 
 def is_true(value):
@@ -85,6 +88,18 @@ class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
         return participant
 
 
+class ParticipantPasswordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Participant
+        fields = ('password',)
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['password'])
+        instance.save()
+        return instance
+
+
 class ParticipantViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     queryset = Participant.objects.all()
     serializer_class = ParticipantSerializer
@@ -104,3 +119,48 @@ class WhoAmIViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     def list(self, request):
         serializer = self.get_serializer(request.user.participant)
         return Response(serializer.data)
+
+
+class ResetPasswordViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = Participant.objects
+
+    def create(self, request, *args, **kwargs):
+        user = self.queryset\
+            .filter(email=request.data.get('email', None))\
+            .first()
+
+        if user:
+            user.request_password_reset()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        raise Http404()
+
+
+class CreatePasswordViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = Participant.objects
+
+    def create(self, request, *args, **kwargs):
+        password = request.data.get('password', None)
+        token = request.data.get('token', None)
+        participant = None
+
+        if token and password:
+            participant = self.queryset.filter(
+                tokens__token=token,
+                tokens__token_type=PASSWORD_RESET,
+                tokens__used=False,
+                tokens__valid_until__gt=localtime(now()),
+            ).first()
+
+        if participant and password:
+            serializer = ParticipantPasswordSerializer(
+                participant,
+                {'password': password},
+            )
+            serializer.is_valid(raise_exception=True)
+            participant.tokens\
+                .filter(token_type=PASSWORD_RESET)\
+                .update(used=True)
+            serializer.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
