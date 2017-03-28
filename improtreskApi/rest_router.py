@@ -31,6 +31,16 @@ router.register(r'teams', teams.TeamsViewSet)
 router.register(r'texts', texts.TextViewSet)
 router.register(r'whoAmI', participants.WhoAmIViewSet)
 router.register(
+    r'password-reset',
+    participants.ResetPasswordViewSet,
+    base_name='password-reset',
+)
+router.register(
+    r'password-create',
+    participants.CreatePasswordViewSet,
+    base_name='password-create',
+)
+router.register(
     r'workshopDifficulties',
     workshop_difficulties.WorkshopDifficultyViewSet,
 )
