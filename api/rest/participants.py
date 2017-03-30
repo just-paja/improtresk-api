@@ -133,7 +133,9 @@ class ResetPasswordViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             user.request_password_reset()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        raise Http404()
+        return Response({
+            'email': 'Tento e-mail nepoznáváme',
+        }, status=status.HTTP_404_NOT_FOUND)
 
 
 class CreatePasswordViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
