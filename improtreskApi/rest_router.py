@@ -29,7 +29,7 @@ router\
     )
 router.register(r'teams', teams.TeamsViewSet)
 router.register(r'texts', texts.TextViewSet)
-router.register(r'whoAmI', participants.WhoAmIViewSet)
+router.register(r'user', participants.WhoAmIViewSet)
 router.register(
     r'password-reset',
     participants.ResetPasswordViewSet,
