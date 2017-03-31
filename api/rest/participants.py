@@ -2,7 +2,6 @@ from datetime import date
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.http import Http404
 from django.utils.timezone import localtime, now
 
 from rest_framework import mixins, permissions, serializers, status, viewsets
