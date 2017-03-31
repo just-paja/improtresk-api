@@ -133,16 +133,17 @@ class ResetPasswordViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             user.request_password_reset()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        return Response({
-            'email': 'Tento e-mail nepoznáváme',
-        }, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {'email': 'Tento e-mail nepoznáváme'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
 
 
 class CreatePasswordViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Participant.objects
 
     def create(self, request, *args, **kwargs):
-        password = request.data.get('password', None)
+        password = request.data.get('newPassword', None)
         token = request.data.get('token', None)
         participant = None
 
@@ -165,4 +166,11 @@ class CreatePasswordViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
                 .update(used=True)
             serializer.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {
+                'errors': [
+                    'invalid-token',
+                ],
+            },
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
