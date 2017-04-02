@@ -4,8 +4,13 @@ import json
 
 from api.rest.orders import OrderViewSet
 
+from datetime import datetime
+
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
+
+from freezegun import freeze_time
 
 from model_mommy import mommy
 
@@ -143,6 +148,70 @@ class OrdersEndpointTest(TestCase):
         self.assertEqual(
             json.loads(response.content.decode('utf-8')),
             {'errors': ['no-matching-price-level']},
+        )
+
+    @freeze_time('2017-01-01T00:00:00Z')
+    def test_order_update_assigned_full(self):
+        workshop = mommy.make(
+            'Workshop',
+            capacity=1)
+        price = mommy.make(
+            'api.WorkshopPrice',
+            price_level=self.price_level,
+            workshop=workshop,
+        )
+        mommy.make(
+            'api.reservation',
+            workshop_price=price,
+            ends_at=datetime(2017, 1, 5, 0, 0, 0, tzinfo=timezone.utc),
+            orders__paid=True,
+        )
+        self.default_user.assigned_workshop = self.workshop
+        self.default_user.save()
+
+        request = self.factory.patch(
+            reverse('order-detail', args=[self.order.pk]),
+            json.dumps({'workshop': workshop.pk}),
+            content_type='application/json',
+        )
+        force_authenticate(request, user=self.default_user)
+        response = self.view(request, pk=self.order.pk).render()
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(
+            json.loads(response.content.decode('utf-8')),
+            {'errors': ['workshop-is-full']},
+        )
+
+    @freeze_time('2017-01-01T00:00:00Z')
+    def test_order_update_reserved_full(self):
+        workshop = mommy.make(
+            'Workshop',
+            capacity=1)
+        price = mommy.make(
+            'api.WorkshopPrice',
+            price_level=self.price_level,
+            workshop=workshop,
+        )
+        mommy.make(
+            'api.Reservation',
+            workshop_price=price,
+            ends_at=datetime(2017, 1, 5, 0, 0, 0, tzinfo=timezone.utc),
+            orders__paid=False,
+        )
+        self.default_user.assigned_workshop = self.workshop
+        self.default_user.save()
+
+        request = self.factory.patch(
+            reverse('order-detail', args=[self.order.pk]),
+            json.dumps({'workshop': workshop.pk}),
+            content_type='application/json',
+        )
+        force_authenticate(request, user=self.default_user)
+        response = self.view(request, pk=self.order.pk).render()
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(
+            json.loads(response.content.decode('utf-8')),
+            {'errors': ['workshop-is-full']},
         )
 
     def test_order_update_no_change(self):
