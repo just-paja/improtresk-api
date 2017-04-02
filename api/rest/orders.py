@@ -1,8 +1,8 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 
-from rest_framework import mixins, permissions, response, serializers,\
-    status, viewsets
+from rest_framework import permissions, response, serializers, status, viewsets
 
 from .payments import PaymentSerializer
 from .reservations import ReservationSerializer
@@ -72,12 +72,12 @@ class CreateOrderSerializer(serializers.Serializer):
             )
         return order
 
+    def update(self, instance, validated_data):
+        print("%s" % validated_data)
+        return super().update()
 
-class OrderViewSet(
-        mixins.DestroyModelMixin,
-        mixins.RetrieveModelMixin,
-        mixins.ListModelMixin,
-        viewsets.GenericViewSet):
+
+class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.none()
     permission_classes = [permissions.IsAuthenticated]
 
@@ -127,6 +127,57 @@ class OrderViewSet(
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+    def update(self, request, pk=None, *args, **kwargs):
+        order = Order.objects.filter(pk=pk).first()
+        next_workshop = Workshop.objects\
+            .filter(pk=request.data.get('workshop', None))\
+            .first()
+
+        if not order or not next_workshop:
+            return response.Response(
+                {'errors': ['unknown-object']},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        if order.participant != request.user.participant:
+            return response.Response(
+                {'errors': ['must-be-owner']},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        try:
+            reservation = order.reservation
+        except ObjectDoesNotExist:
+            reservation = None
+
+        # get current order reservation or 404
+        if not reservation or not reservation.workshop_price:
+            return response.Response(
+                {'errors': ['make-reservation-first']},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        current_price_level = reservation.workshop_price.price_level
+        current_workshop = reservation.workshop_price.workshop
+        next_price = next_workshop.prices.filter(
+            price_level=current_price_level,
+        ).first()
+
+        if not next_price:
+            return response.Response(
+                {'errors': ['no-matching-price-level']},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        reservation.workshop_price = next_price
+        reservation.save()
+
+        participant = self.request.user.participant
+        if participant.assigned_workshop == current_workshop:
+            participant.assigned_workshop = next_workshop
+            participant.save()
+
+        return response.Response(status=status.HTTP_204_NO_CONTENT)
 
     def destroy(self, request, pk=None):
         order = get_object_or_404(Order, pk=pk)
