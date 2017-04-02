@@ -169,6 +169,12 @@ class OrderViewSet(viewsets.ModelViewSet):
                 {'errors': ['no-matching-price-level']},
                 status=status.HTTP_403_FORBIDDEN,
             )
+        if not next_workshop.has_free_capacity():
+            return response.Response(
+                {'errors': ['workshop-is-full']},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
         reservation.workshop_price = next_price
         reservation.save()
 
