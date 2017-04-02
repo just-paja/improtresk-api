@@ -43,8 +43,19 @@ class Reservation(Base):
     def participant(self):
         return self.order.participant
 
-    def price(self):
+    def get_meals_price(self):
+        return self.meals.aggregate(
+            total=models.functions.Coalesce(
+                models.Sum('mealreservation__meal__price'),
+                0,
+            ),
+        ).get('total')
+
+    def get_workshop_price(self):
         return self.workshop_price.price
+
+    def price(self):
+        return self.get_workshop_price() + self.get_meals_price()
 
     def is_valid(self):
         if self.order and self.order.paid:
@@ -67,9 +78,13 @@ class Reservation(Base):
         """Set ends_at field."""
         if not self.ends_at:
             self.ends_at = timezone.now() + settings.RESERVATION_DURATION_SHORT
+
         super().save(*args, **kwargs)
 
     def extend_reservation(self):
         """ Payment was created, extend validity of this reservation """
         if self.ends_at >= timezone.now():
-            self.ends_at = timezone.now() + settings.RESERVATION_DURATION_PAYMENT
+            self.ends_at = (
+                timezone.now() +
+                settings.RESERVATION_DURATION_PAYMENT
+            )
