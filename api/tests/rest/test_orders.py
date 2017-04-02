@@ -4,7 +4,7 @@ import json
 
 from api.rest.orders import OrderViewSet
 
-from datetime import datetime
+from dateutil.parser import parse
 
 from django.test import TestCase
 from django.urls import reverse
@@ -154,7 +154,8 @@ class OrdersEndpointTest(TestCase):
     def test_order_update_assigned_full(self):
         workshop = mommy.make(
             'Workshop',
-            capacity=1)
+            capacity=1,
+        )
         price = mommy.make(
             'api.WorkshopPrice',
             price_level=self.price_level,
@@ -163,7 +164,7 @@ class OrdersEndpointTest(TestCase):
         mommy.make(
             'api.reservation',
             workshop_price=price,
-            ends_at=datetime(2017, 1, 5, 0, 0, 0, tzinfo=timezone.utc),
+            ends_at=parse('2017-01-05T00:00:00Z'),
             orders__paid=True,
         )
         self.default_user.assigned_workshop = self.workshop
@@ -186,7 +187,8 @@ class OrdersEndpointTest(TestCase):
     def test_order_update_reserved_full(self):
         workshop = mommy.make(
             'Workshop',
-            capacity=1)
+            capacity=1,
+        )
         price = mommy.make(
             'api.WorkshopPrice',
             price_level=self.price_level,
@@ -195,7 +197,7 @@ class OrdersEndpointTest(TestCase):
         mommy.make(
             'api.Reservation',
             workshop_price=price,
-            ends_at=datetime(2017, 1, 5, 0, 0, 0, tzinfo=timezone.utc),
+            ends_at=parse('2017-01-05T00:00:00Z'),
             orders__paid=False,
         )
         self.default_user.assigned_workshop = self.workshop
