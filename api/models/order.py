@@ -20,7 +20,13 @@ from ..mail.common import formatAccountInfo, formatMail, formatPayments, \
 def generate_symvar():
     """Generate variable symbol for a new order."""
     today = datetime.now().strftime('%Y')
-    total = Order.objects.count()
+    top = Order.objects.order_by('id').last()
+
+    if top:
+        total = int(top.symvar.split(today)[-1]) + 1
+    else:
+        total = 1
+
     return "%s%s" % (today, total)
 
 
@@ -69,11 +75,11 @@ class Order(Base):
 
     def save(self, *args, **kwargs):
         """Generate variable symbol if not available yet."""
-        super().save(*args, **kwargs)
 
         if not self.symvar:
             self.symvar = generate_symvar()
-            self.save()
+
+        super().save(*args, **kwargs)
 
         if not self.initialConfirmed and self.confirmed:
             self.mail_confirm()
