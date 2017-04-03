@@ -29,6 +29,8 @@ class MealTest(TestCase):
             meal__capacity=1,
             reservation__order__paid=True,
         )
+        meal_reservation.reservation.order.paid = True
+        meal_reservation.reservation.order.save()
         meal = meal_reservation.meal
         self.assertEqual(meal.number_of_reservations(), 1)
         self.assertEqual(meal.has_free_capacity(), False)
@@ -54,6 +56,8 @@ class MealTest(TestCase):
             reservation__order__paid=True,
             reservation__order__participant__name="Foo participant",
         )
+        meal_reservation.reservation.order.paid = True
+        meal_reservation.reservation.order.save()
         meal = meal_reservation.meal
         self.assertEqual(meal.number_of_reservations(), 1)
         self.assertEqual(meal.has_free_capacity(), False)

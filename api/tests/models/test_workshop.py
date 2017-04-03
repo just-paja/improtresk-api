@@ -24,8 +24,9 @@ class WorkshopTest(TestCase):
             'api.Reservation',
             ends_at=datetime.datetime(year=2017, month=3, day=1),
             workshop_price__workshop__capacity=1,
-            order__paid=True,
         )
+        reservation.order.paid = True
+        reservation.order.save()
         workshop = reservation.workshop_price.workshop
         self.assertEqual(workshop.number_of_reservations(), 1)
         self.assertEqual(workshop.has_free_capacity(), False)
@@ -48,9 +49,10 @@ class WorkshopTest(TestCase):
             'api.Reservation',
             ends_at=datetime.datetime(year=2017, month=1, day=1),
             workshop_price__workshop__capacity=1,
-            order__paid=True,
             order__participant__name="Foo participant",
         )
+        reservation.order.paid = True
+        reservation.order.save()
         workshop = reservation.workshop_price.workshop
         self.assertEqual(workshop.number_of_reservations(), 1)
         self.assertEqual(workshop.has_free_capacity(), False)

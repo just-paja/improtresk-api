@@ -65,8 +65,7 @@ Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontak
 ORDER_UPDATE_SUBJECT = "Aktualizace stavu přihlášky"
 ORDER_UPDATE_BODY = """Ahoj,
 
-dorazila nám na účet od tebe platba. Posíláme ti touto cestou aktualizaci \
-tvojí přihlášky na Improtřesk {year}.
+posíláme ti aktualizaci tvojí přihlášky na Improtřesk {year}.
 
 Přihláška stále není zaplacena, chybí nám od tebe {amountLeft} Kč. \
 Pošli je prosím na náš účet bankovním převodem.

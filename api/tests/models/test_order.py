@@ -126,8 +126,7 @@ class OrderUpdateTest(TestCase):
             sent.body,
             """Ahoj,
 
-dorazila nám na účet od tebe platba. Posíláme ti touto cestou aktualizaci \
-tvojí přihlášky na Improtřesk 2017.
+posíláme ti aktualizaci tvojí přihlášky na Improtřesk 2017.
 
 Přihláška stále není zaplacena, chybí nám od tebe 434 Kč. \
 Pošli je prosím na náš účet bankovním převodem.

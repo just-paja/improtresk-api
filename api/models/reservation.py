@@ -81,6 +81,15 @@ class Reservation(Base):
 
         super().save(*args, **kwargs)
 
+        price = self.price()
+        if (
+            self.order and
+            not self.order.canceled and
+            self.order.price != price
+        ):
+            self.order.price = price
+            self.order.update_paid_status()
+
     def extend_reservation(self):
         """ Payment was created, extend validity of this reservation """
         if self.ends_at >= timezone.now():
