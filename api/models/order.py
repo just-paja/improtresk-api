@@ -27,12 +27,6 @@ def generate_symvar():
 class Order(Base):
     """Stores orders types."""
 
-    def __init__(self, *args, **kwargs):
-        """Store initial paid status."""
-        super().__init__(*args, **kwargs)
-        self.initialPaid = self.paid
-        self.initialConfirmed = self.confirmed
-
     participant = models.ForeignKey(Participant, related_name="orders")
     symvar = models.CharField(
         verbose_name=_("Variable symbol"),
@@ -62,6 +56,17 @@ class Order(Base):
         default=False,
     )
 
+    def __init__(self, *args, **kwargs):
+        """Store initial paid status."""
+        super().__init__(*args, **kwargs)
+        self.initialPaid = self.paid
+        self.initialPrice = self.price
+        self.initialConfirmed = self.confirmed
+
+    def __str__(self):
+        """Return name as string representation."""
+        return "%s at %s" % (self.participant.name, self.created_at)
+
     def save(self, *args, **kwargs):
         """Generate variable symbol if not available yet."""
         super().save(*args, **kwargs)
@@ -72,10 +77,6 @@ class Order(Base):
 
         if not self.initialConfirmed and self.confirmed:
             self.mail_confirm()
-
-    def __str__(self):
-        """Return name as string representation."""
-        return "%s at %s" % (self.participant.name, self.created_at)
 
     def get_workshop_formatted(self):
         workshop = self.reservation.workshop_price.workshop
