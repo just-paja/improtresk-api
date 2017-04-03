@@ -85,6 +85,7 @@ class Reservation(Base):
         if (
             self.order and
             not self.order.canceled and
+            self.order.confirmed and
             self.order.price != price
         ):
             self.order.price = price
