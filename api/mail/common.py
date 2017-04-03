@@ -20,8 +20,7 @@ PAYMENT = """
     Přijato bankou: {received_at:{datetime_format}}
     Zpracováno: {created_at:{datetime_format}}"""
 
-ACCOUNT_INFO = """
-Číslo účtu: 2800754192/2010
+ACCOUNT_INFO = """Číslo účtu: 2800754192/2010
 Částka k zaplacení: {price} Kč
 Variabilní symbol: {symvar}"""
 
