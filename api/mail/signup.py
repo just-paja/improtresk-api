@@ -1,27 +1,5 @@
 """E-mail templates for signups."""
 
-CONFIRMATION_SUBJECT = "Potvrzení přihlášky"
-CONFIRMATION_BODY = """Ahoj,
-
-přijali jsme tvojí přihlášku na Improtřesk {year}. Zde je rekapitulace:
-
-Jméno: {name}
-Telefon: {phone}
-E-mail: {email}
-Způsob platby: {paymentMethod}
-
-Workshopy:
-{workshops}
-
-{accountInfo}
-
-Po uhrazení účastnického poplatku budete přiřazen na workshop. O přijetí \
-platby tě budeme informovat automatickým e-mailem. Detaily platby jsou níže.
-
-Do zprávy prosím uveď pro kontrolu svoje jméno.
-"""
-
-
 ORDER_CONFIRMED_SUBJECT = "Tvoje přihláška"
 ORDER_CONFIRMED_BODY = """Ahoj,
 
@@ -32,7 +10,8 @@ tak tvoje místo na workshopu nabídneme ostatním.
 
 O zařazení na workshop a potvrzení platby ti přijde oznámení e-mailem.
 
-Detaily platby:{accountInfo}
+Detaily platby:
+{accountInfo}
 
 Objednaný workshop: {workshop}
 Čas propadnutí rezervace: {validUntil:{datetime_format}}
@@ -52,6 +31,7 @@ probíhá částečně manuálně a částečně automaticky - někde u počíta
 člověk, který potvrzuje kdo kam půjde podle toho kdo dřív zaplatil. \
 Může to tedy chvíli trvat. Jakmile tě zařadíme, okamžitě se ti ozveme.
 
+Workshop: {workshop}
 Celkem zaplaceno: {amountPaid} Kč
 
 Spárované platby:
@@ -69,6 +49,8 @@ posíláme ti aktualizaci tvojí přihlášky na Improtřesk {year}.
 
 Přihláška stále není zaplacena, chybí nám od tebe {amountLeft} Kč. \
 Pošli je prosím na náš účet bankovním převodem.
+
+Workshop: {workshop}
 {accountInfo}
 
 Celkem zaplaceno: {amountPaid} Kč

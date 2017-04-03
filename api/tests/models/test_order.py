@@ -131,6 +131,7 @@ posíláme ti aktualizaci tvojí přihlášky na Improtřesk 2017.
 Přihláška stále není zaplacena, chybí nám od tebe 434 Kč. \
 Pošli je prosím na náš účet bankovním převodem.
 
+Workshop: Foo workshop
 Číslo účtu: 2800754192/2010
 Částka k zaplacení: 434 Kč
 Variabilní symbol: 38212
@@ -226,6 +227,7 @@ probíhá částečně manuálně a částečně automaticky - někde u počíta
 člověk, který potvrzuje kdo kam půjde podle toho kdo dřív zaplatil. \
 Může to tedy chvíli trvat. Jakmile tě zařadíme, okamžitě se ti ozveme.
 
+Workshop: Foo workshop
 Celkem zaplaceno: 1434 Kč
 
 Spárované platby:
