@@ -82,14 +82,12 @@ class Reservation(Base):
         super().save(*args, **kwargs)
 
         price = self.price()
-        if (
-            self.order and
-            not self.order.canceled and
-            self.order.confirmed and
-            self.order.price != price
-        ):
+        if self.order and self.order.price != price:
             self.order.price = price
-            self.order.update_paid_status()
+            if self.order.confirmed and not self.order.canceled:
+                self.order.update_paid_status()
+            else:
+                self.order.save()
 
     def extend_reservation(self):
         """ Payment was created, extend validity of this reservation """
