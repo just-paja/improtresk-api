@@ -88,10 +88,6 @@ Ahoj,
 na základě preferencí v tvojí přihlášce jsme tě zařadili na tento workshop:
 {currentWorkshop}
 
-Tvoje preference z přihlášky:
-
-{workshopPreferences}
-
 Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontaktovat.
 """
 
@@ -102,10 +98,6 @@ Ahoj,
 přeřadili jsme tě na jiný workshop.
 
 {prevWorkshop} -> {currentWorkshop}
-
-Tvoje preference z přihlášky:
-
-{workshopPreferences}
 
 Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontaktovat.
 """
