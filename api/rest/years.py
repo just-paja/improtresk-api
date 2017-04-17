@@ -21,6 +21,7 @@ class YearSerializer(serializers.HyperlinkedModelSerializer):
     startDate = serializers.DateField(source='start_date')
     endDate = serializers.DateField(source='end_date')
     startSignupsAt = serializers.DateTimeField(source='start_date_of_signups')
+    endFoodPickingAt = serializers.DateTimeField(source='end_food_picking_at')
     priceLevels = PriceLevelSerializer(source='price_levels', many=True)
 
     class Meta:
@@ -32,6 +33,7 @@ class YearSerializer(serializers.HyperlinkedModelSerializer):
             'startDate',
             'endDate',
             'startSignupsAt',
+            'endFoodPickingAt',
             'current',
             'priceLevels',
         )
@@ -40,6 +42,8 @@ class YearSerializer(serializers.HyperlinkedModelSerializer):
 class YearDetailSerializer(serializers.HyperlinkedModelSerializer):
     startDate = serializers.DateField(source='start_date')
     endDate = serializers.DateField(source='end_date')
+    startSignupsAt = serializers.DateTimeField(source='start_date_of_signups')
+    endFoodPickingAt = serializers.DateTimeField(source='end_food_picking_at')
     workshops = serializers.SerializerMethodField()
 
     class Meta:
@@ -50,6 +54,8 @@ class YearDetailSerializer(serializers.HyperlinkedModelSerializer):
             'topic',
             'startDate',
             'endDate',
+            'startSignupsAt',
+            'endFoodPickingAt',
             'current',
             'workshops',
         )

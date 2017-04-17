@@ -34,6 +34,11 @@ class Year(Base):
         null=True,
         blank=True,
     )
+    end_food_picking_at = models.DateTimeField(
+        verbose_name=_("Last day participants can pick food"),
+        null=True,
+        blank=True,
+    )
     current = models.BooleanField(
         verbose_name=_("Is this year current?"),
     )
