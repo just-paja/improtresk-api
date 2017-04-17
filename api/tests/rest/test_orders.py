@@ -2,7 +2,7 @@
 
 import json
 
-from api.rest.orders import OrderViewSet
+from api.rest.orders import OrderViewSet, OrdersFoodViewSet
 
 from dateutil.parser import parse
 
@@ -267,3 +267,100 @@ class OrdersEndpointTest(TestCase):
         self.default_user.refresh_from_db()
         self.assertEqual(self.order.reservation.workshop_price.pk, price.pk)
         self.assertEqual(self.default_user.assigned_workshop.pk, workshop.pk)
+
+
+class OrdersFoodEndpointTest(TestCase):
+    """Test accomodation methods."""
+
+    def setUp(self):
+        self.factory = APIRequestFactory()
+        self.default_user = mommy.make('api.Participant')
+        self.order = mommy.make(
+            'api.Order',
+            participant=self.default_user,
+        )
+        self.reservation = mommy.make(
+            'api.Reservation',
+            order=self.order,
+        )
+
+        meal1 = mommy.make('Meal')
+        meal2 = mommy.make('Meal')
+
+        self.food1 = mommy.make('Food', meal=meal1)
+        self.food2 = mommy.make('Food', meal=meal2)
+        self.soup1 = mommy.make('Soup', meal=meal1)
+        self.soup2 = mommy.make('Soup', meal=meal2)
+
+        mommy.make('MealReservation', meal=meal1, reservation=self.reservation)
+        mommy.make('MealReservation', meal=meal2, reservation=self.reservation)
+
+        self.view = OrdersFoodViewSet.as_view(
+            actions={
+                'patch': 'update',
+            },
+        )
+
+    def test_order_update_missing_order(self):
+        request = self.factory.patch(
+            reverse('order-detail', args=[3335]),
+            json.dumps({'food': []}),
+            content_type='application/json',
+        )
+        force_authenticate(request, user=self.default_user)
+        response = self.view(request, pk=None).render()
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
+            json.loads(response.content.decode('utf-8')),
+            {'errors': ['unknown-object']},
+        )
+
+    def test_order_update_missing_food(self):
+        request = self.factory.patch(
+            reverse('order-detail', args=[356568]),
+            json.dumps({}),
+            content_type='application/json',
+        )
+        force_authenticate(request, user=self.default_user)
+        response = self.view(request, pk=356568).render()
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
+            json.loads(response.content.decode('utf-8')),
+            {'errors': ['unknown-object']},
+        )
+
+    def test_order_update_not_owned_order(self):
+        invalid_user = mommy.make('api.Participant')
+        request = self.factory.patch(
+            reverse('order-detail', args=[self.order.pk]),
+            json.dumps({'foods': []}),
+            content_type='application/json',
+        )
+        force_authenticate(request, user=invalid_user)
+        response = self.view(request, pk=self.order.pk).render()
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(
+            json.loads(response.content.decode('utf-8')),
+            {'errors': ['must-be-owner']},
+        )
+
+    def test_order_update_foods(self):
+
+        request = self.factory.patch(
+            reverse('order-detail', args=[self.order.pk]),
+            json.dumps({
+                'foods': [self.food1.pk, self.food2.pk],
+                'soups': [self.soup1.pk, self.soup2.pk],
+            }),
+            content_type='application/json',
+        )
+
+        force_authenticate(request, user=self.default_user)
+        response = self.view(request, pk=self.order.pk).render()
+        self.assertEqual(response.status_code, 204)
+        self.order.reservation.refresh_from_db()
+        meal_reservations = self.order.reservation.mealreservation_set.all()
+        self.assertEqual(meal_reservations[0].food, self.food1)
+        self.assertEqual(meal_reservations[0].soup, self.soup1)
+        self.assertEqual(meal_reservations[1].food, self.food2)
+        self.assertEqual(meal_reservations[1].soup, self.soup2)

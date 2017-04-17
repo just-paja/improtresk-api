@@ -7,7 +7,8 @@ from rest_framework import permissions, response, serializers, status, viewsets
 from .payments import PaymentSerializer
 from .reservations import ReservationSerializer
 
-from ..models import Meal, MealReservation, Order, Reservation, Workshop, Year
+from ..models import Food, Meal, MealReservation, Order, Reservation, Soup,\
+    Workshop, Year
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -200,3 +201,69 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+
+class OrdersFoodViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.none()
+    permission_classes = [permissions.IsAuthenticated]
+    serializer = OrderSerializer
+
+    def get_queryset(self):
+        return Order.objects\
+            .filter(participant=self.request.user.participant)\
+            .prefetch_related('reservation')
+
+    def update(self, request, pk=None, *args, **kwargs):
+        order = Order.objects.filter(pk=pk).first()
+        foods = request.data.get('foods')
+        soups = request.data.get('soups')
+
+        if not order:
+            return response.Response(
+                {'errors': ['unknown-object']},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        if order.participant != request.user.participant:
+            return response.Response(
+                {'errors': ['must-be-owner']},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        try:
+            reservation = order.reservation
+        except ObjectDoesNotExist:
+            return response.Response(
+                {
+                    'messages': ['make-reservation-first'],
+                },
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        print("%s" % foods)
+        print("%s" % soups)
+
+        saved = True
+        meals = reservation.mealreservation_set.all()
+        foods = [Food.objects.get(pk=food) for food in foods]
+        soups = [Soup.objects.get(pk=soup) for soup in soups]
+
+        for meal_reservation in meals:
+            for food in foods:
+                print(food.meal.pk, meal_reservation.meal.pk)
+                if food.meal.pk == meal_reservation.meal.pk:
+                    meal_reservation.food = food
+            for soup in soups:
+                if soup.meal.pk == meal_reservation.meal.pk:
+                    meal_reservation.soup = soup
+
+            try:
+                meal_reservation.save()
+            except:
+                saved = False
+                break
+
+        if saved:
+            return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+        return response.Response(status=status.HTTP_400_BAD_REQUEST)
