@@ -40,9 +40,6 @@ class SoupSerializer(serializers.ModelSerializer):
 
 
 class MealReservationSerializer(serializers.ModelSerializer):
-    food = FoodSerializer(many=False, read_only=True)
-    soup = SoupSerializer(many=False, read_only=True)
-
     class Meta:
         model = MealReservation
         fields = (
@@ -55,7 +52,7 @@ class MealReservationSerializer(serializers.ModelSerializer):
 class ReservationSerializer(serializers.ModelSerializer):
     endsAt = serializers.DateTimeField(source='ends_at')
     mealReservation = MealReservationSerializer(
-        source='meals',
+        source='mealreservation_set',
         many=True,
         read_only=True,
     )
