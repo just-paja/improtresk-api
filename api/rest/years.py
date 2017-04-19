@@ -42,8 +42,6 @@ class YearSerializer(serializers.HyperlinkedModelSerializer):
 class YearDetailSerializer(serializers.HyperlinkedModelSerializer):
     startDate = serializers.DateField(source='start_date')
     endDate = serializers.DateField(source='end_date')
-    startSignupsAt = serializers.DateTimeField(source='start_date_of_signups')
-    endFoodPickingAt = serializers.DateTimeField(source='end_food_picking_at')
     workshops = serializers.SerializerMethodField()
 
     class Meta:

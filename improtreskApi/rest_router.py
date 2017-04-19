@@ -18,6 +18,7 @@ router.register(r'lectorRoles', lector_roles.LectorRoleViewSet)
 router.register(r'lectors', lectors.LectorViewSet)
 router.register(r'news', news.NewsViewSet)
 router.register(r'orders', orders.OrderViewSet)
+router.register(r'ordersFood', orders.OrdersFoodViewSet)
 router.register(r'payments', payments.PaymentViewSet)
 router\
     .register(r'polls', polls.PollViewSet)\

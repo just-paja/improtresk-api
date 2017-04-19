@@ -203,6 +203,28 @@ class OrderViewSet(viewsets.ModelViewSet):
         return self.destroy(request, *args, **kwargs)
 
 
+def save_food_changes(meals, foods, soups):
+    saved = True
+    foods = [Food.objects.get(pk=food) for food in foods]
+    soups = [Soup.objects.get(pk=soup) for soup in soups]
+
+    for meal_reservation in meals:
+        for food in foods:
+            print(food.meal.pk, meal_reservation.meal.pk)
+            if food.meal.pk == meal_reservation.meal.pk:
+                meal_reservation.food = food
+        for soup in soups:
+            if soup.meal.pk == meal_reservation.meal.pk:
+                meal_reservation.soup = soup
+
+        try:
+            meal_reservation.save()
+        except:
+            saved = False
+            break
+    return saved
+
+
 class OrdersFoodViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.none()
     permission_classes = [permissions.IsAuthenticated]
@@ -215,8 +237,6 @@ class OrdersFoodViewSet(viewsets.ModelViewSet):
 
     def update(self, request, pk=None, *args, **kwargs):
         order = Order.objects.filter(pk=pk).first()
-        foods = request.data.get('foods')
-        soups = request.data.get('soups')
 
         if not order:
             return response.Response(
@@ -240,28 +260,11 @@ class OrdersFoodViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_403_FORBIDDEN,
             )
 
-        print("%s" % foods)
-        print("%s" % soups)
-
-        saved = True
-        meals = reservation.mealreservation_set.all()
-        foods = [Food.objects.get(pk=food) for food in foods]
-        soups = [Soup.objects.get(pk=soup) for soup in soups]
-
-        for meal_reservation in meals:
-            for food in foods:
-                print(food.meal.pk, meal_reservation.meal.pk)
-                if food.meal.pk == meal_reservation.meal.pk:
-                    meal_reservation.food = food
-            for soup in soups:
-                if soup.meal.pk == meal_reservation.meal.pk:
-                    meal_reservation.soup = soup
-
-            try:
-                meal_reservation.save()
-            except:
-                saved = False
-                break
+        saved = save_food_changes(
+            reservation.mealreservation_set.all(),
+            request.data.get('foods'),
+            request.data.get('soups'),
+        )
 
         if saved:
             return response.Response(status=status.HTTP_204_NO_CONTENT)

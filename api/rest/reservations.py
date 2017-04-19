@@ -46,6 +46,7 @@ class MealReservationSerializer(serializers.ModelSerializer):
             'id',
             'food',
             'soup',
+            'meal',
         )
 
 
