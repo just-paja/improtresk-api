@@ -1,0 +1,42 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; Stats
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <div class="app-stasts module">
+  {% for festival in festivals %}
+    <table>
+    <caption>
+        {{ festival.year }}
+    </caption>
+        <tr class="model-festival">
+          <th scope="row">
+            <a href="{% url 'admin:stats-food' festivalId=festival.id%}">Jídlo</a>
+          </th>
+        </tr>
+        <tr class="model-festival">
+          <th scope="row">
+            <a href="{% url 'admin:stats-workshops' festivalId=festival.id%}">Workshopy</a>
+          </th>
+        </tr>
+        <tr class="model-festival">
+          <th scope="row">Účastníci</th>
+        </tr>
+    </table>
+  {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; Stats
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <div class="app-stasts module">
+    <h1>Food {{ festival.year }}</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Food</th>
+          <th>Date</th>
+          <th>Paid Confirmed</th>
+          <th>Unpaid Confirmed</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for food in order %}
+          <tr>
+            <td>{{ food.name }}</td>
+            <td>{{ food.meal.date }}</td>
+            <td>{{ food.paid_reservations }}</td>
+            <td>{{ food.unpaid_reservations }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; Stats
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <h1>Workshops {{ festival.year }}</h1>
+  {% for workshop in workshops %}
+  <div class="app-stasts module">
+    <h2>{{workshop.name}} ({{workshop.participant_count}})</h2>
+    <ul>
+      {% for participant in workshop.participant_list %}
+      <li>
+          {{ participant.name }}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

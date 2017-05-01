@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'rest_framework',
     'django_nose',
+    'django_extensions',
     'storages',
     'django_markdown',
     'dbbackup',
@@ -78,7 +79,9 @@ ROOT_URLCONF = 'improtreskApi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'improtreskApi/admin/templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

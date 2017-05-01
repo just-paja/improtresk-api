@@ -47,4 +47,9 @@ class Food(AbstractFood):
 
 
 class Soup(AbstractFood):
-    pass
+
+    def get_reservations_query(self):
+        """
+        Returns query path from reservation to self.
+        """
+        return Reservation.objects.filter(mealreservation__soup=self)

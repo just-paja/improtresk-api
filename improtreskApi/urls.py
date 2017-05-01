@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls import include, url
-from django.contrib import admin
 from django.views.static import serve
 
+from .admin.festival import festival_site
 from .rest_router import router
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/', festival_site.urls),
     url('^markdown/', include('django_markdown.urls')),
     url(r'^api/', include(router.urls)),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
