@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'dbbackup',
     'api',
     'api_textual',
+    'api_admin',
 ]
 
 MIDDLEWARE = [
@@ -81,9 +82,7 @@ ROOT_URLCONF = 'improtreskApi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'improtreskApi/admin/templates'),
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

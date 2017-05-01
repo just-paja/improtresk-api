@@ -1,6 +1,7 @@
 recursive-include bin *
 recursive-include api *.py *.mo
 recursive-include api_textual *.py *.mo
+recursive-include api_admin *.py *.mo *.html
 recursive-include improtreskApi *.py
 include requirements.txt
 include README.md
