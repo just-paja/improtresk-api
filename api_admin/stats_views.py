@@ -1,5 +1,6 @@
 from api.models import Food, Soup, Year
 
+from django.db.models import Q
 from django.shortcuts import render
 
 
@@ -38,6 +39,16 @@ def update_food(mixed_food):
         )
 
 
+def update_meal_reservation(meal, reservation):
+    reservation.meal_reservation = (
+        reservation
+        .mealreservation_set
+        .filter(meal=meal.pk)
+        .first()
+    )
+    return reservation
+
+
 def update_meal(meal):
     meal.unpicked_paid_reservations = (
         meal
@@ -46,6 +57,11 @@ def update_meal(meal):
             order__paid=True,
             order__confirmed=True,
             order__canceled=False,
+        )
+        .filter(
+            Q(mealreservation__meal=meal),
+            Q(mealreservation__food__isnull=True) |
+            Q(mealreservation__soup__isnull=True),
         )
     )
 
@@ -57,13 +73,28 @@ def update_meal(meal):
             order__confirmed=True,
             order__canceled=False,
         )
+        .filter(
+            Q(mealreservation__meal=meal),
+            Q(mealreservation__food__isnull=True) |
+            Q(mealreservation__soup__isnull=True),
+        )
     )
+
     meal.unpicked_paid_reservations_count = (
         meal.unpicked_paid_reservations.count()
     )
     meal.unpicked_unpaid_reservations_count = (
         meal.unpicked_unpaid_reservations.count()
     )
+
+    meal.unpicked_paid_reservations = [
+        update_meal_reservation(meal, res) for res in
+        meal.unpicked_paid_reservations
+    ]
+    meal.unpicked_unpaid_reservations = [
+        update_meal_reservation(meal, res) for res in
+        meal.unpicked_unpaid_reservations
+    ]
 
 
 def food(request, festivalId):
