@@ -1,15 +1,16 @@
+from api import models as models_api
+
+from api_textual import models as models_text
+
 from django.conf.urls import url
 from django.contrib.admin import AdminSite
-
-from api import models as models_api
-from api_textual import models as models_text
 
 from .models import (
     BaseAdminModel,
     BaseInlineAdminModel,
     BaseTextAdminModel,
-    FoodAdminMixin,
     DEFAULT_READONLY,
+    FoodAdminMixin,
 )
 
 from .stats_views import food, index, workshops

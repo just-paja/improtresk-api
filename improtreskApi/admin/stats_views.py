@@ -1,6 +1,6 @@
-from django.shortcuts import render
-
 from api.models import Food, Soup, Year
+
+from django.shortcuts import render
 
 
 def index(request):
