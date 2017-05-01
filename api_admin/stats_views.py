@@ -38,6 +38,34 @@ def update_food(mixed_food):
         )
 
 
+def update_meal(meal):
+    meal.unpicked_paid_reservations = (
+        meal
+        .get_reservations_query()
+        .filter(
+            order__paid=True,
+            order__confirmed=True,
+            order__canceled=False,
+        )
+    )
+
+    meal.unpicked_unpaid_reservations = (
+        meal
+        .get_reservations_query()
+        .filter(
+            order__paid=False,
+            order__confirmed=True,
+            order__canceled=False,
+        )
+    )
+    meal.unpicked_paid_reservations_count = (
+        meal.unpicked_paid_reservations.count()
+    )
+    meal.unpicked_unpaid_reservations_count = (
+        meal.unpicked_unpaid_reservations.count()
+    )
+
+
 def food(request, festivalId):
     festival = Year.objects.get(pk=festivalId)
     meals = festival.meals.all()
@@ -46,11 +74,11 @@ def food(request, festivalId):
     for meal in meals:
         soups = Soup.objects.filter(meal=meal.id).all()
         foods = Food.objects.filter(meal=meal.id).all()
-        print(foods)
 
         order += soups
         order += foods
 
+        update_meal(meal)
         update_food(soups)
         update_food(foods)
 

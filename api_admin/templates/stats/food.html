@@ -19,6 +19,7 @@
   <div class="app-stasts module">
     <h1>Food {{ festival.year }}</h1>
 
+    <h2>Picked</h2>
     <table>
       <thead>
         <tr>
@@ -39,6 +40,62 @@
         {% endfor %}
       </tbody>
     </table>
+
+    <hr />
+
+    <div>
+      <h2>Paid Unpicked</h2>
+      {% for meal in meals %}
+      {% if meal.unpicked_paid_reservations_count > 0 %}
+      <h3>{{meal.name}} {{meal.date}} ({{meal.unpicked_paid_reservations_count}})</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Participant</th>
+            <th>Soup</th>
+            <th>Food</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for reservation in meal.unpicked_paid_reservations %}
+            <tr>
+              <td>{{ reservation.participant }}</td>
+              <td>{{ reservation.soup }}</td>
+              <td>{{ reservation.food }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    <div>
+      <h2>Unpaid Unpicked</h2>
+      {% for meal in meals %}
+      {% if meal.unpicked_unpaid_reservations_count > 0 %}
+      <h3>{{meal.name}} {{meal.date}} ({{meal.unpicked_unpaid_reservations_count}})</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Participant</th>
+            <th>Soup</th>
+            <th>Food</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for reservation in meal.unpicked_unpaid_reservations %}
+            <tr>
+              <td>{{ reservation.participant }}</td>
+              <td>{{ reservation.soup }}</td>
+              <td>{{ reservation.food }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+      {% endfor %}
+    </div>
   </div>
 </div>
 {% endblock %}
