@@ -52,6 +52,7 @@
         <thead>
           <tr>
             <th>Participant</th>
+            <th>E-mail</th>
             <th>Soup</th>
             <th>Food</th>
           </tr>
@@ -60,8 +61,9 @@
           {% for reservation in meal.unpicked_paid_reservations %}
             <tr>
               <td>{{ reservation.participant }}</td>
-              <td>{{ reservation.soup }}</td>
-              <td>{{ reservation.food }}</td>
+              <td>{{ reservation.participant.email }}</td>
+              <td>{{ reservation.meal_reservation.soup|default:"-" }}</td>
+              <td>{{ reservation.meal_reservation.food|default:"-" }}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -79,6 +81,7 @@
         <thead>
           <tr>
             <th>Participant</th>
+            <th>E-mail</th>
             <th>Soup</th>
             <th>Food</th>
           </tr>
@@ -87,8 +90,9 @@
           {% for reservation in meal.unpicked_unpaid_reservations %}
             <tr>
               <td>{{ reservation.participant }}</td>
-              <td>{{ reservation.soup }}</td>
-              <td>{{ reservation.food }}</td>
+              <td>{{ reservation.participant.email }}</td>
+              <td>{{ reservation.meal_reservation.soup|default:"-" }}</td>
+              <td>{{ reservation.meal_reservation.food|default:"-" }}</td>
             </tr>
           {% endfor %}
         </tbody>
