@@ -80,7 +80,9 @@ class Reservation(Base):
             self.ends_at = timezone.now() + settings.RESERVATION_DURATION_SHORT
 
         super().save(*args, **kwargs)
+        self.update_price()
 
+    def update_price(self):
         price = self.price()
         if self.order and self.order.price != price:
             self.order.price = price

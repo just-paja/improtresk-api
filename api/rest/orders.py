@@ -71,10 +71,10 @@ class CreateOrderSerializer(serializers.Serializer):
                 meal=meal,
                 reservation=reservation,
             )
+        reservation.update_price()
         return order
 
     def update(self, instance, validated_data):
-        print("%s" % validated_data)
         return super().update()
 
 
