@@ -1,8 +1,28 @@
-from api.rest import accomodations, capacity, lector_roles, lectors, meals,\
-    orders,\
-    participants, payments, rules, schedule, teams, workshop_difficulties,\
-    workshops, years
-from api_textual.rest import news, performers, polls, texts, workshop_locations
+from api.rest import (
+    accomodations,
+    capacity,
+    lector_roles,
+    lectors,
+    meals,
+    orders,
+    participants,
+    payments,
+    rules,
+    schedule,
+    teams,
+    workshop_difficulties,
+    workshops,
+    years,
+)
+
+from api_textual.rest import (
+    news,
+    performers,
+    polls,
+    texts,
+    traveling_tips,
+    workshop_locations,
+)
 
 from rest_framework import routers
 
@@ -29,6 +49,7 @@ router\
         parents_query_lookups=['answer__poll'],
     )
 router.register(r'teams', teams.TeamsViewSet)
+router.register(r'traveling-tips', traveling_tips.TravelingTipViewSet)
 router.register(r'texts', texts.TextViewSet)
 router.register(r'user', participants.WhoAmIViewSet)
 router.register(
