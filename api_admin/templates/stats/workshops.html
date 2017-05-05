@@ -1,28 +1,15 @@
-{% extends "admin/base_site.html" %}
-{% load i18n static %}
-
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />{% endblock %}
-
-{% block coltype %}colMS{% endblock %}
-
-{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
-
-{% block breadcrumbs %}
-<div class="breadcrumbs">
-  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-  &rsaquo; Stats
-</div>
-{% endblock %}
+{% extends "stats/bootstrap.html" %}
 
 {% block content %}
-<div id="content-main">
-  <h1>Workshops {{ festival.year }}</h1>
+<div class="container">
   {% for workshop in workshops %}
-  <div class="app-stasts module">
-    <h2>{{workshop.name}} ({{workshop.participant_count}})</h2>
-    <ul>
+  <div class="card" style="page-break-after: always">
+    <div class="card-block">
+      <h2 class="card-title">{{workshop.name}} ({{workshop.participant_count}})</h2>
+    </div>
+    <ul class="list-group list-group-flush">
       {% for participant in workshop.participant_list %}
-      <li>
+      <li class="list-group-item">
           {{ participant.name }}
       </li>
       {% endfor %}
