@@ -162,11 +162,15 @@ def accounting(request, festivalId):
     data = []
 
     for participant in participants:
-        data.append({
-            'name': participant.name,
-            'email': participant.email,
-            'address': participant.address,
-        })
+        order = get_participant_order(participant)
+
+        if order:
+            data.append({
+                'name': participant.name,
+                'email': participant.email,
+                'address': participant.address,
+                'cash_expected': order.price,
+            })
 
     return render(
         request,
@@ -215,7 +219,7 @@ def participant_list(request, festivalId):
                 'workshop': participant.assigned_workshop.name,
                 'accomodation': accomodation.name,
                 'meals': meal_reservations,
-                'cash_expected': reservation.price,
+                'cash_expected': order.price,
                 'cash_received': payment_sum,
             })
 
