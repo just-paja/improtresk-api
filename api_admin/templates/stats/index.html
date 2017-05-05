@@ -29,6 +29,11 @@
         </tr>
         <tr class="model-festival">
           <th scope="row">
+            <a href="{% url 'admin:stats-food-per-location' festivalId=festival.id%}">Dovoz jídla</a>
+          </th>
+        </tr>
+        <tr class="model-festival">
+          <th scope="row">
             <a href="{% url 'admin:stats-workshops' festivalId=festival.id%}">Workshopy</a>
           </th>
         </tr>
