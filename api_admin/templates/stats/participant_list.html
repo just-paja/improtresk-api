@@ -1,43 +1,39 @@
+{% extends 'stats/bootstrap.html' %}
 {% load mathfilters %}
+
+{% block content %}
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-</head>
-<body>
-  <h1>Improtřesk 2017 - přehled účastníků</h1>
+<h1>Improtřesk 2017 - přehled účastníků</h1>
 
-  <hr />
+<hr />
 
-  <div class="card-group">
-    {% for participant in data %}
-      <div class="card" style="page-break-inside: avoid">
-        <div class="card-block">
-          <h2 class="card-title">{{ participant.name }}</h2>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><b>Workshop:&nbsp;</b> {{ participant.workshop }}</li>
-          <li class="list-group-item"><b>Ubytování:&nbsp;</b> {{ participant.accomodation }}</li>
-          <li class="list-group-item"><b>Má dáti:&nbsp;</b> {{ participant.cash_expected }} Kč</li>
-          <li class="list-group-item"><b>Dal:&nbsp;</b> {{ participant.cash_received }} Kč</li>
-          {% if participant.cash_received > participant.expected %}
-            <li class="list-group-item"><b style="color: red">Přeplatek:&nbsp;</b> {{ participant.cash_received|sub:participant.cash_expected }} Kč</li>
-          {% endif %}
-          {% if participant.cash_expected > participant.expected %}
-            <li class="list-group-item"><b style="color: red">Přeplatek:&nbsp;</b> {{ participant.cash_expected|sub:participant.cash_received }} Kč</li>
-          {% endif %}
-        </ul>
-        {% for meal in participant.meals %}
-        <div class="card-block">
-          <p class="card-text"><strong>Jídlo {{meal.meal.date}}</strong></p>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><b>Polévka:&nbsp;</b> {{meal.soup|default:'Výchozí'}}</li>
-          <li class="list-group-item"><b>Hlavní chod:&nbsp;</b> {{meal.food}}</li>
-        </ul>
-        {% endfor %}
-      </div>
+<div class="card-group">
+{% for participant in data %}
+  <div class="card" style="page-break-inside: avoid">
+    <div class="card-block">
+      <h2 class="card-title">{{ participant.name }}</h2>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><b>Workshop:&nbsp;</b> {{ participant.workshop }}</li>
+      <li class="list-group-item"><b>Ubytování:&nbsp;</b> {{ participant.accomodation }}</li>
+      <li class="list-group-item"><b>Má dáti:&nbsp;</b> {{ participant.cash_expected }} Kč</li>
+      <li class="list-group-item"><b>Dal:&nbsp;</b> {{ participant.cash_received }} Kč</li>
+      {% if participant.cash_received > participant.expected %}
+        <li class="list-group-item"><b style="color: red">Přeplatek:&nbsp;</b> {{ participant.cash_received|sub:participant.cash_expected }} Kč</li>
+      {% endif %}
+      {% if participant.cash_expected > participant.expected %}
+        <li class="list-group-item"><b style="color: red">Přeplatek:&nbsp;</b> {{ participant.cash_expected|sub:participant.cash_received }} Kč</li>
+      {% endif %}
+    </ul>
+    {% for meal in participant.meals %}
+    <div class="card-block">
+      <p class="card-text"><strong>Jídlo {{meal.meal.date}}</strong></p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><b>Polévka:&nbsp;</b> {{meal.soup|default:'Výchozí'}}</li>
+      <li class="list-group-item"><b>Hlavní chod:&nbsp;</b> {{meal.food}}</li>
+    </ul>
     {% endfor %}
   </div>
-</body>
+{% endfor %}
+{% endblock %}

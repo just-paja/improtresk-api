@@ -1,38 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-  <style type="text/css">
-    th {
-      text-align: left;
-    }
-  </style>
-</head>
-<body>
-  <h1>Improtřesk 2017 - přehled příspěvků</h1>
-  <p>5. května 2017 v Milevsku</p>
+{% extends 'stats/bootstrap.html' %}
 
-  <table class="table" style="width: 100%">
-    <thead>
+{% block content %}
+<h1>Improtřesk 2017 - přehled příspěvků</h1>
+<p>5. května 2017 v Milevsku</p>
+
+<table class="table" style="width: 100%">
+  <thead>
+    <tr>
+      <th style="width: auto">Jméno</th>
+      <th>E-mail</th>
+      <th>Bydliště</th>
+      <th>Příspěvek</th>
+      <th style="min-width: 30pt">Podpis</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for participant in data %}
       <tr>
-        <th style="width: auto">Jméno</th>
-        <th>E-mail</th>
-        <th>Bydliště</th>
-        <th>Příspěvek</th>
-        <th style="min-width: 30pt">Podpis</th>
+        <td>{{ participant.name }}</td>
+        <td>{{ participant.email }}</td>
+        <td>{{ participant.address }}</td>
+        <td>{{ participant.cash_expected }} Kč</td>
+        <td></td>
       </tr>
-    </thead>
-    <tbody>
-      {% for participant in data %}
-        <tr>
-          <td>{{ participant.name }}</td>
-          <td>{{ participant.email }}</td>
-          <td>{{ participant.address }}</td>
-          <td>{{ participant.cash_expected }} Kč</td>
-          <td></td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</body>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
