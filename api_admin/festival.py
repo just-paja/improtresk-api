@@ -13,7 +13,13 @@ from .models import (
     FoodAdminMixin,
 )
 
-from .stats_views import accounting, food, index, workshops
+from .stats_views import (
+    accounting,
+    food,
+    index,
+    participant_list,
+    workshops,
+)
 
 
 class FestivalAdminSite(AdminSite):
@@ -36,6 +42,11 @@ class FestivalAdminSite(AdminSite):
                     r'^stats/(?P<festivalId>[0-9]+)/accounting$',
                     accounting,
                     name='stats-accounting',
+                ),
+                url(
+                    r'^stats/(?P<festivalId>[0-9]+)/participants$',
+                    participant_list,
+                    name='stats-participants',
                 ),
             ]
         )

@@ -1,7 +1,14 @@
-from api.models import Food, Participant, Soup, Year
+from api.models import (
+    Food,
+    Order,
+    Participant,
+    Reservation,
+    Soup,
+    Year,
+)
 
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -151,7 +158,6 @@ def workshops(request, festivalId):
 
 @staff_member_required
 def accounting(request, festivalId):
-    festival = Year.objects.get(pk=festivalId)
     participants = Participant.objects.filter(assigned_workshop__isnull=False).all()
     data = []
 
@@ -165,6 +171,57 @@ def accounting(request, festivalId):
     return render(
         request,
         'stats/accounting.html',
+        {
+            'data': data,
+        },
+    )
+
+
+def get_participant_order(participant):
+    return Order.objects.filter(
+        participant=participant,
+        canceled=False,
+        confirmed=True,
+        paid=True,
+    ).first()
+
+
+def get_participant_reservation(order):
+    if order:
+        return Reservation.objects.filter(
+            order=order,
+        ).first()
+    return None
+
+
+@staff_member_required
+def participant_list(request, festivalId):
+    participants = Participant.objects.filter(assigned_workshop__isnull=False).all()
+    data = []
+
+    for participant in participants:
+        order = get_participant_order(participant)
+        reservation = get_participant_reservation(order)
+        payment_sum = 0
+        if order.payments.count() > 0:
+            payment_sum = order.payments.aggregate(paid=Sum('amount')).get('paid')
+        if order and reservation:
+            accomodation = reservation.accomodation
+            meal_reservations = reservation.mealreservation_set.all()
+
+            data.append({
+                'name': participant.name,
+                'email': participant.email,
+                'workshop': participant.assigned_workshop.name,
+                'accomodation': accomodation.name,
+                'meals': meal_reservations,
+                'cash_expected': reservation.price,
+                'cash_received': payment_sum,
+            })
+
+    return render(
+        request,
+        'stats/participant_list.html',
         {
             'data': data,
         },

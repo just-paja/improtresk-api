@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'storages',
     'django_markdown',
     'dbbackup',
+    'mathfilters',
     'api',
     'api_textual',
     'api_admin',
