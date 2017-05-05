@@ -1,10 +1,12 @@
-from api.models import Food, Soup, Year
+from api.models import Food, Participant, Soup, Year
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q
 from django.shortcuts import render
 from django.utils import timezone
 
 
+@staff_member_required
 def index(request):
     festivals = Year.objects.all()
     return render(
@@ -100,6 +102,7 @@ def update_meal(meal):
     ]
 
 
+@staff_member_required
 def food(request, festivalId):
     festival = Year.objects.get(pk=festivalId)
     meals = festival.meals.all()
@@ -127,6 +130,7 @@ def food(request, festivalId):
     )
 
 
+@staff_member_required
 def workshops(request, festivalId):
     festival = Year.objects.get(pk=festivalId)
     workshops = festival.get_workshops()
@@ -141,5 +145,27 @@ def workshops(request, festivalId):
         {
             'festival': festival,
             'workshops': workshops,
+        },
+    )
+
+
+@staff_member_required
+def accounting(request, festivalId):
+    festival = Year.objects.get(pk=festivalId)
+    participants = Participant.objects.filter(assigned_workshop__isnull=False).all()
+    data = []
+
+    for participant in participants:
+        data.append({
+            'name': participant.name,
+            'email': participant.email,
+            'address': participant.address,
+        })
+
+    return render(
+        request,
+        'stats/accounting.html',
+        {
+            'data': data,
         },
     )
