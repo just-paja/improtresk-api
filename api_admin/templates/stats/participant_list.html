@@ -12,7 +12,7 @@
 
   <div class="card-group">
     {% for participant in data %}
-      <div class="card">
+      <div class="card" style="page-break-inside: avoid">
         <div class="card-block">
           <h2 class="card-title">{{ participant.name }}</h2>
         </div>
@@ -30,7 +30,7 @@
         </ul>
         {% for meal in participant.meals %}
         <div class="card-block">
-          <h3 class="card-text">Jídlo {{meal.meal.date}}</h3>
+          <p class="card-text"><strong>Jídlo {{meal.meal.date}}</strong></p>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><b>Polévka:&nbsp;</b> {{meal.soup|default:'Výchozí'}}</li>

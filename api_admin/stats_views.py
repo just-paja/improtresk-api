@@ -158,7 +158,10 @@ def workshops(request, festivalId):
 
 @staff_member_required
 def accounting(request, festivalId):
-    participants = Participant.objects.filter(assigned_workshop__isnull=False).all()
+    participants = Participant.objects\
+        .filter(assigned_workshop__isnull=False)\
+        .order_by('name')\
+        .all()
     data = []
 
     for participant in participants:
@@ -200,7 +203,10 @@ def get_participant_reservation(order):
 
 @staff_member_required
 def participant_list(request, festivalId):
-    participants = Participant.objects.filter(assigned_workshop__isnull=False).all()
+    participants = Participant.objects\
+        .filter(assigned_workshop__isnull=False)\
+        .order_by('name')\
+        .all()
     data = []
 
     for participant in participants:
