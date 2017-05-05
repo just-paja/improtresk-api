@@ -160,13 +160,16 @@ def food_per_location(request, festivalId):
         delivery.append(meal)
 
         for location in locations:
-            meal.delivery.append(location)
-            location.delivery = []
+            loc = {
+                'name': location.name,
+                'delivery': [],
+            }
+            meal.delivery.append(loc)
             soups = Soup.objects.filter(meal=meal.id).all()
             foods = Food.objects.filter(meal=meal.id).all()
 
-            location.delivery += load_food_counts(soups, location)
-            location.delivery += load_food_counts(foods, location, True)
+            loc['delivery'] += load_food_counts(soups, location)
+            loc['delivery'] += load_food_counts(foods, location, True)
 
     return render(
         request,
