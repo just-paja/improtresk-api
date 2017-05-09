@@ -165,11 +165,6 @@ STATIC_URL = '/static/'
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-NOSE_ARGS = [
-    '--with-coverage',
-    '--cover-package=api,api_textual',
-]
-
 EMAIL_SENDER = 'info@improtresk.cz'
 EMAIL_TECH = 'tech@improliga.cz'
 

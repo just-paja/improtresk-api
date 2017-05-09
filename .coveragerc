@@ -1,0 +1,22 @@
+[run]
+branch = True
+source =
+  api
+  api_admin
+  api_textual
+omit =
+  */migrations/*.py
+  */tests/*.py
+  vendor/*
+  vendor
+
+[paths]
+source =
+  api
+  api_admin
+  api_textual
+
+[report]
+omit =
+  */migrations/*.py
+  */tests/*.py
