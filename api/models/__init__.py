@@ -2,6 +2,7 @@
 
 from .accomodation import Accomodation
 from .accomodationPhoto import AccomodationPhoto
+from .festival import Festival
 from .food import Food, Soup
 from .foodPhoto import FoodPhoto
 from .lector import Lector
@@ -28,6 +29,7 @@ from .year import Year
 __all__ = (
     Accomodation,
     AccomodationPhoto,
+    Festival,
     Food,
     FoodPhoto,
     Lector,

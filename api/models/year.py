@@ -14,6 +14,13 @@ from ..fields import VISIBILITY_PUBLIC
 class Year(Base):
     """Stores years."""
 
+    festival = models.ForeignKey(
+        'Festival',
+        verbose_name=_('Festival'),
+        related_name='instances',
+        null=True,
+        blank=False,
+    )
     year = models.SlugField(
         verbose_name=_("Year"),
         unique=True,
