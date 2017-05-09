@@ -21,6 +21,8 @@ test:
   pre:
     - pylama
     - flake8
+  override:
+    - DJANGO_SETTINGS_MODULE="improtreskApi.settings" pytest
   post:
     - codeclimate-test-reporter
 
