@@ -1,0 +1,44 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+django = "*"
+django-storages = "*"
+djangorestframework = "*"
+mysqlclient = "*"
+django-auth-ldap = "*"
+pillow = "*"
+django-cors-headers = "*"
+django-oauth-toolkit = "*"
+django-extensions = "*"
+django-markdown-app = "*"
+django-dbbackup = "*"
+drf-extensions = "*"
+
+
+[dev-packages]
+
+codeclimate-test-reporter = "*"
+coverage = "*"
+django-nose = "*"
+"flake8-import-order" = "*"
+"flake8-strict" = "*"
+"flake8-tidy-imports" = "*"
+"flake8" = "*"
+freezegun = "*"
+mock = "*"
+model-mommy = "*"
+nose = "*"
+pyflakes = "*"
+pylama = "*"
+pylint = "*"
+pytest-django = "*"
+pytest-watch = "*"
+pytest = "*"
+python-dateutil = "*"
+pytest-cov = "*"

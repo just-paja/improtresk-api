@@ -2,8 +2,6 @@
 
 import json
 
-from api.rest.orders import OrderViewSet, OrdersFoodViewSet
-
 from dateutil.parser import parse
 
 from django.test import TestCase
@@ -14,6 +12,8 @@ from freezegun import freeze_time
 from model_mommy import mommy
 
 from rest_framework.test import APIRequestFactory, force_authenticate
+
+from api.rest.orders import OrderViewSet, OrdersFoodViewSet
 
 
 class OrdersEndpointTest(TestCase):
