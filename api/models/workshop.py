@@ -33,7 +33,11 @@ class Workshop(CapacityMixin, Base):
         choices=VISIBILITY_CHOICES,
         default=VISIBILITY_PUBLIC,
     )
-    lectors = models.ManyToManyField(Lector, related_name='workshops', through=WorkshopLector)
+    lectors = models.ManyToManyField(
+        Lector,
+        related_name='workshops',
+        through=WorkshopLector
+    )
 
     def get_actual_workshop_price(self, year):
         return self.prices.get(price_level=year.get_actual_price_level())

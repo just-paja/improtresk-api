@@ -1,4 +1,4 @@
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, DatabaseError
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 
@@ -204,7 +204,6 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 
 def save_food_changes(meals, foods, soups):
-    saved = True
     foods = [Food.objects.get(pk=food) for food in foods]
     soups = [Soup.objects.get(pk=soup) for soup in soups]
 
@@ -216,13 +215,7 @@ def save_food_changes(meals, foods, soups):
         for soup in soups:
             if soup.meal.pk == meal_reservation.meal.pk:
                 meal_reservation.soup = soup
-
-        try:
-            meal_reservation.save()
-        except:
-            saved = False
-            break
-    return saved
+        meal_reservation.save()
 
 
 class OrdersFoodViewSet(viewsets.ModelViewSet):
@@ -260,13 +253,13 @@ class OrdersFoodViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_403_FORBIDDEN,
             )
 
-        saved = save_food_changes(
-            reservation.mealreservation_set.all(),
-            request.data.get('foods'),
-            request.data.get('soups'),
-        )
+        try:
+            save_food_changes(
+                reservation.mealreservation_set.all(),
+                request.data.get('foods'),
+                request.data.get('soups'),
+            )
+        except DatabaseError:
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
-        if saved:
-            return response.Response(status=status.HTTP_204_NO_CONTENT)
-
-        return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        return response.Response(status=status.HTTP_204_NO_CONTENT)
