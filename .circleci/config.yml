@@ -56,11 +56,20 @@ jobs:
           command: ./venv/bin/vrun pipenv ./manage.py compilemessages
 
       - run:
+          name: Lock requirements
+          command: ./venv/bin/vrun pipenv lock --requirements > requirements.txt
+
+      - run:
           name: Compile artifacts
           command: ./venv/bin/vrun python setup.py sdist
 
       - store_artifacts:
           path: ./dist
+
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - .
 
   test:
     <<: *defaults

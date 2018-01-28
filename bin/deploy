@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 app="improtresk-api"
-artifact=`find ${CIRCLE_ARTIFACTS} -type f -name "improtresk-api*.tar.gz"`
+artifact=`find dist -type f -name "improtresk-api*.tar.gz"`
 env=${1}
 dest="/tmp/${app}.${env}.tgz"
 
@@ -14,6 +14,6 @@ elif [ "$env" == "production" ]; then
 fi
 
 echo "Uploading data"
-scp ${artifact} www-data@${host}:${dest}
+scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${artifact} www-data@${host}:${dest}
 
-ssh www-data@${host} hosting-install-django --app-host "${hostAs}" --app-env "${env}" --app-name "${app}" --app-src "${dest}"
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null www-data@${host} hosting-install-django --app-host "${hostAs}" --app-env "${env}" --app-name "${app}" --app-src "${dest}"
