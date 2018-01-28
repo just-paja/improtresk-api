@@ -19,6 +19,7 @@ django-extensions = "*"
 django-dbbackup = "*"
 drf-extensions = "*"
 django-mathfilters = "*"
+boto = "*"
 
 
 [dev-packages]
