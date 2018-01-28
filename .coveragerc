@@ -1,0 +1,10 @@
+[run]
+branch = True
+source =
+  api
+  api_admin
+  api_textual
+omit =
+  */migrations/*.py
+  */tests/*.py
+  venv/*

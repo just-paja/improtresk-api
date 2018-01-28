@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'oauth2_provider',
     'rest_framework',
-    'django_nose',
     'django_extensions',
     'storages',
     'dbbackup',
@@ -161,13 +160,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-NOSE_ARGS = [
-    '--with-coverage',
-    '--cover-package=api,api_textual',
-]
 
 EMAIL_SENDER = 'info@improtresk.cz'
 EMAIL_TECH = 'tech@improliga.cz'

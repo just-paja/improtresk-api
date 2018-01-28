@@ -78,12 +78,6 @@ jobs:
           at: *workspace_root
 
       - run:
-          command: |
-            ls -l
-            ls -l venv
-            ls -l venv/bin
-
-      - run:
           name: Static code analysis
           command: ./venv/bin/vrun pipenv run pylama
 
