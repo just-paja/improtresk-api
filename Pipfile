@@ -16,15 +16,15 @@ pillow = "*"
 django-cors-headers = "*"
 django-oauth-toolkit = "*"
 django-extensions = "*"
-django-markdown-app = "*"
 django-dbbackup = "*"
 drf-extensions = "*"
+django-mathfilters = "*"
 
 
 [dev-packages]
 
 codeclimate-test-reporter = "*"
-coverage = "*"
+coverage = "==4.3.4"
 django-nose = "*"
 "flake8-import-order" = "*"
 "flake8-strict" = "*"

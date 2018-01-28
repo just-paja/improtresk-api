@@ -19,10 +19,12 @@ class PollAnswer(Base):
         related_name='polls',
         blank=True,
         null=True,
+        on_delete=models.CASCADE,
     )
     poll = models.ForeignKey(
         'Poll',
         related_name='answers',
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):

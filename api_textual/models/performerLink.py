@@ -23,7 +23,11 @@ SERVICE_CHOICES = (
 class PerformerLink(Base):
     """Stores Performer Links."""
 
-    performer = models.ForeignKey('Performer', related_name='links')
+    performer = models.ForeignKey(
+        'Performer',
+        related_name='links',
+        on_delete=models.CASCADE,
+    )
 
     name = models.CharField(
         help_text=_("eg. Fish and chips"),

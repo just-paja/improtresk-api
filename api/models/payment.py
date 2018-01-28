@@ -102,6 +102,7 @@ class Payment(Base):
         verbose_name=_("Order"),
         help_text=_("Which order is this payment related to?"),
         related_name='payments',
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):

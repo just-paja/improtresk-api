@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 import django.db.models.deletion
-import django_markdown.models
 
 
 class Migration(migrations.Migration):
@@ -23,7 +22,7 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=127, verbose_name='Name')),
                 ('slug', models.SlugField(verbose_name='Identifier in URL')),
-                ('text', django_markdown.models.MarkdownField(verbose_name='Text')),
+                ('text', models.TextField(verbose_name='Text')),
                 ('visibility', models.PositiveIntegerField(choices=[(1, 'Private'), (2, 'Public'), (3, 'Deleted')], default=2)),
                 ('year', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='performers', to='api.Year', verbose_name='Year')),
             ],

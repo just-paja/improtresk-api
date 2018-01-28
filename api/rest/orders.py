@@ -1,5 +1,6 @@
-from django.core.exceptions import ObjectDoesNotExist, DatabaseError
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Sum
+from django.db.utils import DatabaseError
 from django.shortcuts import get_object_or_404
 
 from rest_framework import permissions, response, serializers, status, viewsets

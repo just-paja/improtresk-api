@@ -14,4 +14,5 @@ class TextPhoto(Photo):
         Text,
         verbose_name=_("Text"),
         related_name='photos',
+        on_delete=models.CASCADE,
     )

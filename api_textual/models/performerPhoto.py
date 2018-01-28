@@ -14,4 +14,5 @@ class PerformerPhoto(Photo):
         Performer,
         verbose_name=_("Performer"),
         related_name='photos',
+        on_delete=models.CASCADE,
     )

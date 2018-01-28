@@ -14,4 +14,5 @@ class TravelingTipPhoto(Photo):
         TravelingTip,
         verbose_name=_("Traveling tip"),
         related_name='photos',
+        on_delete=models.CASCADE,
     )

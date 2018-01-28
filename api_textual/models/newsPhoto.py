@@ -14,4 +14,5 @@ class NewsPhoto(Photo):
         News,
         verbose_name=_("News"),
         related_name='photos',
+        on_delete=models.CASCADE,
     )

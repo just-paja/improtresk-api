@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     'django_nose',
     'django_extensions',
     'storages',
-    'django_markdown',
     'dbbackup',
     'mathfilters',
     'api',

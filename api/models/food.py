@@ -25,6 +25,7 @@ class AbstractFood(CapacityMixin, Base):
     meal = models.ForeignKey(
         Meal,
         verbose_name=_("Meal"),
+        on_delete=models.CASCADE,
     )
     visibility = models.PositiveIntegerField(
         choices=VISIBILITY_CHOICES,

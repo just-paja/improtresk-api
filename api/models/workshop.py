@@ -24,10 +24,12 @@ class Workshop(CapacityMixin, Base):
     difficulty = models.ForeignKey(
         WorkshopDifficulty,
         verbose_name=_("Difficulty"),
+        on_delete=models.PROTECT,
     )
     location = models.ForeignKey(
         WorkshopLocation,
         verbose_name=_("Location"),
+        on_delete=models.PROTECT,
     )
     visibility = models.PositiveIntegerField(
         choices=VISIBILITY_CHOICES,

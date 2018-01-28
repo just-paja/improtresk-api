@@ -4,8 +4,6 @@ from django.http import HttpResponseForbidden
 
 from rest_framework import mixins, serializers, viewsets
 
-from rest_framework_extensions.mixins import NestedViewSetMixin
-
 from .performers import PerformerSerializer
 from .. import models
 
@@ -90,7 +88,6 @@ class PollViewSet(viewsets.ReadOnlyModelViewSet):
 class PollVoteViewSet(
     mixins.CreateModelMixin,
     viewsets.GenericViewSet,
-    NestedViewSetMixin,
 ):
     queryset = models.PollVote.objects
     serializer_class = PollVoteSerializer

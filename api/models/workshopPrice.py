@@ -14,6 +14,7 @@ class WorkshopPrice(Base):
         PriceLevel,
         verbose_name=_("Price level"),
         related_name="workshop_prices",
+        on_delete=models.PROTECT,
     )
     price = models.PositiveIntegerField(
         verbose_name=_("Price in CZK"),
@@ -22,6 +23,7 @@ class WorkshopPrice(Base):
         Workshop,
         verbose_name=_("Workshop"),
         related_name="prices",
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):

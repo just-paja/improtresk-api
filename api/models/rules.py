@@ -13,6 +13,7 @@ class Rules(Base):
         Year,
         verbose_name=_("Year"),
         related_name='rules',
+        on_delete=models.CASCADE,
     )
     text = models.TextField(
         verbose_name=_("Rules, terms and conditions"),

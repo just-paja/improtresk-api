@@ -23,7 +23,6 @@ from .rest_router import router
 
 urlpatterns = [
     url(r'^admin/', festival_site.urls),
-    url('^markdown/', include('django_markdown.urls')),
     url(r'^api/', include(router.urls)),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]

@@ -8,4 +8,8 @@ from .photo import Photo
 class AccomodationPhoto(Photo):
     """Stores accomodation photos."""
 
-    accomodation = models.ForeignKey(Accomodation, related_name='photos')
+    accomodation = models.ForeignKey(
+        Accomodation,
+        related_name='photos',
+        on_delete=models.CASCADE,
+    )

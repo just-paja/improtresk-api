@@ -29,6 +29,7 @@ class Participant(Base, auth.models.User):
         verbose_name=_("Team"),
         blank=True,
         null=True,
+        on_delete=models.PROTECT,
     )
     phone = models.CharField(max_length=255)
     birthday = models.DateField(
@@ -43,7 +44,13 @@ class Participant(Base, auth.models.User):
         ),
     )
     newsletter = models.BooleanField(default=False)
-    assigned_workshop = models.ForeignKey(Workshop, blank=True, null=True)
+    assigned_workshop = models.ForeignKey(
+        Workshop,
+        blank=True,
+        null=True,
+        on_delete=models.PROTECT,
+    )
+
     is_staff = False
 
     def __str__(self):
