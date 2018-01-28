@@ -13,11 +13,13 @@ class Reservation(Base):
     workshop_price = models.ForeignKey(
         'WorkshopPrice',
         verbose_name=_("Workshop price"),
+        on_delete=models.PROTECT,
     )
     order = models.OneToOneField(
         'Order',
         verbose_name=_("Order"),
         related_name="reservation",
+        on_delete=models.CASCADE,
     )
     foods = models.ManyToManyField(
         'Food',
@@ -32,6 +34,7 @@ class Reservation(Base):
     accomodation = models.ForeignKey(
         'Accomodation',
         verbose_name=_("Accomodation"),
+        on_delete=models.PROTECT,
     )
     ends_at = models.DateTimeField(
         verbose_name=_("Reservation is valid until"),

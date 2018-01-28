@@ -26,6 +26,7 @@ class ParticipantToken(Base):
         'Participant',
         verbose_name=_('Participant'),
         related_name='tokens',
+        on_delete=models.CASCADE,
     )
     token = models.CharField(
         max_length=255,

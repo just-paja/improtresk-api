@@ -33,7 +33,11 @@ def generate_symvar():
 class Order(Base):
     """Stores orders types."""
 
-    participant = models.ForeignKey(Participant, related_name="orders")
+    participant = models.ForeignKey(
+        Participant,
+        related_name="orders",
+        on_delete=models.CASCADE,
+    )
     symvar = models.CharField(
         verbose_name=_("Variable symbol"),
         max_length=63,

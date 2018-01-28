@@ -17,20 +17,24 @@ class MealReservation(Base):
         verbose_name=_("Food"),
         null=True,
         blank=True,
+        on_delete=models.PROTECT,
     )
     soup = models.ForeignKey(
         'Soup',
         verbose_name=_("Soup"),
         null=True,
         blank=True,
+        on_delete=models.PROTECT,
     )
     meal = models.ForeignKey(
         'Meal',
         verbose_name=_("Meal"),
+        on_delete=models.PROTECT,
     )
     reservation = models.ForeignKey(
         'Reservation',
         verbose_name=_("Reservation"),
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):

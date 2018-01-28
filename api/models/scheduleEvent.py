@@ -14,6 +14,7 @@ class ScheduleEvent(Base):
         Year,
         verbose_name=_("Year"),
         related_name="events",
+        on_delete=models.PROTECT,
     )
     name = models.CharField(
         verbose_name=_("Name"),
@@ -36,6 +37,7 @@ class ScheduleEvent(Base):
         related_name='events',
         blank=True,
         null=True,
+        on_delete=models.PROTECT,
     )
 
     def __str__(self):

@@ -14,4 +14,5 @@ class WorkshopLocationPhoto(Photo):
         WorkshopLocation,
         verbose_name=_("Workshop Location"),
         related_name='photos',
+        on_delete=models.CASCADE,
     )

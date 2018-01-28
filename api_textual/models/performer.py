@@ -18,6 +18,7 @@ class Performer(AbstractText):
         'api.Year',
         verbose_name=_('Year'),
         related_name='performers',
+        on_delete=models.CASCADE,
     )
     visibility = models.PositiveIntegerField(
         default=VISIBILITY_PUBLIC,

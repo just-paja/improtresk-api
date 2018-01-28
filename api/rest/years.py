@@ -5,7 +5,7 @@ from ..models import PriceLevel, Year
 
 
 class PriceLevelSerializer(serializers.ModelSerializer):
-    takesEffectOn = serializers.DateTimeField(source='takes_effect_on')
+    takesEffectOn = serializers.DateField(source='takes_effect_on')
 
     class Meta:
         model = PriceLevel
@@ -18,11 +18,11 @@ class PriceLevelSerializer(serializers.ModelSerializer):
 
 
 class YearSerializer(serializers.HyperlinkedModelSerializer):
-    startDate = serializers.DateField(source='start_date')
     endDate = serializers.DateField(source='end_date')
-    startSignupsAt = serializers.DateTimeField(source='start_date_of_signups')
     endFoodPickingAt = serializers.DateTimeField(source='end_food_picking_at')
     priceLevels = PriceLevelSerializer(source='price_levels', many=True)
+    startDate = serializers.DateField(source='start_date')
+    startSignupsAt = serializers.DateTimeField(source='start_date_of_signups')
 
     class Meta:
         model = Year
@@ -40,8 +40,10 @@ class YearSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class YearDetailSerializer(serializers.HyperlinkedModelSerializer):
-    startDate = serializers.DateField(source='start_date')
     endDate = serializers.DateField(source='end_date')
+    endFoodPickingAt = serializers.DateTimeField(source='end_food_picking_at')
+    startDate = serializers.DateField(source='start_date')
+    startSignupsAt = serializers.DateTimeField(source='start_date_of_signups')
     workshops = serializers.SerializerMethodField()
 
     class Meta:

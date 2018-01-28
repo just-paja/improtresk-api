@@ -8,8 +8,6 @@ from rest_framework import mixins, permissions, serializers, status, viewsets
 
 from rest_framework.response import Response
 
-from rest_framework_extensions.mixins import NestedViewSetMixin
-
 from ..models import Participant
 from ..models.participantToken import PASSWORD_RESET
 
@@ -99,7 +97,7 @@ class ParticipantPasswordSerializer(serializers.ModelSerializer):
         return instance
 
 
-class ParticipantViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
+class ParticipantViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Participant.objects.all()
     serializer_class = ParticipantSerializer
     permission_classes = [permissions.IsAdminUser]
@@ -110,7 +108,7 @@ class RegistrationViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = ParticipantSerializer
 
 
-class WhoAmIViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
+class WhoAmIViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Participant.objects
     serializer_class = ParticipantSerializer
     permission_classes = [permissions.IsAuthenticated]

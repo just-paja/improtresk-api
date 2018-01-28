@@ -17,14 +17,17 @@ class WorkshopLector(Base):
     lector = models.ForeignKey(
         Lector,
         verbose_name=_("Lector"),
+        on_delete=models.PROTECT,
     )
     workshop = models.ForeignKey(
         'Workshop',
         verbose_name=_("Workshop"),
+        on_delete=models.CASCADE,
     )
     role = models.ForeignKey(
         LectorRole,
         verbose_name=_("Lector role"),
+        on_delete=models.PROTECT,
     )
 
     def __str__(self):

@@ -36,7 +36,11 @@ class Meal(CapacityMixin, Base):
         choices=VISIBILITY_CHOICES,
         default=VISIBILITY_PUBLIC,
     )
-    year = models.ForeignKey(Year, related_name="meals")
+    year = models.ForeignKey(
+        Year,
+        related_name="meals",
+        on_delete=models.CASCADE,
+    )
 
     def get_reservations_query(self):
         """

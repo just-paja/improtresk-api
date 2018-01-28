@@ -4,8 +4,6 @@ from api.models.base import Base
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from django_markdown.models import MarkdownField
-
 
 class AbstractText(Base):
     """Stores text types."""
@@ -17,7 +15,7 @@ class AbstractText(Base):
     slug = models.SlugField(
         verbose_name=_("Identifier in URL"),
     )
-    text = MarkdownField(
+    text = models.TextField(
         verbose_name=_("Text"),
     )
 

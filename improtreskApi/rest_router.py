@@ -26,28 +26,25 @@ from api_textual.rest import (
 
 from rest_framework import routers
 
-from rest_framework_extensions.routers import NestedRouterMixin
 
-
-class NestedDefaultRouter(NestedRouterMixin, routers.DefaultRouter):
+class DefaultRouter(routers.DefaultRouter):
     pass
 
 
-router = NestedDefaultRouter()
+router = DefaultRouter()
 router.register(r'lectorRoles', lector_roles.LectorRoleViewSet)
 router.register(r'lectors', lectors.LectorViewSet)
 router.register(r'news', news.NewsViewSet)
 router.register(r'orders', orders.OrderViewSet)
 router.register(r'ordersFood', orders.OrdersFoodViewSet)
 router.register(r'payments', payments.PaymentViewSet)
-router\
-    .register(r'polls', polls.PollViewSet)\
-    .register(
-        r'vote',
-        polls.PollVoteViewSet,
-        base_name='poll-vote',
-        parents_query_lookups=['answer__poll'],
-    )
+router.register(r'polls', polls.PollViewSet)
+# .register(
+#     r'vote',
+#     polls.PollVoteViewSet,
+#     base_name='poll-vote',
+#     parents_query_lookups=['answer__poll'],
+# )
 router.register(r'teams', teams.TeamsViewSet)
 router.register(r'traveling-tips', traveling_tips.TravelingTipViewSet)
 router.register(r'texts', texts.TextViewSet)
@@ -72,12 +69,13 @@ router.register(
     r'years/(?P<year>[0-9]{4})/workshops',
     workshops.WorkshopViewSet,
     base_name='workshops',
-).register(
-    r'participants',
-    participants.ParticipantViewSet,
-    base_name='workshops-participants',
-    parents_query_lookups=['assigned_workshop'],
 )
+# .register(
+#     r'participants',
+#     participants.ParticipantViewSet,
+#     base_name='workshops-participants',
+#     parents_query_lookups=['assigned_workshop'],
+# )
 router.register(
     r'years/(?P<year>[0-9]{4})/locations',
     workshop_locations.WorkshopLocationViewSet,

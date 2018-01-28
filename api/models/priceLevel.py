@@ -13,6 +13,7 @@ class PriceLevel(Base):
         Year,
         verbose_name=_("Year"),
         related_name="price_levels",
+        on_delete=models.CASCADE,
     )
     name = models.CharField(
         verbose_name=_("Name"),

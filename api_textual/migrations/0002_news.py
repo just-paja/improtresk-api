@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-import django_markdown.models
 
 
 class Migration(migrations.Migration):
@@ -21,7 +20,7 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=127, verbose_name='Name')),
                 ('slug', models.SlugField(verbose_name='Identifier in URL')),
-                ('text', django_markdown.models.MarkdownField(verbose_name='Text')),
+                ('text', models.TextField(verbose_name='Text')),
             ],
             options={
                 'verbose_name_plural': 'News list',

@@ -8,4 +8,8 @@ from .photo import Photo
 class LectorPhoto(Photo):
     """Stores lector photos."""
 
-    lector = models.ForeignKey(Lector, related_name='photos')
+    lector = models.ForeignKey(
+        Lector,
+        related_name='photos',
+        on_delete=models.CASCADE,
+    )

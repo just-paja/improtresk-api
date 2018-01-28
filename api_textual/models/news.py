@@ -16,4 +16,5 @@ class News(AbstractText):
         'Poll',
         blank=True,
         null=True,
+        on_delete=models.SET_NULL,
     )
