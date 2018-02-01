@@ -12,6 +12,7 @@ from .mealReservation import MealReservation
 from .order import Order
 from .participant import Participant
 from .participantToken import ParticipantToken
+from .participantWorkshop import ParticipantWorkshop
 from .payment import Payment
 from .priceLevel import PriceLevel
 from .reservation import Reservation
@@ -38,6 +39,7 @@ __all__ = (
     Order,
     Participant,
     ParticipantToken,
+    ParticipantWorkshop,
     Payment,
     PriceLevel,
     Reservation,
