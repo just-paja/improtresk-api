@@ -205,9 +205,19 @@ class PaymentAdmin(BaseAdminModel):
         )
 
 
+class ParticipantWorkshopAdmin(BaseInlineAdminModel):
+    """Admin model for Participant workshop assignment."""
+
+    model = models_api.ParticipantWorkshop
+    exclude = [
+        'created_at',
+    ]
+
+
 class ParticipantAdmin(BaseAdminModel):
     """Admin model for Participants."""
 
+    inlines = [ParticipantWorkshopAdmin]
     readonly_fields = [
         'password',
         'last_login',
@@ -220,16 +230,16 @@ class ParticipantAdmin(BaseAdminModel):
         'last_name',
         'is_staff',
         'is_active',
+        'assigned_workshop',
     ]
     list_display = (
         'name',
         'team',
         'email',
-        'assigned_workshop',
         'newsletter',
         'created_at',
     )
-    list_filter = ('team', 'assigned_workshop', 'newsletter')
+    list_filter = ('team', 'newsletter')
 
 
 class MealReservationInlineAdmin(BaseInlineAdminModel):

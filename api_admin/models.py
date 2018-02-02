@@ -14,6 +14,7 @@ class BaseAdminModel(admin.ModelAdmin):
 
 class BaseInlineAdminModel(admin.TabularInline):
     """Base admin for Inline models."""
+    extra = 1
 
     def get_readonly_fields(self, request, obj=None):
         """Define default readonly fields."""

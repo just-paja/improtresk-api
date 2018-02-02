@@ -22,12 +22,13 @@ class ParticipantWorkshop(Base):
 
     def __str__(self):
         """Return name and status as string representation."""
-        return "%s @ %s" % (self.participant.name, self.participant.workshop)
+        return "%s @ %s" % (self.participant.name, self.workshop.name)
 
     def __init__(self, *args, **kwargs):
         """Store initial asssignment."""
         super().__init__(*args, **kwargs)
-        self.initialAssignment = self.assigned_workshop
+        if self.workshop_id:
+            self.initialAssignment = self.workshop
 
     def save(self, *args, **kwargs):
         """Save and notify about changes."""
@@ -38,18 +39,18 @@ class ParticipantWorkshop(Base):
         """Reconcile what e-mail template will be used."""
         template = None
 
-        if not self.initialAssignment and self.assigned_workshop:
+        if not self.initialAssignment and self.workshop:
             template = (
                 templates.ASSIGNED_SUBJECT,
                 templates.ASSIGNED_BODY,
             )
-        elif self.initialAssignment and not self.assigned_workshop:
+        elif self.initialAssignment and not self.workshop:
             template = (
                 templates.REMOVED_SUBJECT,
                 templates.REMOVED_BODY,
             )
-        elif (self.initialAssignment and self.assigned_workshop and
-                self.initialAssignment != self.assigned_workshop):
+        elif (self.initialAssignment and self.workshop and
+                self.initialAssignment != self.workshop):
             template = (
                 templates.REASSIGNED_SUBJECT,
                 templates.REASSIGNED_BODY,
@@ -68,10 +69,10 @@ class ParticipantWorkshop(Base):
                 'lectorName': self.initialAssignment.lector_names(),
             })
 
-        if self.assigned_workshop:
+        if self.workshop:
             currentWorkshop = formatWorkshop({
-                'name': self.assigned_workshop.name,
-                'lectorName': self.assigned_workshop.lector_names(),
+                'name': self.workshop.name,
+                'lectorName': self.workshop.lector_names(),
             })
 
         return formatMail(
@@ -94,4 +95,4 @@ class ParticipantWorkshop(Base):
             return None
 
         body = self.getReassignmentMailBody(template[1])
-        mail.send_mail(template[0], body, settings.EMAIL_SENDER, [self.email])
+        mail.send_mail(template[0], body, settings.EMAIL_SENDER, [self.participant.email])
