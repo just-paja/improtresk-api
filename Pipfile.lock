@@ -5,14 +5,14 @@
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
-            "implementation_version": "3.6.3",
+            "implementation_version": "3.6.4",
             "os_name": "posix",
             "platform_machine": "x86_64",
             "platform_python_implementation": "CPython",
-            "platform_release": "4.14.8-1-ARCH",
+            "platform_release": "4.14.15-1-ARCH",
             "platform_system": "Linux",
-            "platform_version": "#1 SMP PREEMPT Wed Dec 20 21:27:44 UTC 2017",
-            "python_full_version": "3.6.3",
+            "platform_version": "#1 SMP PREEMPT Tue Jan 23 21:49:25 UTC 2018",
+            "python_full_version": "3.6.4",
             "python_version": "3.6",
             "sys_platform": "linux"
         },
@@ -50,10 +50,10 @@
         },
         "django": {
             "hashes": [
-                "sha256:52475f607c92035d4ac8fee284f56213065a4a6b25ed43f7e39df0e576e69e9f",
-                "sha256:d96b804be412a5125a594023ec524a2010a6ffa4d408e5482ab6ff3cb97ec12f"
+                "sha256:7c8ff92285406fb349e765e9ade685eec7271d6f5c3f918e495a74768b765c99",
+                "sha256:dc3b61d054f1bced64628c62025d480f655303aea9f408e5996c339a543b45f0"
             ],
-            "version": "==2.0.1"
+            "version": "==2.0.2"
         },
         "django-auth-ldap": {
             "hashes": [
@@ -336,10 +336,10 @@
         },
         "django": {
             "hashes": [
-                "sha256:52475f607c92035d4ac8fee284f56213065a4a6b25ed43f7e39df0e576e69e9f",
-                "sha256:d96b804be412a5125a594023ec524a2010a6ffa4d408e5482ab6ff3cb97ec12f"
+                "sha256:7c8ff92285406fb349e765e9ade685eec7271d6f5c3f918e495a74768b765c99",
+                "sha256:dc3b61d054f1bced64628c62025d480f655303aea9f408e5996c339a543b45f0"
             ],
-            "version": "==2.0.1"
+            "version": "==2.0.2"
         },
         "django-nose": {
             "hashes": [
@@ -404,10 +404,11 @@
         },
         "isort": {
             "hashes": [
-                "sha256:cd5d3fc2c16006b567a17193edf4ed9830d9454cbeb5a42ac80b36ea00c23db4",
-                "sha256:79f46172d3a4e2e53e7016e663cc7a8b538bec525c36675fcfd2767df30b3983"
+                "sha256:d3faf77a0a39bd402f1aea97463bc0eeb36c48a7c4695b0ed56b542195e49c49",
+                "sha256:fd8ea1acf80ae343eb8e2dec17bfe9b78e231a43ea6d0744da6758be1b373553",
+                "sha256:b8b584d1223204a4948ba20d605d3e5421c5956455d8618feb5c2ccdae2b78ba"
             ],
-            "version": "==4.2.15"
+            "version": "==4.3.1"
         },
         "lazy-object-proxy": {
             "hashes": [
@@ -536,10 +537,10 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:b84878865558194630c6147f44bdaef27222a9f153bbd4a08908b16bf285e0b1",
-                "sha256:53548280ede7818f4dc2ad96608b9f08ae2cc2ca3874f2ceb6f97e3583f25bc4"
+                "sha256:95fa025cd6deb5d937e04e368a00552332b58cae23f63b76c8c540ff1733ab6d",
+                "sha256:6074ea3b9c999bd6d0df5fa9d12dd95ccd23550df2a582f5f5b848331d2e82ca"
             ],
-            "version": "==3.3.2"
+            "version": "==3.4.0"
         },
         "pytest-cov": {
             "hashes": [
