@@ -63,11 +63,6 @@ class Participant(Base, auth.models.User):
         super().__init__(*args, **kwargs)
         self.initialAssignment = self.assigned_workshop
 
-    def save(self, *args, **kwargs):
-        """Save and notify about changes."""
-        super().save(*args, **kwargs)
-        self.mailReassignment()
-
     @property
     def team_name(self):
         return self.team.name
