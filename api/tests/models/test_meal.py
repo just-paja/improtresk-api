@@ -1,13 +1,10 @@
 """Tests for meal model."""
-import datetime
-
-from api.models import Meal
 
 from django.test import TestCase
-
 from freezegun import freeze_time
-
 from model_mommy import mommy
+
+from api.models import Meal
 
 
 class MealTest(TestCase):
@@ -25,7 +22,7 @@ class MealTest(TestCase):
     def test_capacity(self):
         meal_reservation = mommy.make(
             'api.MealReservation',
-            reservation__ends_at=datetime.datetime(year=2017, month=3, day=1),
+            reservation__ends_at='2017-03-01T00:00:00Z',
             meal__capacity=1,
             reservation__order__paid=True,
         )
@@ -39,7 +36,7 @@ class MealTest(TestCase):
     def test_capacity_after_reservation(self):
         meal_reservation = mommy.make(
             'api.MealReservation',
-            reservation__ends_at=datetime.datetime(year=2017, month=1, day=1),
+            reservation__ends_at='2017-01-01T00:00:00Z',
             meal__capacity=1,
             reservation__order__paid=False,
         )
@@ -51,7 +48,7 @@ class MealTest(TestCase):
     def test_capacity_paid(self):
         meal_reservation = mommy.make(
             'api.MealReservation',
-            reservation__ends_at=datetime.datetime(year=2017, month=1, day=1),
+            reservation__ends_at='2017-01-01T00:00:00Z',
             meal__capacity=1,
             reservation__order__paid=True,
             reservation__order__participant__name="Foo participant",

@@ -2,42 +2,68 @@
 
 from django.core import mail
 from django.test import TestCase
-
-from mock import patch
-
 from model_mommy import mommy
 
+from api.models import ParticipantWorkshop
 
-class ParticipantWorkshopTest(TestCase):
 
-    def test_getReassignmentMailBody(self):
-        participant = mommy.make(
+class ParticipantWorkshopAssignmentTest(TestCase):
+    def setUp(self):
+        mail.outbox = []
+        mommy.make(
             'api.ParticipantWorkshop',
-            name="Foo participant",
-            assigned_workshop__name="Foo workshop",
-            assigned_workshop__lectors={
-                mommy.make(
-                    'api.Lector',
-                    name="Foo lector",
-                ),
-            },
-        )
-        template = (
-            'Prev workshop: {prevWorkshop}, '
-            'Current workshop: {currentWorkshop}, '
-            'Workshop preferences {workshopPreferences}'
+            participant__name='Henry Black',
+            participant__email='participant@example.com',
+            workshop__name='Tiny Afterlunch Workshop',
         )
 
-        self.assertEquals(
-            participant.getReassignmentMailBody(template),
-            'Prev workshop: Foo workshop, '
-            'Current workshop: Foo workshop, '
-            'Workshop preferences foo\n'
-            'Organizační tým Improtřesku\n'
-            'http://improtresk.cz\n'
-            'info@improtresk.cz\n'
-            '\n'
-            '--\n'
-            '\n'
-            'Tato zpráva byla vyžádána v rámci placené přihlášky na Improtřesk 2017.\n',
+    def test_mail_sent_to_participant_email(self):
+        self.assertEquals(mail.outbox.pop().to, ['participant@example.com'])
+
+    def test_mail_contains_workshop_name(self):
+        self.assertIn('Tiny Afterlunch Workshop', mail.outbox.pop().body)
+
+
+class ParticipantWorkshopReassignmentTest(TestCase):
+    def setUp(self):
+        gen_assignment = mommy.make(
+            'api.ParticipantWorkshop',
+            participant__name='Henry Black',
+            participant__email='participant@example.com',
+            workshop__name='Tiny Afterlunch Workshop',
         )
+        second_workshop = mommy.make(
+            'api.Workshop',
+            name='Large Breakfast Workshop',
+        )
+        mail.outbox = []
+        assignment = ParticipantWorkshop.objects.get(pk=gen_assignment.id)
+        assignment.workshop = second_workshop
+        assignment.save()
+
+    def test_mail_sent_to_participant_email(self):
+        self.assertEquals(mail.outbox.pop().to, ['participant@example.com'])
+
+    def test_mail_contains_previous_workshop_name(self):
+        self.assertIn('Tiny Afterlunch Workshop', mail.outbox.pop().body)
+
+    def test_mail_contains_current_workshop_name(self):
+        self.assertIn('Large Breakfast Workshop', mail.outbox.pop().body)
+
+
+class ParticipantWorkshopRemoveTest(TestCase):
+    def setUp(self):
+        assignment = mommy.make(
+            'api.ParticipantWorkshop',
+            participant__name='Henry Black',
+            participant__email='participant@example.com',
+            workshop__name='Tiny Afterlunch Workshop',
+        )
+        mail.outbox = []
+        assignment.delete()
+
+    def test_mail_sent_to_participant_email(self):
+        self.assertEquals(mail.outbox.pop().to, ['participant@example.com'])
+
+    def test_mail_contains_previous_workshop_name(self):
+        self.assertIn('Tiny Afterlunch Workshop', mail.outbox.pop().body)

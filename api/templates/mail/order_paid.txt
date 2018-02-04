@@ -1,0 +1,13 @@
+Hurá!
+
+Tvoje přihláška je zaplacena. V tento okamžik jsi byl(a) zařazen(a) do fronty na workshop podle tvých preferencí. Zařazování na workshopy probíhá částečně manuálně a částečně automaticky - někde u počítače sedí člověk, který potvrzuje kdo kam půjde podle toho kdo dřív zaplatil. Může to tedy chvíli trvat. Jakmile tě zařadíme, okamžitě se ti ozveme.
+
+Workshop: {{workshop.name}}
+Celkem zaplaceno: {{amount_paid}} Kč
+
+Spárované platby: {% include 'mail/partial/payment_list.txt' %}
+
+    -----
+
+Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontaktovat.
+{% include 'mail/partial/footer.txt' %}

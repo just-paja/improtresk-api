@@ -1,0 +1,15 @@
+Ahoj,
+
+Přijali jsme tvojí přihlášku. Na workshop tě však zařadíme až v momentě kdy bude zaplacena. Rezervujeme ti místo na workshopu do {{validUntil|date:'j. n. Y H:i'}}, pokud nám od tebe nepřijde platba včas, tak tvoje místo na workshopu nabídneme ostatním.
+
+O zařazení na workshop a potvrzení platby ti přijde oznámení e-mailem.
+
+Detaily platby: {% include 'mail/partial/account_info.txt' %}
+
+Objednaný workshop: {{workshop.name}}
+Čas propadnutí rezervace: {{validUntil|date:'j. n. Y H:i'}}
+
+    -----
+
+Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontaktovat.
+{% include 'mail/partial/footer.txt' %}

@@ -1,8 +1,8 @@
 """Base model class."""
-import datetime
 
 from django.db import models
 from django.db.models import Q
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -29,7 +29,7 @@ class CapacityMixin(models.Model):
         from .participant import Participant
         return Participant.objects.filter(
             orders__canceled=False,
-            orders__reservation__ends_at__gt=datetime.datetime.now(),
+            orders__reservation__ends_at__gt=now(),
             orders__reservation__in=self.get_reservations_query(),
         ).exclude(
             orders__paid=True,

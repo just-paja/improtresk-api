@@ -2,8 +2,6 @@
 
 import json
 
-from dateutil.parser import parse
-
 from django.test import TestCase
 from django.urls import reverse
 
@@ -163,7 +161,7 @@ class OrdersEndpointTest(TestCase):
         mommy.make(
             'api.reservation',
             workshop_price=price,
-            ends_at=parse('2017-01-05T00:00:00Z'),
+            ends_at='2017-01-05T00:00:00Z',
             orders__paid=True,
         )
         self.default_user.assigned_workshop = self.workshop
@@ -196,7 +194,7 @@ class OrdersEndpointTest(TestCase):
         mommy.make(
             'api.Reservation',
             workshop_price=price,
-            ends_at=parse('2017-01-05T00:00:00Z'),
+            ends_at='2017-01-05T00:00:00Z',
             orders__paid=False,
         )
         self.default_user.assigned_workshop = self.workshop

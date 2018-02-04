@@ -1,25 +1,21 @@
 """Order model."""
-from datetime import datetime
 
 from django.conf import settings
 from django.core import mail
 from django.db import models
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from django.template.loader import render_to_string
 
 from .base import Base
 from .participant import Participant
 from .payment import STATUS_PAID
 from .workshop import Workshop
 
-from ..mail import report as templatesReport
-from ..mail import signup as templates
-from ..mail.common import formatAccountInfo, formatMail, formatPayments, \
-    formatWorkshop
-
 
 def generate_symvar():
     """Generate variable symbol for a new order."""
-    today = datetime.now().strftime('%Y')
+    today = now().strftime('%Y')
     top = Order.objects.order_by('id').last()
 
     if top:
@@ -88,52 +84,45 @@ class Order(Base):
         if not self.initialConfirmed and self.confirmed:
             self.mail_confirm()
 
-    def get_workshop_formatted(self):
-        workshop = self.reservation.workshop_price.workshop
-        return formatWorkshop({
-            'name': workshop.name,
-            'lectorName': workshop.lector_names(),
-        })
-
     def get_mail_body(self, template):
         """Format template body to be emailed."""
-        return formatMail(
+        return render_to_string(
             template,
             {
-                'accountInfo': formatAccountInfo({
+                'account_info': {
                     'price': self.amount_left(),
                     'symvar': self.symvar,
-                }),
-                'amountPaid': self.total_amount_received(),
-                'amountLeft': self.amount_left(),
+                },
+                'amount_paid': self.total_amount_received(),
+                'amount_left': self.amount_left(),
                 'price': self.price,
-                'payments': formatPayments(self.payments.values()),
+                'payments': self.payments.all(),
                 'symvar': self.symvar,
                 'validUntil': self.reservation.ends_at,
-                'workshop': self.get_workshop_formatted(),
+                'workshop': self.reservation.workshop_price.workshop,
             },
         )
 
     def mail_confirm(self):
         mail.send_mail(
-            templates.ORDER_CONFIRMED_SUBJECT,
-            self.get_mail_body(templates.ORDER_CONFIRMED_BODY),
+            'Tvoje přihláška',
+            self.get_mail_body('mail/order_confirmed.txt'),
             settings.EMAIL_SENDER,
             [self.participant.email],
         )
 
     def mail_paid(self):
         mail.send_mail(
-            templates.ORDER_PAID_SUBJECT,
-            self.get_mail_body(templates.ORDER_PAID_BODY),
+            'Přihláška zaplacena',
+            self.get_mail_body('mail/order_paid.txt'),
             settings.EMAIL_SENDER,
             [self.participant.email],
         )
 
     def mail_update(self):
         mail.send_mail(
-            templates.ORDER_UPDATE_SUBJECT,
-            self.get_mail_body(templates.ORDER_UPDATE_BODY),
+            'Aktualizace stavu přihlášky',
+            self.get_mail_body('mail/order_update.txt'),
             settings.EMAIL_SENDER,
             [self.participant.email],
         )
@@ -182,13 +171,10 @@ class Order(Base):
                 'workshop': self.reservation.workshop().name,
             }
             mail.send_mail(
-                templatesReport.ASSIGNMENT_FAILED_SUBJECT.format(
+                '[O{order}]: Nepovedlo se zařadit na workshop'.format(
                     **formatConfig,
                 ),
-                formatMail(
-                    templatesReport.ASSIGNMENT_FAILED_BODY,
-                    formatConfig,
-                ),
+                render_to_string('mail/assignment_failed.txt', formatConfig),
                 settings.EMAIL_SENDER,
                 [settings.EMAIL_TECH],
             )

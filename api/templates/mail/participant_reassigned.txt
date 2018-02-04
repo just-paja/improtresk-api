@@ -1,0 +1,8 @@
+Ahoj,
+
+přeřadili jsme tě na jiný workshop.
+
+{{prevWorkshop.name}} -> {{currentWorkshop.name}}
+
+Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontaktovat.
+{% include 'mail/partial/footer.txt' %}

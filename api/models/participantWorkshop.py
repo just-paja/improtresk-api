@@ -2,10 +2,9 @@
 from django.conf import settings
 from django.core import mail
 from django.db import models
+from django.template.loader import render_to_string
 
 from .base import Base
-from ..mail import signup as templates
-from ..mail.common import formatMail, formatWorkshop
 
 
 class ParticipantWorkshop(Base):
@@ -19,6 +18,7 @@ class ParticipantWorkshop(Base):
         on_delete=models.PROTECT,
     )
     ignore_change = False
+    initial_workshop = None
 
     def __str__(self):
         """Return name and status as string representation."""
@@ -27,72 +27,63 @@ class ParticipantWorkshop(Base):
     def __init__(self, *args, **kwargs):
         """Store initial asssignment."""
         super().__init__(*args, **kwargs)
-        if self.workshop_id:
-            self.initialAssignment = self.workshop
+        if self.id and self.workshop_id:
+            self.initial_workshop = self.workshop
 
     def save(self, *args, **kwargs):
         """Save and notify about changes."""
         super().save(*args, **kwargs)
-        self.mailReassignment()
+        self.mail_changes()
 
-    def getReassignmentTemplate(self):
+    def delete(self, *args, **kwargs):
+        """Delete assignment and notify about changes."""
+        super().delete(*args, *kwargs)
+        self.mail_remove()
+
+    def get_reassignment_template(self):
         """Reconcile what e-mail template will be used."""
         template = None
 
-        if not self.initialAssignment and self.workshop:
+        if not self.initial_workshop and self.workshop:
             template = (
-                templates.ASSIGNED_SUBJECT,
-                templates.ASSIGNED_BODY,
+                'Zařazení na workshop',
+                'mail/participant_assigned.txt',
             )
-        elif self.initialAssignment and not self.workshop:
+        elif (self.initial_workshop and self.workshop and
+                self.initial_workshop != self.workshop):
             template = (
-                templates.REMOVED_SUBJECT,
-                templates.REMOVED_BODY,
-            )
-        elif (self.initialAssignment and self.workshop and
-                self.initialAssignment != self.workshop):
-            template = (
-                templates.REASSIGNED_SUBJECT,
-                templates.REASSIGNED_BODY,
+                'Přeřazení na jiný workshop',
+                'mail/participant_reassigned.txt',
             )
 
         return template
 
-    def getReassignmentMailBody(self, template):
-        """Format template body to be emailed."""
-        prevWorkshop = None
-        currentWorkshop = None
-
-        if self.initialAssignment:
-            prevWorkshop = formatWorkshop({
-                'name': self.initialAssignment.name,
-                'lectorName': self.initialAssignment.lector_names(),
-            })
-
-        if self.workshop:
-            currentWorkshop = formatWorkshop({
-                'name': self.workshop.name,
-                'lectorName': self.workshop.lector_names(),
-            })
-
-        return formatMail(
-            template,
-            {
-                'prevWorkshop': prevWorkshop,
-                'currentWorkshop': currentWorkshop,
-                'workshopPreferences': 'foo',
-            },
-        )
-
-    def mailReassignment(self):
+    def mail_changes(self):
         """E-mail changes to the participant assignment."""
         if self.ignore_change:
             return None
 
-        template = self.getReassignmentTemplate()
+        template = self.get_reassignment_template()
 
         if not template:
             return None
 
-        body = self.getReassignmentMailBody(template[1])
+        body = render_to_string(template, {
+            'prevWorkshop': self.initial_workshop,
+            'currentWorkshop': self.workshop,
+        })
         mail.send_mail(template[0], body, settings.EMAIL_SENDER, [self.participant.email])
+
+    def mail_remove(self):
+        """E-mail changes to the participant assignment."""
+        if self.ignore_change:
+            return None
+        body = render_to_string('mail/participant_removed.txt', {
+            'prevWorkshop': self.workshop,
+        })
+        mail.send_mail(
+            'Odhlášení z workshopu',
+            body,
+            settings.EMAIL_SENDER,
+            [self.participant.email]
+        )

@@ -1,6 +1,6 @@
 """Tests for reservation model."""
-from django.test import TestCase
 
+from django.test import TestCase
 from model_mommy import mommy
 
 
@@ -20,6 +20,6 @@ class ReservationTest(TestCase):
         entry = mommy.make(
             'api.Reservation',
             workshop_price=workshop_price,
-            ends_at="2017-01-01",
+            ends_at='2017-01-01T00:00:00Z',
         )
-        self.assertEqual(str(entry), 'Foo workshop for 123 ends at 2017-01-01')
+        self.assertEqual(str(entry), 'Foo workshop for 123 ends at 2017-01-01T00:00:00Z')

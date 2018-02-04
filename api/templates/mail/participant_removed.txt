@@ -1,0 +1,6 @@
+Ahoj,
+
+vyřadili jsme tě z workshopu {{prevWorkshop.name}}.
+
+Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontaktovat.
+{% include 'mail/partial/footer.txt' %}

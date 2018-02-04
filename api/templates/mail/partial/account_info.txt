@@ -1,0 +1,3 @@
+Číslo účtu: 2800754192/2010
+Částka k zaplacení: {{account_info.price}} Kč
+Variabilní symbol: {{account_info.symvar}}

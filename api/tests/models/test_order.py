@@ -1,33 +1,29 @@
 """Tests for participant model."""
 
-from datetime import datetime
-
+from dateutil.parser import parse
 from django.core import mail
 from django.test import TestCase
-
 from model_mommy import mommy
 
 
 class OrderConfirmTest(TestCase):
 
     def setUp(self):
-        self.maxDiff = 60000
+        self.maxDiff = 600000
+        lector = mommy.make(
+            'api.Lector',
+            name="Foo Lector",
+        )
         workshop_price = mommy.make(
             'api.WorkshopPrice',
-            workshop__name="Foo workshop",
+            workshop__name="Foo Workshop",
             workshop__lectors=[
-                mommy.make(
-                    'api.Lector',
-                    name="Foo Lector",
-                ),
+                lector,
             ],
         )
         reservation = mommy.make(
             'api.Reservation',
-            ends_at=datetime.strptime(
-                '2017-03-12T17:30:15',
-                '%Y-%m-%dT%H:%M:%S',
-            ),
+            ends_at=parse('2017-03-12T17:30:15Z'),
             workshop_price=workshop_price,
         )
         self.order = mommy.make(
@@ -37,45 +33,31 @@ class OrderConfirmTest(TestCase):
             participant__email="foo@bar.com",
             reservation=reservation,
         )
-
-    def test_mail_confirm(self):
         mail.outbox = []
+
+    def test_mail_confirm_is_sent_to_participant(self):
         self.order.mail_confirm()
-        self.assertEquals(len(mail.outbox), 1)
-        sent = mail.outbox.pop()
-        self.assertEquals(sent.to, ['foo@bar.com'])
-        self.assertEquals(
-            sent.body,
-            """Ahoj,
+        self.assertEquals(mail.outbox.pop().to, ['foo@bar.com'])
 
-Přijali jsme tvojí přihlášku. Na workshop tě však zařadíme až v \
-momentě kdy bude zaplacena. Rezervujeme ti místo na workshopu do \
-12. 3. 2017 17:30:15, pokud nám od tebe nepřijde platba včas, tak tvoje \
-místo na workshopu nabídneme ostatním.
+    def test_mail_confirm_contains_workshop_name(self):
+        self.order.mail_confirm()
+        self.assertIn('Foo Workshop', mail.outbox.pop().body)
 
-O zařazení na workshop a potvrzení platby ti přijde oznámení e-mailem.
+    def test_mail_confirm_contains_amount_to_pay_in_crowns(self):
+        self.order.mail_confirm()
+        self.assertIn('1200 Kč', mail.outbox.pop().body)
 
-Detaily platby:
-Číslo účtu: 2800754192/2010
-Částka k zaplacení: 1200 Kč
-Variabilní symbol: 38212
+    def test_mail_confirm_contains_variable_symbol(self):
+        self.order.mail_confirm()
+        self.assertIn('38212', mail.outbox.pop().body)
 
-Objednaný workshop: Foo workshop
-Čas propadnutí rezervace: 12. 3. 2017 17:30:15
+    def test_mail_confirm_contains_account_number(self):
+        self.order.mail_confirm()
+        self.assertIn('2800754192/2010', mail.outbox.pop().body)
 
-    -----
-
-Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontaktovat.
-
-Organizační tým Improtřesku
-http://improtresk.cz
-info@improtresk.cz
-
---
-
-Tato zpráva byla vyžádána v rámci placené přihlášky na Improtřesk 2017.
-""",
-        )
+    def test_mail_confirm_contains_reservation_end_time(self):
+        self.order.mail_confirm()
+        self.assertIn('12. 3. 2017 17:30', mail.outbox.pop().body)
 
 
 class OrderUpdateTest(TestCase):
@@ -99,12 +81,12 @@ class OrderUpdateTest(TestCase):
             status='paid',
             sender="3216354",
             bank="2010",
-            received_at='2017-03-01T17:30:15',
+            received_at='2017-03-01T17:30:15Z',
         )
-        payment.created_at = '2017-03-12T17:30:15'
+        payment.created_at = '2017-03-12T17:30:15Z'
         reservation = mommy.make(
             'api.Reservation',
-            ends_at="2016-01-23",
+            ends_at='2016-01-23T00:00:00Z',
             workshop_price=workshop_price,
         )
         self.order = mommy.make(
@@ -115,50 +97,27 @@ class OrderUpdateTest(TestCase):
             payments=[payment],
             reservation=reservation,
         )
-
-    def test_mail_update(self):
         mail.outbox = []
+
+    def test_mail_update_sent_to_participant(self):
         self.order.mail_update()
-        self.assertEquals(len(mail.outbox), 1)
-        sent = mail.outbox.pop()
-        self.assertEquals(sent.to, ['foo@bar.com'])
-        self.assertEquals(
-            sent.body,
-            """Ahoj,
+        self.assertEquals(mail.outbox.pop().to, ['foo@bar.com'])
 
-posíláme ti aktualizaci tvojí přihlášky na Improtřesk 2017.
+    def test_mail_update_contains_missing_amount(self):
+        self.order.mail_update()
+        self.assertIn('434 Kč', mail.outbox.pop().body)
 
-Přihláška stále není zaplacena, chybí nám od tebe 434 Kč. \
-Pošli je prosím na náš účet bankovním převodem.
+    def test_mail_update_contains_paid_amount(self):
+        self.order.mail_update()
+        self.assertIn('1000 Kč', mail.outbox.pop().body)
 
-Workshop: Foo workshop
-Číslo účtu: 2800754192/2010
-Částka k zaplacení: 434 Kč
-Variabilní symbol: 38212
+    def test_mail_update_contains_variable_symbol(self):
+        self.order.mail_update()
+        self.assertIn('38212', mail.outbox.pop().body)
 
-Celkem zaplaceno: 1000 Kč
-
-Spárované platby:
-
-    Částka: 1000 Kč
-    Odesláno z účtu: 3216354/2010
-    Variabilní symbol: 38212
-    Přijato bankou: 1. 3. 2017 17:30:15
-    Zpracováno: 12. 3. 2017 17:30:15
-
-    -----
-
-Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontaktovat.
-
-Organizační tým Improtřesku
-http://improtresk.cz
-info@improtresk.cz
-
---
-
-Tato zpráva byla vyžádána v rámci placené přihlášky na Improtřesk 2017.
-""",
-        )
+    def test_mail_confirm_contains_account_number(self):
+        self.order.mail_update()
+        self.assertIn('2800754192/2010', mail.outbox.pop().body)
 
 
 class OrderPaidTest(TestCase):
@@ -183,7 +142,7 @@ class OrderPaidTest(TestCase):
             status='paid',
             sender="3216354",
             bank="2010",
-            received_at='2017-03-01T17:30:15',
+            received_at='2017-03-01T17:30:15Z',
         )
         payment2 = mommy.make(
             'api.Payment',
@@ -193,13 +152,13 @@ class OrderPaidTest(TestCase):
             status='paid',
             sender="3216354",
             bank="2010",
-            received_at='2017-03-01T19:30:15',
+            received_at='2017-03-01T19:30:15Z',
         )
-        payment1.created_at = '2017-03-12T17:30:15'
-        payment2.created_at = '2017-03-12T19:30:15'
+        payment1.created_at = '2017-03-12T17:30:15Z'
+        payment2.created_at = '2017-03-12T19:30:15Z'
         reservation = mommy.make(
             'api.Reservation',
-            ends_at="2016-01-23",
+            ends_at="2016-01-23T00:00:00Z",
             workshop_price=workshop_price,
         )
         self.order = mommy.make(
@@ -210,50 +169,20 @@ class OrderPaidTest(TestCase):
             payments=[payment1, payment2],
             reservation=reservation,
         )
-
-    def test_mail_paid(self):
         mail.outbox = []
+
+    def test_mail_paid_sent_to_participant(self):
         self.order.mail_paid()
-        self.assertEquals(len(mail.outbox), 1)
-        sent = mail.outbox.pop()
-        self.assertEquals(sent.to, ['foo@bar.com'])
-        self.assertEquals(
-            sent.body,
-            """Hurá!
+        self.assertEquals(mail.outbox.pop().to, ['foo@bar.com'])
 
-Tvoje přihláška je zaplacena. V tento okamžik jsi byl(a) zařazen(a) \
-do fronty na workshop podle tvých preferencí. Zařazování na workshopy \
-probíhá částečně manuálně a částečně automaticky - někde u počítače sedí \
-člověk, který potvrzuje kdo kam půjde podle toho kdo dřív zaplatil. \
-Může to tedy chvíli trvat. Jakmile tě zařadíme, okamžitě se ti ozveme.
+    def test_mail_update_contains_total_payment_amount(self):
+        self.order.mail_paid()
+        self.assertIn('1434 Kč', mail.outbox.pop().body)
 
-Workshop: Foo workshop
-Celkem zaplaceno: 1434 Kč
+    def test_mail_update_contains_first_payment_amount(self):
+        self.order.mail_paid()
+        self.assertIn('1000 Kč', mail.outbox.pop().body)
 
-Spárované platby:
-
-    Částka: 1000 Kč
-    Odesláno z účtu: 3216354/2010
-    Variabilní symbol: 38212
-    Přijato bankou: 1. 3. 2017 17:30:15
-    Zpracováno: 12. 3. 2017 17:30:15
-
-    Částka: 434 Kč
-    Odesláno z účtu: 3216354/2010
-    Variabilní symbol: 38212
-    Přijato bankou: 1. 3. 2017 19:30:15
-    Zpracováno: 12. 3. 2017 19:30:15
-
-    -----
-
-Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontaktovat.
-
-Organizační tým Improtřesku
-http://improtresk.cz
-info@improtresk.cz
-
---
-
-Tato zpráva byla vyžádána v rámci placené přihlášky na Improtřesk 2017.
-""",
-        )
+    def test_mail_update_contains_second_payment_amount(self):
+        self.order.mail_paid()
+        self.assertIn('434 Kč', mail.outbox.pop().body)

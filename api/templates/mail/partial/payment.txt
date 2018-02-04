@@ -1,0 +1,5 @@
+Částka: {{payment.amount}} Kč
+Odesláno z účtu: {{payment.sender}}/{{payment.bank}}
+Variabilní symbol: {{payment.symvar}}
+Přijato bankou: {{payment.received_at|date:'j. n. Y H:i'}}
+Zpracováno: {{payment.created_at|date:'j. n. Y H:i'}}

@@ -1,0 +1,1 @@
+{% for payment in payments %}{% include 'mail/partial/payment.txt' %}{% endfor %}

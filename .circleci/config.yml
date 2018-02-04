@@ -83,7 +83,7 @@ jobs:
 
       - run:
           name: Tests
-          command: ./venv/bin/vrun pipenv run pytest --junitxml=/tmp/junit-test-report.xml
+          command: ./venv/bin/vrun pipenv run pytest --junitxml=/tmp/junit-test-report.xml --cov-config=.coveragerc --cov="."
 
       - run:
           name: Code Climate reporter

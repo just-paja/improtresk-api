@@ -1,0 +1,7 @@
+Ahoj,
+
+na základě preferencí v tvojí přihlášce jsme tě zařadili na tento workshop:
+{{currentWorkshop.name}}
+
+Kdyby došlo k jakékoliv nesrovnalosti, neváhej nás prosím okamžitě kontaktovat.
+{% include 'mail/partial/footer.txt' %}
