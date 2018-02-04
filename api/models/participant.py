@@ -10,7 +10,7 @@ from .participantToken import PASSWORD_RESET, ParticipantToken
 from .team import Team
 from .workshop import Workshop
 from ..mail import signup as templates
-from ..mail.common import formatMail, formatWorkshop
+from ..mail.common import formatMail
 
 
 class Participant(Base, auth.models.User):
@@ -75,65 +75,6 @@ class Participant(Base, auth.models.User):
     @team_name.setter
     def team_name(self, name):
         self.team, _ = Team.objects.get_or_create(name=name)
-
-    def getReassignmentTemplate(self):
-        """Reconcile what e-mail template will be used."""
-        template = None
-
-        if not self.initialAssignment and self.assigned_workshop:
-            template = (
-                templates.ASSIGNED_SUBJECT,
-                templates.ASSIGNED_BODY,
-            )
-        elif self.initialAssignment and not self.assigned_workshop:
-            template = (
-                templates.REMOVED_SUBJECT,
-                templates.REMOVED_BODY,
-            )
-        elif (self.initialAssignment and self.assigned_workshop and
-                self.initialAssignment != self.assigned_workshop):
-            template = (
-                templates.REASSIGNED_SUBJECT,
-                templates.REASSIGNED_BODY,
-            )
-
-        return template
-
-    def getReassignmentMailBody(self, template):
-        """Format template body to be emailed."""
-        prevWorkshop = None
-        currentWorkshop = None
-
-        if self.initialAssignment:
-            prevWorkshop = formatWorkshop({
-                'name': self.initialAssignment.name,
-                'lectorName': self.initialAssignment.lector_names(),
-            })
-
-        if self.assigned_workshop:
-            currentWorkshop = formatWorkshop({
-                'name': self.assigned_workshop.name,
-                'lectorName': self.assigned_workshop.lector_names(),
-            })
-
-        return formatMail(
-            template,
-            {
-                'prevWorkshop': prevWorkshop,
-                'currentWorkshop': currentWorkshop,
-                'workshopPreferences': 'foo',
-            },
-        )
-
-    def mailReassignment(self):
-        """E-mail changes to the participant assignment."""
-        template = self.getReassignmentTemplate()
-
-        if not template:
-            return None
-
-        body = self.getReassignmentMailBody(template[1])
-        mail.send_mail(template[0], body, settings.EMAIL_SENDER, [self.email])
 
     def request_password_reset(self):
         self.tokens.filter(token_type=PASSWORD_RESET).update(used=True)
