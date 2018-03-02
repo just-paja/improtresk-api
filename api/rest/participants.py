@@ -132,7 +132,7 @@ class ResetPasswordViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
         return Response(
             {'email': 'Tento e-mail nepoznáváme'},
-            status=status.HTTP_404_NOT_FOUND,
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
 
