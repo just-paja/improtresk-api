@@ -1,7 +1,8 @@
 from api import models as models_api
+from oauth2_provider import admin as oauth_admin
 
 from api_textual import models as models_text
-
+from django.contrib.auth import admin as auth_admin
 from django.conf.urls import url
 from django.contrib.admin import AdminSite
 
@@ -487,3 +488,11 @@ festival_site.register(models_text.Poll, PollAdmin)
 festival_site.register(models_text.Text, TextAdmin)
 festival_site.register(models_text.TravelingTip, TravelingTipAdmin)
 festival_site.register(models_text.WorkshopLocation, WorkshopLocationAdmin)
+
+festival_site.register(oauth_admin.Application, oauth_admin.ApplicationAdmin)
+festival_site.register(oauth_admin.Grant, oauth_admin.GrantAdmin)
+festival_site.register(oauth_admin.AccessToken, oauth_admin.AccessTokenAdmin)
+festival_site.register(oauth_admin.RefreshToken, oauth_admin.RefreshTokenAdmin)
+
+festival_site.register(auth_admin.Group, auth_admin.GroupAdmin)
+festival_site.register(auth_admin.User, auth_admin.UserAdmin)
