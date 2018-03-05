@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers, viewsets
 
 from .workshop_lectors import WorkshopLectorSerializer
-from ..models import Workshop, WorkshopPrice, Year
+from ..models import Workshop, WorkshopPhoto, WorkshopPrice, Year
 
 
 class WorkshopPriceSerializer(serializers.ModelSerializer):
@@ -17,6 +17,18 @@ class WorkshopPriceSerializer(serializers.ModelSerializer):
         )
 
 
+class WorkshopPhotoSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = WorkshopPhoto
+        fields = (
+            'id',
+            'image',
+            'desc',
+            'height',
+            'width',
+        )
+
+
 class WorkshopSerializer(serializers.ModelSerializer):
     prices = WorkshopPriceSerializer(many=True)
     lectors = WorkshopLectorSerializer(
@@ -24,6 +36,7 @@ class WorkshopSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True,
     )
+    photos = WorkshopPhotoSerializer(many=True, read_only=True)
 
     class Meta:
         model = Workshop
