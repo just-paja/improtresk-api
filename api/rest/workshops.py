@@ -29,13 +29,14 @@ class WorkshopPhotoSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
-class WorkshopSerializer(serializers.ModelSerializer):
+class WorkshopSerializer(serializers.HyperlinkedModelSerializer):
     prices = WorkshopPriceSerializer(many=True)
     lectors = WorkshopLectorSerializer(
         source='workshoplector_set',
         many=True,
         read_only=True,
     )
+    difficulty = serializers.ReadOnlyField(source='difficulty_id')
     photos = WorkshopPhotoSerializer(many=True, read_only=True)
 
     class Meta:

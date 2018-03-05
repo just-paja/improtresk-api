@@ -62,7 +62,11 @@ class YearDetailSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_workshops(self, obj):
         queryset = obj.get_workshops().prefetch_related('lectors', 'photos')
-        serializer = WorkshopSerializer(instance=queryset, many=True)
+        serializer = WorkshopSerializer(
+            instance=queryset,
+            many=True,
+            context=self.context,
+        )
         return serializer.data
 
 
