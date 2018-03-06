@@ -37,5 +37,5 @@ class NewsSerializer(serializers.ModelSerializer):
 
 
 class NewsViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = models.News.objects.all()
+    queryset = models.News.objects.order_by('-created_at').all()
     serializer_class = NewsSerializer
