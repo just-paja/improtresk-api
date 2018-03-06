@@ -1,8 +1,9 @@
 from datetime import date
 
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.utils.timezone import localtime, now
+from django.http import Http404
 
 from rest_framework import mixins, permissions, serializers, status, viewsets
 
@@ -114,7 +115,11 @@ class WhoAmIViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request):
-        serializer = self.get_serializer(request.user.participant)
+        try:
+            participant = request.user.participant
+        except ObjectDoesNotExist:
+            raise Http404
+        serializer = self.get_serializer(participant)
         return Response(serializer.data)
 
 
