@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from api.models.base import Base
 
+
 class Performer(Base):
     """Stores performer data."""
 

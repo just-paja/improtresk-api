@@ -8,17 +8,27 @@ class TextSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Text
-        lookup_field = 'slug'
         fields = (
+            'category',
+            'createdAt',
             'id',
+            'lang',
             'name',
             'slug',
             'text',
-            'createdAt',
         )
 
 
 class TextViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Text.objects.all()
     serializer_class = TextSerializer
-    lookup_field = 'slug'
+
+    def get_queryset(self):
+        lang = self.request.query_params.get('lang', None)
+        category = self.request.query_params.get('category', None)
+        queryset = self.queryset
+        if lang:
+            queryset = queryset.filter(lang=lang)
+        if category:
+            queryset = queryset.filter(category=category)
+        return queryset

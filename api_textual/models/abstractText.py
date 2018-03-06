@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from .abstractStub import AbstractStub
 
+
 class AbstractText(AbstractStub):
     """Stores text types."""
 

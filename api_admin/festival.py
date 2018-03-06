@@ -116,6 +116,12 @@ class WorkshopAdmin(BaseAdminModel):
     list_filter = ('visibility', 'difficulty')
 
 
+class AccomodationDescriptionAdmin(BaseInlineAdminModel):
+    """Admin model for Accomodation photos."""
+
+    model = models_api.AccomodationDescription
+
+
 class AccomodationPhotoAdmin(BaseInlineAdminModel):
     """Admin model for Accomodation photos."""
 
@@ -126,7 +132,14 @@ class AccomodationAdmin(BaseAdminModel):
     """Admin model for Accomodation and its photos."""
 
     inlines = [
+        AccomodationDescriptionAdmin,
         AccomodationPhotoAdmin,
+    ]
+    fields = [
+        'name',
+        'price',
+        'visibility',
+        'capacity',
     ]
     list_display = ('name', 'capacity', 'price', 'visibility')
     list_filter = ('visibility',)
@@ -362,7 +375,7 @@ class TextPhotoInlineAdmin(BaseInlineAdminModel):
 
 class TextAdmin(BaseTextAdminModel):
     """Admin model for Text."""
-
+    list_filter = ('lang', 'category')
     inlines = [
         TextPhotoInlineAdmin,
     ]
@@ -380,7 +393,7 @@ class WorkshopLocationPhotoInlineAdmin(BaseInlineAdminModel):
     model = models_text.WorkshopLocationPhoto
 
 
-class WorkshopLocationAdmin(BaseTextAdminModel):
+class WorkshopLocationAdmin(BaseAdminModel):
     """Admin model for Workshop location."""
 
     inlines = [
@@ -436,7 +449,7 @@ class PerformerPhotoInlineAdmin(BaseInlineAdminModel):
     model = models_text.PerformerPhoto
 
 
-class PerformerAdmin(BaseTextAdminModel):
+class PerformerAdmin(BaseAdminModel):
     """Define admin model for Performer."""
 
     list_display = ('name', 'year', 'visibility')

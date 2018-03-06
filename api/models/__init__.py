@@ -1,6 +1,7 @@
 """Import all models."""
 
 from .accomodation import Accomodation
+from .accomodationDescription import AccomodationDescription
 from .accomodationPhoto import AccomodationPhoto
 from .food import Food, Soup
 from .foodPhoto import FoodPhoto
@@ -28,6 +29,7 @@ from .year import Year
 
 __all__ = (
     Accomodation,
+    AccomodationDescription,
     AccomodationPhoto,
     Food,
     FoodPhoto,

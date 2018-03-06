@@ -1,5 +1,6 @@
 from django.db import migrations
 
+
 def forwards(apps, schema_editor):
     WorkshopLocation = apps.get_model('api_textual', 'WorkshopLocation')
     WorkshopLocationDescription = apps.get_model('api_textual', 'WorkshopLocationDescription')
@@ -21,6 +22,7 @@ def forwards(apps, schema_editor):
         performer.save()
     WorkshopLocationDescription.objects.using(db_alias).bulk_create(create)
 
+
 def backwards(apps, schema_editor):
     WorkshopLocationDescription = apps.get_model('api_textual', 'WorkshopLocationDescription')
     db_alias = schema_editor.connection.alias
@@ -34,6 +36,7 @@ def backwards(apps, schema_editor):
             performer.text = desc.text
             performer.save()
         desc.delete()
+
 
 class Migration(migrations.Migration):
 

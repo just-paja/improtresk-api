@@ -28,7 +28,6 @@ class WorkshopLocationDescriptionSerializer(serializers.ModelSerializer):
         )
 
 
-
 class WorkshopLocationSerializer(serializers.HyperlinkedModelSerializer):
     photos = WorkshopLocationPhotoSerializer(many=True, read_only=True)
     description = WorkshopLocationDescriptionSerializer(

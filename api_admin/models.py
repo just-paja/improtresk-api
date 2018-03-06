@@ -25,7 +25,15 @@ class BaseTextAdminModel(BaseAdminModel):
     """Base admin for Text models."""
 
     prepopulated_fields = {'slug': ('name',)}
-    list_display = ('name', 'updated_at')
+    list_display = ('name', 'lang', 'updated_at')
+    list_filter = ('lang',)
+    fields = [
+        'name',
+        'slug',
+        'lang',
+        'category',
+        'text',
+    ]
 
 
 class BaseTagAdmin(BaseAdminModel):

@@ -1,6 +1,6 @@
 from rest_framework import permissions, serializers, viewsets
 
-from ..models import Accomodation, AccomodationPhoto
+from ..models import Accomodation, AccomodationDescription, AccomodationPhoto
 
 
 class AccomodationPhotoSerializer(serializers.HyperlinkedModelSerializer):
@@ -15,9 +15,24 @@ class AccomodationPhotoSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
+class AccomodationDescriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AccomodationDescription
+        fields = (
+            'id',
+            'lang',
+            'text',
+        )
+
+
 class AccomodationSerializer(serializers.HyperlinkedModelSerializer):
     photos = AccomodationPhotoSerializer(many=True, read_only=True)
     available = serializers.IntegerField(source='available_capacity')
+    description = AccomodationDescriptionSerializer(
+        many=True,
+        read_only=True,
+        source='descriptions',
+    )
 
     class Meta:
         model = Accomodation
@@ -26,6 +41,7 @@ class AccomodationSerializer(serializers.HyperlinkedModelSerializer):
             'name',
             'desc',
             'capacity',
+            'description',
             'price',
             'photos',
             'available',
