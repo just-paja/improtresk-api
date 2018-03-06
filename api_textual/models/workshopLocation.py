@@ -2,12 +2,18 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .abstractText import AbstractText
+from api.models.base import Base
 
-
-class WorkshopLocation(AbstractText):
+class WorkshopLocation(Base):
     """Stores workshop location."""
 
+    name = models.CharField(
+        verbose_name=_("Name"),
+        max_length=127,
+    )
+    slug = models.SlugField(
+        verbose_name=_("Identifier in URL"),
+    )
     address = models.TextField(
         verbose_name=_("Address"),
     )

@@ -14,6 +14,7 @@ from .textPhoto import TextPhoto
 from .travelingTip import TravelingTip
 from .travelingTipPhoto import TravelingTipPhoto
 from .workshopLocation import WorkshopLocation
+from .workshopLocationDescription import WorkshopLocationDescription
 from .workshopLocationPhoto import WorkshopLocationPhoto
 
 __all__ = (
@@ -31,5 +32,6 @@ __all__ = (
     TravelingTip,
     TravelingTipPhoto,
     WorkshopLocation,
+    WorkshopLocationDescription,
     WorkshopLocationPhoto,
 )

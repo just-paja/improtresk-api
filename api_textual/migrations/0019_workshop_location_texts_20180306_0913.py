@@ -1,17 +1,17 @@
 from django.db import migrations
 
 def forwards(apps, schema_editor):
-    Performer = apps.get_model('api_textual', 'Performer')
-    PerformerDescription = apps.get_model('api_textual', 'PerformerDescription')
+    WorkshopLocation = apps.get_model('api_textual', 'WorkshopLocation')
+    WorkshopLocationDescription = apps.get_model('api_textual', 'WorkshopLocationDescription')
     db_alias = schema_editor.connection.alias
-    performers = Performer.objects.using(db_alias).all()
+    performers = WorkshopLocation.objects.using(db_alias).all()
     create = []
 
     for performer in performers:
         desc = performer.descriptions.filter(lang='cs').first()
 
         if not desc:
-            desc = PerformerDescription(
+            desc = WorkshopLocationDescription(
                 performer=performer,
                 text=performer.text,
             )
@@ -19,12 +19,12 @@ def forwards(apps, schema_editor):
 
         performer.text = ''
         performer.save()
-    PerformerDescription.objects.using(db_alias).bulk_create(create)
+    WorkshopLocationDescription.objects.using(db_alias).bulk_create(create)
 
 def backwards(apps, schema_editor):
-    PerformerDescription = apps.get_model('api_textual', 'PerformerDescription')
+    WorkshopLocationDescription = apps.get_model('api_textual', 'WorkshopLocationDescription')
     db_alias = schema_editor.connection.alias
-    descriptions = PerformerDescription.objects.using(db_alias)\
+    descriptions = WorkshopLocationDescription.objects.using(db_alias)\
         .filter(lang='cs')\
         .all()
 
@@ -38,7 +38,7 @@ def backwards(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api_textual', '0014_auto_20180306_0757'),
+        ('api_textual', '0018_workshoplocationdescription'),
     ]
 
     operations = [

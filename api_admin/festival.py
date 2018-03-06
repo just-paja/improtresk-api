@@ -368,6 +368,12 @@ class TextAdmin(BaseTextAdminModel):
     ]
 
 
+class WorkshopLocationDescriptionInlineAdmin(BaseInlineAdminModel):
+    """Admin model for WorkshopLocation photos."""
+
+    model = models_text.WorkshopLocationDescription
+
+
 class WorkshopLocationPhotoInlineAdmin(BaseInlineAdminModel):
     """Admin model for WorkshopLocation photos."""
 
@@ -378,6 +384,7 @@ class WorkshopLocationAdmin(BaseTextAdminModel):
     """Admin model for Workshop location."""
 
     inlines = [
+        WorkshopLocationDescriptionInlineAdmin,
         WorkshopLocationPhotoInlineAdmin,
     ]
     list_display = ('name', 'address', 'updated_at')
