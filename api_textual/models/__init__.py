@@ -3,6 +3,7 @@
 from .news import News
 from .newsPhoto import NewsPhoto
 from .performer import Performer
+from .performerDescription import PerformerDescription
 from .performerLink import PerformerLink
 from .performerPhoto import PerformerPhoto
 from .poll import Poll
@@ -19,6 +20,7 @@ __all__ = (
     News,
     NewsPhoto,
     Performer,
+    PerformerDescription,
     PerformerLink,
     PerformerPhoto,
     Poll,

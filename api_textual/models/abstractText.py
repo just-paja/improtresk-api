@@ -1,11 +1,10 @@
 """Import Django models."""
-from api.models.base import Base
-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from .abstractStub import AbstractStub
 
-class AbstractText(Base):
+class AbstractText(AbstractStub):
     """Stores text types."""
 
     name = models.CharField(
@@ -15,14 +14,10 @@ class AbstractText(Base):
     slug = models.SlugField(
         verbose_name=_("Identifier in URL"),
     )
-    text = models.TextField(
-        verbose_name=_("Text"),
-    )
 
     class Meta:
         verbose_name = _("Text item")
         verbose_name_plural = _("Text items")
-
         abstract = True
 
     def __str__(self):

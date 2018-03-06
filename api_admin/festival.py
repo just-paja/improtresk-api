@@ -417,6 +417,12 @@ class LinkInlineAdmin(BaseInlineAdminModel):
     model = models_text.PerformerLink
 
 
+class PerformerDescriptionInlineAdmin(BaseInlineAdminModel):
+    """Admin model for TravelingTip photos."""
+
+    model = models_text.PerformerDescription
+
+
 class PerformerPhotoInlineAdmin(BaseInlineAdminModel):
     """Admin model for TravelingTip photos."""
 
@@ -430,6 +436,7 @@ class PerformerAdmin(BaseTextAdminModel):
     exclude = ('links',)
     inlines = [
         LinkInlineAdmin,
+        PerformerDescriptionInlineAdmin,
         PerformerPhotoInlineAdmin,
     ]
 

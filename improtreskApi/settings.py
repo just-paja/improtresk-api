@@ -15,6 +15,7 @@ import datetime
 import os
 
 from django_auth_ldap.config import GroupOfNamesType, LDAPSearch
+from django.utils.translation import ugettext_lazy as _
 
 import ldap
 
@@ -146,6 +147,12 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
 LANGUAGE_CODE = 'cs-cz'
+
+LANGUAGES = [
+    ('cs', _('Česky')),
+    ('en', _('English')),
+]
+
 
 TIME_ZONE = 'UTC'
 
