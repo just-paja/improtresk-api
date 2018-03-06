@@ -21,6 +21,16 @@ class PerformerLinkSerializer(serializers.ModelSerializer):
         )
 
 
+class PerformerDescriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PerformerDescription
+        fields = (
+            'id',
+            'lang',
+            'text',
+        )
+
+
 class PerformerPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.PerformerPhoto
@@ -36,6 +46,11 @@ class PerformerPhotoSerializer(serializers.ModelSerializer):
 class PerformerSerializer(serializers.ModelSerializer):
     links = PerformerLinkSerializer(many=True, read_only=True)
     photos = PerformerPhotoSerializer(many=True, read_only=True)
+    description = PerformerDescriptionSerializer(
+        many=True,
+        read_only=True,
+        source='descriptions',
+    )
 
     class Meta:
         model = models.Performer
@@ -45,7 +60,7 @@ class PerformerSerializer(serializers.ModelSerializer):
             'links',
             'photos',
             'slug',
-            'text',
+            'description',
             'year',
         )
 

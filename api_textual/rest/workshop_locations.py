@@ -18,8 +18,24 @@ class WorkshopLocationPhotoSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
+class WorkshopLocationDescriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.WorkshopLocationDescription
+        fields = (
+            'id',
+            'lang',
+            'text',
+        )
+
+
+
 class WorkshopLocationSerializer(serializers.HyperlinkedModelSerializer):
     photos = WorkshopLocationPhotoSerializer(many=True, read_only=True)
+    description = WorkshopLocationDescriptionSerializer(
+        many=True,
+        read_only=True,
+        source='descriptions',
+    )
 
     class Meta:
         model = models.WorkshopLocation
@@ -27,9 +43,9 @@ class WorkshopLocationSerializer(serializers.HyperlinkedModelSerializer):
             'id',
             'name',
             'address',
+            'description',
             'photos',
             'slug',
-            'text',
         )
 
 
