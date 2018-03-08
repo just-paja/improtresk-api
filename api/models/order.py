@@ -29,6 +29,12 @@ def generate_symvar():
 class Order(Base):
     """Stores orders types."""
 
+    year = models.ForeignKey(
+        'Year',
+        null=True,
+        related_name='orders',
+        on_delete=models.PROTECT,
+    )
     participant = models.ForeignKey(
         Participant,
         related_name="orders",

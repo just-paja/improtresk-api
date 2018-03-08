@@ -27,16 +27,17 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = (
-            'id',
-            'confirmed',
-            'participant',
-            'symvar',
-            'price',
-            'paid',
-            'canceled',
-            'reservation',
             'accomodationInfo',
+            'canceled',
+            'confirmed',
+            'id',
+            'paid',
+            'participant',
             'payments',
+            'price',
+            'reservation',
+            'symvar',
+            'year',
         )
 
 
