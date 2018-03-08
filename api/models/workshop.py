@@ -40,6 +40,12 @@ class Workshop(CapacityMixin, Base):
         related_name='workshops',
         through=WorkshopLector
     )
+    year = models.ForeignKey(
+        'Year',
+        null=True,
+        related_name='workshops',
+        on_delete=models.PROTECT,
+    )
 
     def get_actual_workshop_price(self, year):
         return self.prices.get(price_level=year.get_actual_price_level())

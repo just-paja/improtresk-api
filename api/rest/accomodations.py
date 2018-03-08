@@ -1,6 +1,8 @@
+from django.shortcuts import get_object_or_404
+
 from rest_framework import permissions, serializers, viewsets
 
-from ..models import Accomodation, AccomodationDescription, AccomodationPhoto
+from ..models import Accomodation, AccomodationDescription, AccomodationPhoto, Year
 
 
 class AccomodationPhotoSerializer(serializers.HyperlinkedModelSerializer):
@@ -49,7 +51,10 @@ class AccomodationSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class AccomodationViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Accomodation.objects.all()
     serializer_class = AccomodationSerializer
     permission_classes = [permissions.AllowAny]
     allowed_methods = ('GET',)
+
+    def get_queryset(self):
+        year = get_object_or_404(Year, year=self.kwargs.get('year', None))
+        return Accomodation.objects.filter(year=year)

@@ -27,16 +27,17 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = (
-            'id',
-            'confirmed',
-            'participant',
-            'symvar',
-            'price',
-            'paid',
-            'canceled',
-            'reservation',
             'accomodationInfo',
+            'canceled',
+            'confirmed',
+            'id',
+            'paid',
+            'participant',
             'payments',
+            'price',
+            'reservation',
+            'symvar',
+            'year',
         )
 
 
@@ -44,12 +45,18 @@ class CreateOrderSerializer(serializers.Serializer):
     workshop = serializers.IntegerField()
     meals = serializers.ListField()
     accomodation = serializers.IntegerField()
-    year = serializers.IntegerField()
     accomodationInfo = serializers.BooleanField(required=False)
 
     def create(self, validated_data):
+        try:
+            year = Year.objects.filter(current=True).order_by('-year').first()
+        except ObjectDoesNotExist:
+            year = None
+
+        if not year:
+            return None
+
         workshop = Workshop.objects.get(id=validated_data['workshop'])
-        year = Year.objects.get(year=validated_data['year'])
         workshop_price = workshop.get_actual_workshop_price(year)
         meals = Meal.objects.filter(id__in=validated_data['meals'])
         meals_price = meals.aggregate(Sum('price'))['price__sum']
@@ -61,6 +68,7 @@ class CreateOrderSerializer(serializers.Serializer):
             participant=self.user.participant,
             price=workshop_price.price + meals_price,
             accomodation_info=validated_data.get('accomodationInfo', False),
+            year=year,
         )
         reservation = Reservation.objects.create(
             accomodation_id=validated_data['accomodation'],
@@ -110,12 +118,17 @@ class OrderViewSet(viewsets.ModelViewSet):
         return super().retrieve(request, *args, **kwargs)
 
     def create(self, request):
+        try:
+            year = Year.objects.filter(current=True).order_by('-year').first()
+        except ObjectDoesNotExist:
+            year = None
         serializer = CreateOrderSerializer(data=request.data)
         serializer.user = request.user.participant
-        if serializer.user.participant and serializer.is_valid():
+        if year and serializer.user.participant and serializer.is_valid():
             openOrders = Order.objects.filter(
                 canceled=False,
                 participant=request.user.participant,
+                year=year,
             ).count()
             if openOrders == 0:
                 serializer.save()

@@ -33,6 +33,11 @@ class Accomodation(CapacityMixin, Base):
         verbose_name=_("Capacity"),
         help_text=_("How many people can fit in"),
     )
+    year = models.ForeignKey(
+        'Year',
+        null=True,
+        on_delete=models.PROTECT,
+    )
 
     def get_reservations_query(self):
         """

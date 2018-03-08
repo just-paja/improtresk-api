@@ -43,6 +43,9 @@ class Year(Base):
         verbose_name=_("Is this year current?"),
     )
 
+    class Meta:
+        ordering = ('-year', )
+
     def __str__(self):
         """Return name as string representation."""
         return "Year %s" % self.year

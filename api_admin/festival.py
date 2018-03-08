@@ -113,7 +113,7 @@ class WorkshopAdmin(BaseAdminModel):
     ]
 
     list_display = ('name', 'desc', 'difficulty', 'visibility')
-    list_filter = ('visibility', 'difficulty')
+    list_filter = ('year', 'visibility', 'difficulty')
 
 
 class AccomodationDescriptionAdmin(BaseInlineAdminModel):
@@ -136,13 +136,14 @@ class AccomodationAdmin(BaseAdminModel):
         AccomodationPhotoAdmin,
     ]
     fields = [
+        'year',
         'name',
         'price',
         'visibility',
         'capacity',
     ]
-    list_display = ('name', 'capacity', 'price', 'visibility')
-    list_filter = ('visibility',)
+    list_display = ('name', 'year', 'capacity', 'price', 'visibility')
+    list_filter = ('year', 'visibility',)
 
 
 class FoodPhotoAdmin(BaseInlineAdminModel):
@@ -171,7 +172,7 @@ class SoupAdmin(FoodAdminMixin, BaseAdminModel):
 
 class MealAdmin(BaseAdminModel):
     """Admin model for Meal."""
-
+    list_filter = ('year', 'visibility',)
     list_display = (
         'name',
         'price',
@@ -254,6 +255,7 @@ class ParticipantAdmin(BaseAdminModel):
         'created_at',
     )
     list_filter = ('team', 'newsletter')
+    search_fields = ['name', 'email']
 
 
 class MealReservationInlineAdmin(BaseInlineAdminModel):
@@ -299,7 +301,7 @@ class OrderAdmin(BaseAdminModel):
         'paid',
         'over_paid',
     )
-    list_filter = ('paid', 'over_paid', 'canceled')
+    list_filter = ('year', 'paid', 'over_paid', 'canceled')
     fields = [
         'participant',
         'symvar',
@@ -365,6 +367,7 @@ class ScheduleEventAdmin(BaseAdminModel):
     """Define admin model for Rules."""
 
     list_display = ('name', 'year', 'start_at', 'end_at')
+    list_filter = ('year',)
 
 
 class TextPhotoInlineAdmin(BaseInlineAdminModel):
@@ -411,7 +414,12 @@ class TravelingTipPhotoInlineAdmin(BaseInlineAdminModel):
 
 class TravelingTipAdmin(BaseTextAdminModel):
     """Admin model for Workshop location."""
-
+    fields = [
+        'name',
+        'slug',
+        'lang',
+        'text',
+    ]
     inlines = [
         TravelingTipPhotoInlineAdmin,
     ]
@@ -425,7 +433,12 @@ class NewsPhotoInlineAdmin(BaseInlineAdminModel):
 
 class NewsAdmin(BaseTextAdminModel):
     """Define admin model for News."""
-
+    fields = [
+        'name',
+        'slug',
+        'lang',
+        'text',
+    ]
     inlines = [
         NewsPhotoInlineAdmin,
     ]
