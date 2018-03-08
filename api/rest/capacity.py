@@ -6,6 +6,11 @@ from rest_framework.response import Response
 from ..models import Accomodation, Workshop, Year
 
 
+class CapacitySerializer(serializers.ModelSerializer):
+    def __init__(self, year, *args, **kwargs):
+        super(*args, **kwargs)
+
+
 class AccomodationCapacitySerializer(serializers.ModelSerializer):
     available_capacity = serializers.Field
 
@@ -44,7 +49,10 @@ class CapacityViewSet(viewsets.ReadOnlyModelViewSet):
         )
 
         workshops_qs = year.get_workshops()
-        workshops_serial = WorkshopCapacitySerializer(workshops_qs, many=True)
+        workshops_serial = WorkshopCapacitySerializer(
+            workshops_qs,
+            many=True,
+        )
 
         return Response(
             {
