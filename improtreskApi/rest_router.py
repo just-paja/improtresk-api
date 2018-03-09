@@ -107,4 +107,7 @@ router.register(
     base_name='capacity',
 )
 
-router.register(r'accomodations', accomodations.AccomodationViewSet)
+router.register(
+    r'years/(?P<year>[0-9]{4})/accomodation',
+    accomodations.AccomodationViewSet
+)
