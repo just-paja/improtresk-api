@@ -13,9 +13,14 @@ def forwards(apps, schema_editor):
     for accomodation in accomodations:
         accomodation.year = year2017
         accomodation.save()
+        descriptions = accomodation.descriptions.all()
         accomodation.pk = None
         accomodation.year = year2018
         accomodation.save()
+        for description in descriptions:
+            description.pk = None
+            description.accomodation = accomodation
+            description.save()
 
 
 def backwards(apps, schema_editor):

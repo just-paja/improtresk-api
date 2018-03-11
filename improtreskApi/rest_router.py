@@ -109,5 +109,6 @@ router.register(
 
 router.register(
     r'years/(?P<year>[0-9]{4})/accomodation',
-    accomodations.AccomodationViewSet
+    accomodations.AccomodationViewSet,
+    base_name='accomodation',
 )

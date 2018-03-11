@@ -1,6 +1,9 @@
 """Site administration module."""
 from django.contrib import admin
+from django.http import HttpResponseRedirect
 from django.urls import reverse
+
+from api import models as models_api
 
 DEFAULT_READONLY = ['created_at', 'updated_at']
 
@@ -13,22 +16,24 @@ class BaseAdminModel(admin.ModelAdmin):
         return DEFAULT_READONLY + list(self.readonly_fields)
 
     def changelist_view(self, request, *args, **kwargs):
-        from django.http import HttpResponseRedirect
-        if hasattr(self, 'default_filters') and self.default_filters:
-            if len(request.GET) == 0:
-                print(self.opts)
-                url = reverse('admin:%s_%s_changelist' % (
-                    self.opts.app_label,
-                    'accomodation'
-                ))
-                filters = []
-                for filter in self.default_filters:
-                    print(filter)
-                    key = filter.split('=')[0]
-                    if key not in request.GET:
-                        filters.append(filter)
-                if filters:
-                    return HttpResponseRedirect("%s?%s" % (url, "&".join(filters)))
+        referer = request.META.get('HTTP_REFERER', None)
+        filters = []
+
+        url = reverse('admin:%s_%s_changelist' % (
+            self.opts.app_label,
+            'accomodation'
+        ))
+        if 'year' in self.list_filter:
+            currentYear = (
+                models_api.Year.objects
+                    .filter(current=True)
+                    .order_by('-year')
+                    .first()
+            )
+            if currentYear:
+                filters.append('year__id__exact=%s' % currentYear.id)
+        if filters and len(request.GET) == 0:
+            return HttpResponseRedirect("%s?%s" % (url, "&".join(filters)))
         return super(BaseAdminModel, self).changelist_view(request, *args, **kwargs)
 
 

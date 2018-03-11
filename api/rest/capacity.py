@@ -42,7 +42,7 @@ class CapacityViewSet(viewsets.ReadOnlyModelViewSet):
     def list(self, request, year=None):
         year = get_object_or_404(Year, year=year)
 
-        accomodation_qs = Accomodation.objects.all()
+        accomodation_qs = Accomodation.objects.filter(year=year).all()
         accomodation_serial = AccomodationCapacitySerializer(
             accomodation_qs,
             many=True,

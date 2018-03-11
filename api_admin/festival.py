@@ -144,7 +144,6 @@ class AccomodationAdmin(BaseAdminModel):
     ]
     list_display = ('name', 'year', 'capacity', 'price', 'visibility')
     list_filter = ('year', 'visibility',)
-    default_filters = ('year__id__exact=4',)
 
 
 class FoodPhotoAdmin(BaseInlineAdminModel):
