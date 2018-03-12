@@ -25,12 +25,10 @@ class BaseAdminModel(admin.ModelAdmin):
             self.opts.model_name,
         ))
         if 'year' in self.list_filter:
-            currentYear = (
-                models_api.Year.objects
-                    .filter(current=True)
-                    .order_by('-year')
-                    .first()
-            )
+            currentYear = models_api.Year.objects\
+                .filter(current=True)\
+                .order_by('-year')\
+                .first()
             if currentYear:
                 filters.append('year__id__exact=%s' % currentYear.id)
         if 'visibility' in self.list_filter:
