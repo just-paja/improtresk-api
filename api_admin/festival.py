@@ -316,7 +316,6 @@ class OrderAdmin(BaseAdminModel):
         if obj:
             return [
                 'participant',
-                'price',
                 'symvar',
                 'total_amount_received',
             ] + DEFAULT_READONLY
