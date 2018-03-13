@@ -13,6 +13,7 @@ class PriceLevelSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'year',
+            'entryFee',
             'takesEffectOn',
         )
 

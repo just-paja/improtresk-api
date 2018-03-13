@@ -14,6 +14,8 @@ from ..models import Food, Meal, MealReservation, Order, Reservation, Soup,\
 
 class OrderSerializer(serializers.ModelSerializer):
     accomodationInfo = serializers.BooleanField(source='accomodation_info')
+    cancelled = serializers.BooleanField(source='canceled')
+    createdAt = serializers.DateTimeField(source='created_at')
     reservation = ReservationSerializer(
         many=False,
         read_only=True,
@@ -28,8 +30,9 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = (
             'accomodationInfo',
-            'canceled',
+            'cancelled',
             'confirmed',
+            'createdAt',
             'id',
             'paid',
             'participant',
@@ -42,7 +45,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class CreateOrderSerializer(serializers.Serializer):
-    workshop = serializers.IntegerField()
+    workshop = serializers.IntegerField(required=False, allow_null=True, default=None)
     meals = serializers.ListField()
     accomodation = serializers.IntegerField()
     accomodationInfo = serializers.BooleanField(required=False)
@@ -56,17 +59,24 @@ class CreateOrderSerializer(serializers.Serializer):
         if not year:
             return None
 
-        workshop = Workshop.objects.get(id=validated_data['workshop'])
-        workshop_price = workshop.get_actual_workshop_price(year)
+        total_price = 0
+        if 'workshop' in validated_data and validated_data['workshop']:
+            workshop = Workshop.objects.get(id=validated_data['workshop'])
+            workshop_price = workshop.get_actual_workshop_price(year)
+            total_price += workshop_price.price
+        else:
+            workshop = None
+            workshop_price = None
+
         meals = Meal.objects.filter(id__in=validated_data['meals'])
         meals_price = meals.aggregate(Sum('price'))['price__sum']
 
-        if not meals_price:
-            meals_price = 0
+        if meals_price:
+            total_price += meals_price
 
         order = Order.objects.create(
             participant=self.user.participant,
-            price=workshop_price.price + meals_price,
+            price=total_price,
             accomodation_info=validated_data.get('accomodationInfo', False),
             year=year,
         )

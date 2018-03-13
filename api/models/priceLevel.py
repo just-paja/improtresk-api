@@ -22,6 +22,12 @@ class PriceLevel(Base):
     takes_effect_on = models.DateField(
         verbose_name=_("Date, when this price level takes effect"),
     )
+    entryFee = models.PositiveIntegerField(
+        default=None,
+        blank=True,
+        null=True,
+        verbose_name=_('Nightly fee'),
+    )
 
     def __str__(self):
         """Return name as string representation."""

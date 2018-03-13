@@ -16,10 +16,10 @@ from .workshop import Workshop
 def generate_symvar():
     """Generate variable symbol for a new order."""
     today = now().strftime('%Y')
-    top = Order.objects.order_by('id').last()
+    top = Order.objects.filter(symvar__startswith=today).order_by('id').last()
 
     if top:
-        total = int(top.symvar[3:].split(today)[-1]) + 1
+        total = int(top.symvar[4:].split(today)[-1]) + 1
     else:
         total = 1
 
@@ -108,7 +108,7 @@ class Order(Base):
                 'payments': self.payments.all(),
                 'symvar': self.symvar,
                 'validUntil': self.reservation.ends_at,
-                'workshop': self.reservation.workshop_price.workshop,
+                'workshop': self.reservation.workshop(),
             },
         )
 
