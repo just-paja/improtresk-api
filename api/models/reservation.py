@@ -14,6 +14,7 @@ class Reservation(Base):
         'WorkshopPrice',
         verbose_name=_("Workshop price"),
         on_delete=models.PROTECT,
+        null=True,
     )
     order = models.OneToOneField(
         'Order',
@@ -41,7 +42,7 @@ class Reservation(Base):
     )
 
     def workshop(self):
-        return self.workshop_price.workshop
+        return self.workshop_price.workshop if self.workshop_price else None
 
     def participant(self):
         return self.order.participant
@@ -55,7 +56,10 @@ class Reservation(Base):
         ).get('total')
 
     def get_workshop_price(self):
-        return self.workshop_price.price
+        return self.workshop_price.price if self.workshop_price else 0
+
+    def get_workshop_name(self):
+        return self.workshop().name if self.workshop() else None
 
     def price(self):
         return self.get_workshop_price() + self.get_meals_price()
@@ -72,7 +76,7 @@ class Reservation(Base):
     def __str__(self):
         """Return name as string representation."""
         return "%s for %s ends at %s" % (
-            self.workshop().name,
+            self.get_workshop_name(),
             self.price(),
             self.ends_at,
         )
