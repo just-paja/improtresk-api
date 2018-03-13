@@ -20,6 +20,7 @@ django-dbbackup = "*"
 drf-extensions = "*"
 django-mathfilters = "*"
 boto = "*"
+fiobank = "*"
 
 
 [dev-packages]
