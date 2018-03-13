@@ -65,3 +65,6 @@ class Workshop(CapacityMixin, Base):
             return "(%s) %s" % (self.year.year, self.name)
         else:
             return self.name
+
+    def number_of_reservations(self):
+        return self.participants.count()
