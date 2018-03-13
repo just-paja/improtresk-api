@@ -3,6 +3,7 @@ from api_textual.models.workshopLocation import WorkshopLocation
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ObjectDoesNotExist
 
 from .base import Base
 from .capacityMixin import CapacityMixin
@@ -61,4 +62,7 @@ class Workshop(CapacityMixin, Base):
 
     def __str__(self):
         """Return name as string representation."""
-        return self.name
+        if self.year:
+            return "(%s) %s" % (self.year.year, self.name)
+        else:
+            return self.name
