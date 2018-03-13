@@ -76,7 +76,7 @@ class ParticipantWorkshop(Base):
         if not template:
             return None
 
-        body = render_to_string(template, {
+        body = render_to_string(template[1], {
             'prevWorkshop': self.initial_workshop,
             'currentWorkshop': self.workshop,
         })
