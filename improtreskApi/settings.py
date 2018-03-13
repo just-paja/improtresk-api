@@ -94,8 +94,6 @@ TEMPLATES = [
     },
 ]
 
-print(TEMPLATES)
-
 WSGI_APPLICATION = 'improtreskApi.wsgi.application'
 
 
