@@ -44,10 +44,11 @@ class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
         slug_field='name',
     )
-    assigned_workshop = serializers.SlugRelatedField(
-        many=False,
+    assignments = serializers.SlugRelatedField(
+        source="workshops",
+        many=True,
         read_only=True,
-        slug_field='id',
+        slug_field='workshop_id',
     )
     birthday = serializers.DateField(
         validators=[is_eighteen],
@@ -73,7 +74,7 @@ class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
             'birthday',
             'rules_accepted',
             'newsletter',
-            'assigned_workshop',
+            'assignments',
         )
         extra_kwargs = {
             'password': {'write_only': True},

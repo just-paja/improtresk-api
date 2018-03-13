@@ -12,10 +12,18 @@ class ParticipantWorkshop(Base):
     participant = models.ForeignKey(
         'Participant',
         on_delete=models.CASCADE,
+        related_name='workshops',
     )
     workshop = models.ForeignKey(
         'Workshop',
         on_delete=models.PROTECT,
+        related_name='participants',
+    )
+    year = models.ForeignKey(
+        'Year',
+        on_delete=models.PROTECT,
+        related_name='assignments',
+        null=True,
     )
     ignore_change = False
     initial_workshop = None

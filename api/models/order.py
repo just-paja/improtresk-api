@@ -11,6 +11,8 @@ from .base import Base
 from .participant import Participant
 from .payment import STATUS_PAID
 from .workshop import Workshop
+from .participantWorkshop import ParticipantWorkshop
+from .year import Year
 
 
 def generate_symvar():
@@ -161,7 +163,7 @@ class Order(Base):
             if not self.initialPaid:
                 self.mail_paid()
 
-            if not self.participant.assigned_workshop:
+            if not self.participant.get_assignment(self.year):
                 self.try_to_assign()
         else:
             self.mail_update()
@@ -171,8 +173,12 @@ class Order(Base):
         ambiguous_count = ambiguous.count()
 
         if ambiguous_count == 0:
-            self.participant.assigned_workshop = self.reservation.workshop()
-            self.participant.save()
+            assignment = ParticipantWorkshop(
+                participant=self.participant,
+                year=self.year,
+                workshop=self.reservation.workshop(),
+            )
+            assignment.save()
         else:
             formatConfig = {
                 'order': self.id,
@@ -190,14 +196,22 @@ class Order(Base):
 
 
 def unassigned_orders():
+    year = Year.objects.get_current()
+    if not year:
+        return Order.objects.none()
     return Order.objects.filter(
+        year=year,
         paid=True,
-        participant__assigned_workshop__isnull=True,
+        participant__workshops__workshop__exact=models.F('reservation__workshop_price__workshop'),
     )
 
 
 def workshops_at_capacity():
+    year = Year.objects.get_current()
+    if not year:
+        return Workshop.objects.none()
     return Workshop.objects\
+        .filter(year=year)\
         .annotate(assignees=models.Count('participant'))\
         .filter(assignees__gte=models.F('capacity'))
 

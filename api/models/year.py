@@ -11,8 +11,14 @@ from .workshop import Workshop
 from ..fields import VISIBILITY_PUBLIC
 
 
+class YearManager(models.Manager):
+    def get_current(self):
+        return self.filter(current=True).order_by('-year').first()
+
+
 class Year(Base):
     """Stores years."""
+    objects = YearManager()
 
     year = models.SlugField(
         verbose_name=_("Year"),

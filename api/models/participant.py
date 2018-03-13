@@ -54,13 +54,7 @@ class Participant(Base, auth.models.User):
 
     def __str__(self):
         """Return name and status as string representation."""
-        status = 'assigned' if self.assigned_workshop else 'unassigned'
-        return "%s (%s)" % (self.name, status)
-
-    def __init__(self, *args, **kwargs):
-        """Store initial asssignment."""
-        super().__init__(*args, **kwargs)
-        self.initialAssignment = self.assigned_workshop
+        return "%s" % (self.name)
 
     @property
     def team_name(self):
@@ -84,3 +78,9 @@ class Participant(Base, auth.models.User):
             settings.EMAIL_SENDER,
             [self.email],
         )
+
+    def get_assignment(self, year):
+        try:
+            return self.workshops.filter(year=year).first()
+        except ObjectDoesNotExist:
+            return None

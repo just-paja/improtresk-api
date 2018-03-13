@@ -9,39 +9,24 @@ from model_mommy import mommy
 
 
 class ParticipantTest(TestCase):
-    @patch('uuid.uuid4')
-    def test_request_password_reset(self, mock_uuid4):
+    def setUp(self):
         self.maxDiff = 100000
         mail.outbox = []
-        mock_uuid4.return_value = 'generated-token'
-        participant = mommy.make(
+        self.participant = mommy.make(
             'api.Participant',
             name="Foo participant",
             email="foo@bar.com",
         )
-        participant.request_password_reset()
-        self.assertEquals(len(mail.outbox), 1)
-        sent = mail.outbox.pop()
-        self.assertEquals(sent.to, ['foo@bar.com'])
-        self.assertEquals(
-            sent.body,
-            """Ahoj,
+        self.participant.request_password_reset()
 
-dostali jsme žádost na obnovu hesla k tvému účtu na Improtřesk. Pro zadání \
-nového hesla následuj následující odkaz:
+    @patch('uuid.uuid4')
+    def test_mail_update_sent_to_participant(self, mock_uuid4):
+        mock_uuid4.return_value = 'generated-token'
+        self.participant.request_password_reset()
+        self.assertEquals(mail.outbox.pop().to, ['foo@bar.com'])
 
-http://improtresk.cz/nove-heslo?token=generated-token
-
-    -----
-
-Pokud jsi o změnu hesla nepožádal, tak tento e-mail ignoruj.
-
-Organizační tým Improtřesku
-http://improtresk.cz
-info@improtresk.cz
-
---
-
-Tato zpráva byla vyžádána v rámci placené přihlášky na Improtřesk 2017.
-""",
-        )
+    @patch('uuid.uuid4')
+    def test_mail_update_contains_url(self, mock_uuid4):
+        mock_uuid4.return_value = 'generated-token'
+        self.participant.request_password_reset()
+        self.assertIn('/cs/nove-heslo?token=generated-token', mail.outbox.pop().body)
