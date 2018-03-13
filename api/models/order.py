@@ -117,7 +117,7 @@ class Order(Base):
 
     def has_reservation(self):
         try:
-            return self.reservation is not none
+            return self.reservation is not None
         except Reservation.DoesNotExist:
             return False
 
