@@ -22,10 +22,9 @@ class WorkshopTest(TestCase):
             ends_at='2017-03-01T00:00:00Z',
             workshop_price__workshop__capacity=1,
         )
-        reservation.order.paid = True
         reservation.order.save()
         workshop = reservation.workshop_price.workshop
-        self.assertEqual(workshop.number_of_reservations(), 1)
+        self.assertEqual(workshop.number_of_reservations(), 0)
         self.assertEqual(workshop.has_free_capacity(), False)
 
     @freeze_time("2017-02-01T00:00:00Z")
@@ -41,16 +40,12 @@ class WorkshopTest(TestCase):
         self.assertEqual(workshop.has_free_capacity(), True)
 
     @freeze_time('2017-02-01T00:00:00Z')
-    def test_capacity_paid(self):
-        reservation = mommy.make(
-            'api.Reservation',
-            ends_at='2017-01-01T00:00:00Z',
-            workshop_price__workshop__capacity=1,
-            order__participant__name="Foo participant",
+    def test_capacity_assigned(self):
+        workshop = mommy.make('api.Workshop', capacity=1)
+        mommy.make(
+            'api.ParticipantWorkshop',
+            workshop=workshop,
         )
-        reservation.order.paid = True
-        reservation.order.save()
-        workshop = reservation.workshop_price.workshop
         self.assertEqual(workshop.number_of_reservations(), 1)
         self.assertEqual(workshop.has_free_capacity(), False)
 
