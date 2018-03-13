@@ -4,13 +4,12 @@ from django.contrib import auth
 from django.core import mail
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.template.loader import render_to_string
 
 from .base import Base
 from .participantToken import PASSWORD_RESET, ParticipantToken
 from .team import Team
 from .workshop import Workshop
-from ..mail import signup as templates
-from ..mail.common import formatMail
 
 
 class Participant(Base, auth.models.User):
@@ -78,11 +77,10 @@ class Participant(Base, auth.models.User):
             token_type=PASSWORD_RESET,
         )
         mail.send_mail(
-            templates.PASSWORD_RESET_REQUEST_SUBJECT,
-            formatMail(
-                templates.PASSWORD_RESET_REQUEST_BODY,
-                {'token': token.token},
-            ),
+            'Změna hesla',
+            render_to_string('mail/participant_forgotten_password.txt', {
+                'token': token.token,
+            }),
             settings.EMAIL_SENDER,
             [self.email],
         )
