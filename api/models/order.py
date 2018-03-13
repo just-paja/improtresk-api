@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 from .base import Base
 from .participant import Participant
 from .payment import STATUS_PAID
+from .reservation import Reservation
 from .workshop import Workshop
 from .participantWorkshop import ParticipantWorkshop
 from .year import Year
@@ -114,13 +115,20 @@ class Order(Base):
             },
         )
 
+    def has_reservation(self):
+        try:
+            return self.reservation is not none
+        except Reservation.DoesNotExist:
+            return False
+
     def mail_confirm(self):
-        mail.send_mail(
-            'Tvoje přihláška',
-            self.get_mail_body('mail/order_confirmed.txt'),
-            settings.EMAIL_SENDER,
-            [self.participant.email],
-        )
+        if self.has_reservation():
+            mail.send_mail(
+                'Tvoje přihláška',
+                self.get_mail_body('mail/order_confirmed.txt'),
+                settings.EMAIL_SENDER,
+                [self.participant.email],
+            )
 
     def mail_paid(self):
         mail.send_mail(
