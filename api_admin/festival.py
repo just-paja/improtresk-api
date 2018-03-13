@@ -266,7 +266,7 @@ class MealReservationInlineAdmin(BaseInlineAdminModel):
 
 class ReservationAdmin(BaseAdminModel):
     """Admin model for Reservations."""
-    readonly_fields = ('workshop', 'participant', 'price', 'is_valid')
+    readonly_fields = ('participant',)
     list_display = (
         'participant',
         'workshop',
@@ -283,10 +283,7 @@ class ReservationAdmin(BaseAdminModel):
         'accomodation',
         'meals',
     )
-
     inlines = [MealReservationInlineAdmin]
-
-    pass
 
 
 class OrderAdmin(BaseAdminModel):
