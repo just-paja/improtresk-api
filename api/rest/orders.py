@@ -21,7 +21,6 @@ class OrderSerializer(serializers.ModelSerializer):
         read_only=True,
     )
     payments = PaymentSerializer(
-        source="payment_set",
         many=True,
         read_only=True,
     )
@@ -113,7 +112,8 @@ class OrderViewSet(viewsets.ModelViewSet):
         if user.participant:
             return Order.objects\
                 .filter(participant=user.participant)\
-                .prefetch_related('reservation')
+                .prefetch_related('reservation')\
+                .prefetch_related('payments')
 
     def retrieve(self, request, *args, **kwargs):
         order = self.get_object()
