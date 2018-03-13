@@ -83,6 +83,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, 'api/templates')],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
