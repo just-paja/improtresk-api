@@ -90,7 +90,8 @@ class CreateOrderSerializer(serializers.Serializer):
 
         meals = Meal.objects.filter(id__in=validated_data['meals'])
         meals_price = meals.aggregate(Sum('price'))['price__sum']
-        total_price += meals_price
+        if meals_price:
+            total_price += meals_price
 
         order = Order.objects.create(
             participant=self.user.participant,
