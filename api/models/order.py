@@ -177,6 +177,9 @@ class Order(Base):
             self.mail_update()
 
     def try_to_assign(self):
+        if not self.reservation.workshop_price:
+            return
+
         ambiguous = ambiguous_orders()
         ambiguous_count = ambiguous.count()
 
