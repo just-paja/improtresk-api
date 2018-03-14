@@ -300,6 +300,7 @@ class OrderAdmin(BaseAdminModel):
     )
     list_filter = ('year', 'paid', 'over_paid', 'canceled')
     fields = [
+        'year',
         'participant',
         'symvar',
         'accomodation_info',
