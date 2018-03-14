@@ -58,11 +58,24 @@ class Reservation(Base):
     def get_workshop_price(self):
         return self.workshop_price.price if self.workshop_price else 0
 
+    def get_stay_price(self):
+        if not self.workshop_price:
+            price_level = None
+            year = self.order.year
+            if year:
+                stay_length = self.order.participant.stay.filter(year=year).count()
+                price_level = year.get_actual_price_level()
+
+            if price_level:
+                return price_level.entryFee * stay_length
+
+        return 0
+
     def get_workshop_name(self):
         return self.workshop().name if self.workshop() else None
 
     def price(self):
-        return self.get_workshop_price() + self.get_meals_price()
+        return self.get_workshop_price() + self.get_meals_price() + self.get_stay_price()
 
     def is_valid(self):
         if self.order and self.order.paid:

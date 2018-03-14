@@ -229,10 +229,22 @@ class ParticipantWorkshopAdmin(BaseInlineAdminModel):
     ]
 
 
+class ParticipantStayAdmin(BaseInlineAdminModel):
+    """Admin model for Participant workshop assignment."""
+
+    model = models_api.ParticipantStay
+    exclude = [
+        'created_at',
+    ]
+
+
 class ParticipantAdmin(BaseAdminModel):
     """Admin model for Participants."""
 
-    inlines = [ParticipantWorkshopAdmin]
+    inlines = [
+        ParticipantWorkshopAdmin,
+        ParticipantStayAdmin,
+    ]
     readonly_fields = [
         'password',
         'last_login',
