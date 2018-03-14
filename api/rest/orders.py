@@ -50,7 +50,7 @@ class CreateOrderSerializer(serializers.Serializer):
     accomodation = serializers.IntegerField()
     accomodationInfo = serializers.BooleanField(required=False)
 
-    def create(self, validated_data):
+    def create(self, validated_data): # noqa
         try:
             year = Year.objects.filter(current=True).order_by('-year').first()
         except ObjectDoesNotExist:
@@ -90,7 +90,8 @@ class CreateOrderSerializer(serializers.Serializer):
 
         meals = Meal.objects.filter(id__in=validated_data['meals'])
         meals_price = meals.aggregate(Sum('price'))['price__sum']
-        total_price += meals_price
+        if meals_price:
+            total_price += meals_price
 
         order = Order.objects.create(
             participant=self.user.participant,
