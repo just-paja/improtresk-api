@@ -20,7 +20,7 @@ class BaseAdminModel(admin.ModelAdmin):
         return [item for item in self.list_filter if item == 'year' or 'year' in item]
 
     def changelist_view(self, request, *args, **kwargs):
-        # referer = request.META.get('HTTP_REFERER', None)
+        referer = request.META.get('HTTP_REFERER', None)
         filters = []
 
         url = reverse('admin:%s_%s_changelist' % (
@@ -38,7 +38,7 @@ class BaseAdminModel(admin.ModelAdmin):
                     filters.append('%s__id__exact=%s' % (filter_name, currentYear.id))
         if 'visibility' in self.list_filter:
             filters.append('visibility__exact=%s' % VISIBILITY_PUBLIC)
-        if filters and len(request.GET) == 0:
+        if filters and len(request.GET) == 0 and (not referer or '?' not in referer):
             return HttpResponseRedirect("%s?%s" % (url, "&".join(filters)))
         return super(BaseAdminModel, self).changelist_view(request, *args, **kwargs)
 
