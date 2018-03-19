@@ -47,4 +47,6 @@ class Accomodation(CapacityMixin, Base):
 
     def __str__(self):
         """Return name as string representation."""
+        if self.year:
+            return "(%s) %s" % (self.year.year, self.name)
         return self.name
