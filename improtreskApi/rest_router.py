@@ -50,6 +50,11 @@ router.register(r'traveling-tips', traveling_tips.TravelingTipViewSet)
 router.register(r'texts', texts.TextViewSet)
 router.register(r'user', participants.WhoAmIViewSet)
 router.register(
+    r'password-change',
+    participants.ChangePasswordViewSet,
+    base_name='password-change',
+)
+router.register(
     r'password-reset',
     participants.ResetPasswordViewSet,
     base_name='password-reset',

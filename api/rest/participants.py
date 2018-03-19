@@ -143,6 +143,23 @@ class ResetPasswordViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         )
 
 
+class ChangePasswordViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    def create(self, request, *args, **kwargs):
+        try:
+            participant = request.user.participant
+        except ObjectDoesNotExist:
+            raise Http404
+
+        password = request.data.get('newPassword', None)
+        serializer = ParticipantPasswordSerializer(
+            participant,
+            {'password': password},
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class CreatePasswordViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Participant.objects
 
