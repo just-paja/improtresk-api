@@ -288,6 +288,7 @@ class ReservationAdmin(BaseAdminModel):
         'is_valid',
     )
     list_filter = (
+        'order__year',
         'order__confirmed',
         'order__canceled',
         'order__paid',

@@ -16,6 +16,9 @@ class BaseAdminModel(admin.ModelAdmin):
         """Define default readonly fields."""
         return DEFAULT_READONLY + list(self.readonly_fields)
 
+    def find_year_filters(self):
+        return [item for item in self.list_filter if item == 'year' or 'year' in item]
+
     def changelist_view(self, request, *args, **kwargs):
         # referer = request.META.get('HTTP_REFERER', None)
         filters = []
@@ -24,13 +27,15 @@ class BaseAdminModel(admin.ModelAdmin):
             self.opts.app_label,
             self.opts.model_name,
         ))
-        if 'year' in self.list_filter:
+        year_filters = self.find_year_filters()
+        if len(year_filters) > 0:
             currentYear = models_api.Year.objects\
                 .filter(current=True)\
                 .order_by('-year')\
                 .first()
-            if currentYear:
-                filters.append('year__id__exact=%s' % currentYear.id)
+            for filter_name in year_filters:
+                if currentYear:
+                    filters.append('%s__id__exact=%s' % (filter_name, currentYear.id))
         if 'visibility' in self.list_filter:
             filters.append('visibility__exact=%s' % VISIBILITY_PUBLIC)
         if filters and len(request.GET) == 0:
