@@ -2,6 +2,7 @@ from api import models as models_api
 from oauth2_provider import admin as oauth_admin
 
 from api_textual import models as models_text
+from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
 from django.conf.urls import url
 from django.contrib.admin import AdminSite
@@ -299,6 +300,11 @@ class ReservationAdmin(BaseAdminModel):
     inlines = [MealReservationInlineAdmin]
 
 
+class ReservationInlineAdmin(admin.StackedInline):
+    """Inline admin model for Reservations."""
+    model = models_api.Reservation
+
+
 class OrderAdmin(BaseAdminModel):
     """Admin model for Orders."""
 
@@ -325,6 +331,7 @@ class OrderAdmin(BaseAdminModel):
         'created_at',
         'updated_at',
     ]
+    inlines = [ReservationInlineAdmin]
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
