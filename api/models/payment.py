@@ -54,6 +54,7 @@ class Payment(Base):
     sender = models.CharField(
         max_length=255,
         blank=True,
+        null=True,
         default='unknown',
         verbose_name=_("Sender"),
         help_text=_("Account number of person sending this payment"),
@@ -61,6 +62,7 @@ class Payment(Base):
     bank = models.CharField(
         max_length=255,
         blank=True,
+        null=True,
         default='unknown',
         verbose_name=_("Bank"),
         help_text=_("Bank sending this payment"),
@@ -68,6 +70,7 @@ class Payment(Base):
     currency = models.CharField(
         max_length=255,
         blank=True,
+        null=True,
         default='unknown',
         verbose_name=_("Currency"),
         help_text=_("Currency of the payment"),
@@ -94,6 +97,7 @@ class Payment(Base):
         help_text=_("User identification given by the bank"),
         max_length=255,
         null=True,
+        blank=True,
     )
     order = models.ForeignKey(
         'Order',
