@@ -72,6 +72,7 @@ class LectorAdmin(BaseAdminModel):
     inlines = [
         LectorPhotoAdmin,
     ]
+    search_fields = ['name']
 
 
 class LectorRoleAdmin(BaseAdminModel):
@@ -115,6 +116,7 @@ class WorkshopAdmin(BaseAdminModel):
 
     list_display = ('name', 'desc', 'difficulty', 'visibility')
     list_filter = ('year', 'visibility', 'difficulty')
+    search_fields = ['name']
 
 
 class AccomodationDescriptionAdmin(BaseInlineAdminModel):
@@ -293,11 +295,16 @@ class ReservationAdmin(BaseAdminModel):
         'order__confirmed',
         'order__canceled',
         'order__paid',
-        'workshop_price',
-        'accomodation',
         'meals',
     )
     inlines = [MealReservationInlineAdmin]
+    search_fields = [
+        'order__participant__name',
+        'order__year__year',
+        'accomodation__name',
+        'workshop_price__workshop__name',
+        'order__price'
+    ]
 
 
 class ReservationInlineAdmin(admin.StackedInline):
@@ -330,6 +337,14 @@ class OrderAdmin(BaseAdminModel):
         'price',
         'created_at',
         'updated_at',
+    ]
+    search_fields = [
+        'participant__name',
+        'participant__team__name',
+        'price',
+        'reservation__accomodation__name',
+        'reservation__workshop_price__workshop__name',
+        'symvar',
     ]
     inlines = [ReservationInlineAdmin]
 
