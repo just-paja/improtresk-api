@@ -5,12 +5,12 @@
   {% for workshop in workshops %}
   <div class="card" style="page-break-after: always">
     <div class="card-block">
-      <h2 class="card-title">{{workshop.name}} ({{workshop.participant_count}})</h2>
+      <h2 class="card-title">{{workshop.name}} ({{workshop.assignment_count}})</h2>
     </div>
     <ul class="list-group list-group-flush">
-      {% for participant in workshop.participant_list %}
+      {% for assignment in workshop.assignment_list %}
       <li class="list-group-item">
-          {{ participant.name }}
+          {{ assignment.participant.name }}
       </li>
       {% endfor %}
     </ul>

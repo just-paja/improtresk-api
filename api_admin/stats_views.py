@@ -184,8 +184,8 @@ def workshops(request, festivalId):
     workshops = festival.get_workshops()
 
     for workshop in workshops:
-        workshop.participant_count = workshop.participant_set.count()
-        workshop.participant_list = workshop.participant_set.all()
+        workshop.assignment_count = workshop.participants.count()
+        workshop.assignment_list = workshop.participants.all()
 
     return render(
         request,
@@ -200,7 +200,7 @@ def workshops(request, festivalId):
 @staff_member_required
 def accounting(request, festivalId):
     participants = Participant.objects\
-        .filter(assigned_workshop__isnull=False)\
+        .filter(workshops__workshop__year=festivalId)\
         .order_by('name')\
         .all()
     data = []
@@ -245,7 +245,7 @@ def get_participant_reservation(order):
 @staff_member_required
 def participant_list(request, festivalId):
     participants = Participant.objects\
-        .filter(assigned_workshop__isnull=False)\
+        .filter(workshops__workshop__year=festivalId)\
         .order_by('name')\
         .all()
     data = []
