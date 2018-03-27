@@ -187,6 +187,14 @@ def workshops(request, festivalId):
         workshop.assignment_count = workshop.participants.count()
         workshop.assignment_list = workshop.participants.all()
 
+        for assignment in workshop.assignment_list:
+            assignment.order = Order.objects.filter(
+                participant=assignment.participant,
+                reservation__workshop_price__workshop=workshop,
+                confirmed=True,
+                canceled=False,
+            ).first()
+
     return render(
         request,
         'stats/workshops.html',
