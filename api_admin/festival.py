@@ -105,6 +105,15 @@ class WorkshopPriceInlineAdmin(BaseInlineAdminModel):
     model = models_api.WorkshopPrice
 
 
+class ParticipantWorkshopAdmin(BaseInlineAdminModel):
+    """Admin model for Participant workshop assignment."""
+
+    model = models_api.ParticipantWorkshop
+    exclude = [
+        'created_at',
+    ]
+
+
 class WorkshopAdmin(BaseAdminModel):
     """Admin model for Workshops and their photos."""
 
@@ -112,6 +121,7 @@ class WorkshopAdmin(BaseAdminModel):
         WorkshopPhotoAdmin,
         WorkshopLectorInlineAdmin,
         WorkshopPriceInlineAdmin,
+        ParticipantWorkshopAdmin,
     ]
 
     list_display = ('name', 'desc', 'difficulty', 'visibility')
@@ -221,15 +231,6 @@ class PaymentAdmin(BaseAdminModel):
             request,
             obj,
         )
-
-
-class ParticipantWorkshopAdmin(BaseInlineAdminModel):
-    """Admin model for Participant workshop assignment."""
-
-    model = models_api.ParticipantWorkshop
-    exclude = [
-        'created_at',
-    ]
 
 
 class ParticipantStayAdmin(BaseInlineAdminModel):
