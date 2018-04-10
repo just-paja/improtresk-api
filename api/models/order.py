@@ -213,7 +213,6 @@ def unassigned_orders():
     return Order.objects.filter(
         year=year,
         paid=True,
-        participant__workshops__workshop__exact=models.F('reservation__workshop_price__workshop'),
     )
 
 
@@ -221,10 +220,12 @@ def workshops_at_capacity():
     year = Year.objects.get_current()
     if not year:
         return Workshop.objects.none()
-    return Workshop.objects\
-        .filter(year=year)\
-        .annotate(assignees=models.Count('participant'))\
-        .filter(assignees__gte=models.F('capacity'))
+    workshops = Workshop.objects.filter(year=year)
+    full = []
+    for workshop in workshops:
+        if not workshop.has_free_capacity():
+            full.append(workshop)
+    return full
 
 
 def ambiguous_orders():

@@ -45,19 +45,25 @@ class CapacityMixin(models.Model):
             Q(orders__reservation__in=self.get_reservations_query()),
         ).distinct().count()
 
+    def number_of_paid_unassigned_reservations(self):
+        return 0
+
     def has_free_capacity(self):
         """ Returns if the object has still a free capacity and other reservations can be add. """
         if self.capacity:
-            total = self.number_of_unpaid_reservations() + \
-                self.number_of_reservations()
-            return total < self.capacity
+            return self.available_capacity() > 0
         return True
 
     def available_capacity(self):
         """
         Returns number of avaliable places
         """
-        return self.capacity - self.number_of_reservations()
+        return (
+            self.capacity -
+            self.number_of_reservations() -
+            self.number_of_paid_unassigned_reservations() -
+            self.number_of_unpaid_reservations()
+        )
 
     class Meta:
         """Makes the model abstract."""

@@ -15,7 +15,7 @@ from ..models.participantToken import PASSWORD_RESET
 
 def is_true(value):
     if not value:
-        raise serializers.ValidationError('Rules must be accepted')
+        raise serializers.ValidationError('forms.errors.must-accept-rules')
 
 
 def is_eighteen(value):
@@ -23,14 +23,14 @@ def is_eighteen(value):
     age = today.year - value.year - ((today.month, today.day) < (value.month, value.day))
 
     if age < 18:
-        raise serializers.ValidationError('Must be older than 18 years')
+        raise serializers.ValidationError('forms.errors.must-be-eighteen')
 
 
 def is_email_unique(value):
     participant_exists = Participant.objects.filter(email=value)
     user_exists = User.objects.filter(email=value)
     if participant_exists or user_exists:
-        raise ValidationError("Email address already exists, must be unique")
+        raise ValidationError("forms.errors.email-already-exists")
 
 
 class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
