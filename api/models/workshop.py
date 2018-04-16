@@ -71,5 +71,7 @@ class Workshop(CapacityMixin, Base):
 
     def number_of_paid_unassigned_reservations(self):
         return self.get_reservations_query().filter(
+            order__paid=True,
+        ).exclude(
             order__participant__workshops__workshop__exact=self
         ).count()
