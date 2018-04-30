@@ -84,7 +84,7 @@ class CreateOrderSerializer(serializers.Serializer):
             accomodation = Accomodation.objects.get(id=value)
         except Accomodation.DoesNotExist:
             raise ValidationError('orders.invalidSelection')
-        if accomodation.year.id != self.year.id:
+        if accomodation.year and accomodation.year.id != self.year.id:
             raise ValidationError('orders.invalidSelection')
         if not accomodation.has_free_capacity():
             raise ValidationError('orders.noCapacity')
@@ -98,7 +98,7 @@ class CreateOrderSerializer(serializers.Serializer):
             workshop = Workshop.objects.get(id=value)
         except Workshop.DoesNotExist:
             raise ValidationError('orders.invalidSelection')
-        if workshop.year.id != self.year.id:
+        if workshop.year and workshop.year.id != self.year.id:
             raise ValidationError('orders.invalidSelection')
         if not workshop.has_free_capacity():
             raise ValidationError('orders.noCapacity')
