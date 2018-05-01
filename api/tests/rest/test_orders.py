@@ -282,16 +282,16 @@ class OrdersFoodEndpointTest(TestCase):
             order=self.order,
         )
 
-        meal1 = mommy.make('Meal')
-        meal2 = mommy.make('Meal')
+        self.meal1 = mommy.make('Meal')
+        self.meal2 = mommy.make('Meal')
 
-        self.food1 = mommy.make('Food', meal=meal1)
-        self.food2 = mommy.make('Food', meal=meal2)
-        self.soup1 = mommy.make('Soup', meal=meal1)
-        self.soup2 = mommy.make('Soup', meal=meal2)
+        self.food1 = mommy.make('Food', meal=self.meal1)
+        self.food2 = mommy.make('Food', meal=self.meal2)
+        self.soup1 = mommy.make('Soup', meal=self.meal1)
+        self.soup2 = mommy.make('Soup', meal=self.meal2)
 
-        mommy.make('MealReservation', meal=meal1, reservation=self.reservation)
-        mommy.make('MealReservation', meal=meal2, reservation=self.reservation)
+        mommy.make('MealReservation', meal=self.meal1, reservation=self.reservation)
+        mommy.make('MealReservation', meal=self.meal2, reservation=self.reservation)
 
         self.view = OrdersFoodViewSet.as_view(
             actions={
@@ -347,8 +347,16 @@ class OrdersFoodEndpointTest(TestCase):
         request = self.factory.patch(
             reverse('order-detail', args=[self.order.pk]),
             json.dumps({
-                'foods': [self.food1.pk, self.food2.pk],
-                'soups': [self.soup1.pk, self.soup2.pk],
+                'food': {
+                    self.meal1.pk: {
+                        'food': self.food1.pk,
+                        'soup': self.soup1.pk,
+                    },
+                    self.meal2.pk: {
+                        'food': self.food2.pk,
+                        'soup': self.soup2.pk,
+                    },
+                },
             }),
             content_type='application/json',
         )

@@ -1,6 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Sum
-from django.db.utils import DatabaseError
 from django.shortcuts import get_object_or_404
 
 from rest_framework import permissions, response, serializers, status, viewsets
@@ -283,25 +282,87 @@ class OrderViewSet(viewsets.ModelViewSet):
         return self.destroy(request, *args, **kwargs)
 
 
-def save_food_changes(meals, foods, soups):
-    foods = [Food.objects.get(pk=food) for food in foods]
-    soups = [Soup.objects.get(pk=soup) for soup in soups]
+class FoodField(serializers.Field):
+    def to_representation(self, obj):
+        return obj
 
-    for meal_reservation in meals:
-        for food in foods:
-            print(food.meal.pk, meal_reservation.meal.pk)
-            if food.meal.pk == meal_reservation.meal.pk:
-                meal_reservation.food = food
-        for soup in soups:
-            if soup.meal.pk == meal_reservation.meal.pk:
-                meal_reservation.soup = soup
-        meal_reservation.save()
+    def to_internal_value(self, data):
+        return data
+
+
+class ChangeOrderFoodSerializer(serializers.Serializer):
+    food = FoodField(required=True)
+
+    class Meta:
+        field = ('food', )
+
+    def set_order(self, order):
+        self.order = order
+
+    def validate_food(self, value):
+        for reservation in value:
+            food = reservation.get('food', None)
+            soup = reservation.get('soup', None)
+            mealReservation = reservation.get('mealReservation')
+            mealSelection = mealReservation.meal
+            if food:
+                try:
+                    mealFood = Food.objects.get(pk=food)
+                except Food.DoesNotExist:
+                    raise ValidationError('orders.invalidFoodSelection:%s' % food)
+                if mealFood.meal.pk != mealSelection.pk:
+                    raise ValidationError('orders.invalidFoodSelection:%s' % food)
+            if soup:
+                try:
+                    mealSoup = Soup.objects.get(pk=soup)
+                except Soup.DoesNotExist:
+                    raise ValidationError('orders.invalidSoupSelection%s' % soup)
+                if mealSoup.meal.pk != mealSelection.pk:
+                    raise ValidationError('orders.invalidSoupSelection%s' % soup)
+
+    def create(self, validated_data):
+        for reservation in validated_data.get('food'):
+            mealReservation = reservation.get('mealReservation')
+            food = reservation.get('food')
+            soup = reservation.get('soup')
+            mealReservation.food = Food.objects.get(pk=food) if food else None
+            mealReservation.soup = Soup.objects.get(pk=soup) if soup else None
+            mealReservation.save()
+        return self.order
+
+    def update(self, instance, validated_data):
+        return self.create(validated_data)
+
+    def to_internal_value(self, data):
+        food = data.get('food', None)
+        if not food:
+            return {'food': None}
+        order_reservation = self.order.reservation
+        meal_reservations = order_reservation.mealreservation_set.all()
+        result = []
+        for meal_id_str, choices in food.items():
+            meal_id = int(meal_id_str)
+            try:
+                reservation = {
+                    'mealReservation': next(
+                        item for item in meal_reservations if item.meal.pk == meal_id
+                    ),
+                    'food': choices.get('food', None),
+                    'soup': choices.get('soup', None),
+                }
+            except StopIteration:
+                reservation = None
+            if reservation:
+                result.append(reservation)
+        return {
+            'food': result
+        }
 
 
 class OrdersFoodViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.none()
     permission_classes = [permissions.IsAuthenticated]
-    serializer = OrderSerializer
+    serializer = ChangeOrderFoodSerializer
 
     def get_queryset(self):
         return Order.objects\
@@ -310,7 +371,6 @@ class OrdersFoodViewSet(viewsets.ModelViewSet):
 
     def update(self, request, pk=None, *args, **kwargs):
         order = Order.objects.filter(pk=pk).first()
-
         if not order:
             return response.Response(
                 {'errors': ['unknown-object']},
@@ -323,23 +383,14 @@ class OrdersFoodViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_403_FORBIDDEN,
             )
 
-        try:
-            reservation = order.reservation
-        except ObjectDoesNotExist:
+        serializer = ChangeOrderFoodSerializer(data=request.data)
+        serializer.set_order(order)
+        if serializer.is_valid():
+            serializer.save()
+        else:
             return response.Response(
-                {
-                    'messages': ['make-reservation-first'],
-                },
-                status=status.HTTP_403_FORBIDDEN,
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
             )
-
-        try:
-            save_food_changes(
-                reservation.mealreservation_set.all(),
-                request.data.get('foods'),
-                request.data.get('soups'),
-            )
-        except DatabaseError:
-            return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
         return response.Response(status=status.HTTP_204_NO_CONTENT)

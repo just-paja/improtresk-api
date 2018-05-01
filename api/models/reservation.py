@@ -15,6 +15,7 @@ class Reservation(Base):
         verbose_name=_("Workshop price"),
         on_delete=models.PROTECT,
         null=True,
+        blank=True,
     )
     order = models.OneToOneField(
         'Order',
