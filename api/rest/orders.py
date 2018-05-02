@@ -122,7 +122,7 @@ class CreateOrderSerializer(serializers.Serializer):
                 )
                 stay.save()
 
-            if price_level and not validated_data['workshop']:
+            if price_level and not validated_data['workshop'] and price_level.entryFee:
                 total_price += len(validated_data['stayLength']) * price_level.entryFee
 
         if validated_data['workshop']:

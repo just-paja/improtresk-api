@@ -67,7 +67,7 @@ class Reservation(Base):
                 stay_length = self.order.participant.stay.filter(year=year).count()
                 price_level = year.get_actual_price_level()
 
-            if price_level:
+            if price_level and price_level.entryFee:
                 return price_level.entryFee * stay_length
 
         return 0
