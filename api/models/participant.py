@@ -24,6 +24,12 @@ class Participant(Base, auth.models.User):
         blank=True,
         null=True,
     )
+    id_number = models.CharField(
+        verbose_name=_("ID Number"),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
     team = models.ForeignKey(
         Team,
         verbose_name=_("Team"),

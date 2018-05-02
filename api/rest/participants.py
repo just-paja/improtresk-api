@@ -37,18 +37,20 @@ class ParticipantUpdateSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
         slug_field='name',
     )
+    idNumber = serializers.CharField(source='id_number')
     email = serializers.EmailField()
 
     class Meta:
         model = Participant
         fields = (
-            'id',
-            'name',
             'address',
+            'email',
+            'id',
+            'idNumber',
+            'name',
+            'phone',
             'team_name',
             'team',
-            'email',
-            'phone',
         )
 
     def to_internal_value(self, data):
