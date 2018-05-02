@@ -2,7 +2,7 @@ Ahoj,
 
 posíláme ti aktualizaci tvojí přihlášky na Improtřesk {{year}}.
 
-Přihláška stále není zaplacena, chybí nám od tebe {{amount_left}} Kč. Pošli je prosím na náš účet bankovním převodem.
+Sice jsi část zaplatil, ale zbývá ti k úhradě ještě {{amount_left}} Kč. Pošli je prosím na náš účet bankovním převodem.
 
 Workshop: {{workshop.name}}
 {% include 'mail/partial/account_info.txt' %}
