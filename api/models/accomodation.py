@@ -33,6 +33,11 @@ class Accomodation(CapacityMixin, Base):
         verbose_name=_("Capacity"),
         help_text=_("How many people can fit in"),
     )
+    requires_identification = models.BooleanField(
+        default=False,
+        verbose_name=_("Requires Identification"),
+        help_text=_("This accomodation requires to know persons home address and ID number"),
+    )
     year = models.ForeignKey(
         'Year',
         null=True,

@@ -154,6 +154,7 @@ class AccomodationAdmin(BaseAdminModel):
         'price',
         'visibility',
         'capacity',
+        'requires_identification',
     ]
     list_display = ('name', 'year', 'capacity', 'price', 'visibility')
     list_filter = ('year', 'visibility',)

@@ -35,6 +35,7 @@ class AccomodationSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
         source='descriptions',
     )
+    requiresIdentification = serializers.BooleanField(source='requires_identification')
 
     class Meta:
         model = Accomodation
@@ -47,6 +48,7 @@ class AccomodationSerializer(serializers.HyperlinkedModelSerializer):
             'price',
             'photos',
             'available',
+            'requiresIdentification',
         )
 
 
