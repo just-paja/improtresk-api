@@ -16,6 +16,13 @@ class Accomodation(CapacityMixin, Base):
         help_text=_("eg. Hotel Stadion"),
         max_length=127,
     )
+    address = models.CharField(
+        blank=True,
+        help_text=_("Full physical address of the accomodation"),
+        max_length=255,
+        null=True,
+        verbose_name=_("Accomodation address"),
+    )
     desc = models.TextField(
         verbose_name=_("Description formatted in Markdown"),
         help_text=_("eg. Describe room, location, type of accomodation"),

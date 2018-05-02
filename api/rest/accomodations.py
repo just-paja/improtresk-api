@@ -40,6 +40,7 @@ class AccomodationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Accomodation
         fields = (
+            'address',
             'id',
             'name',
             'desc',

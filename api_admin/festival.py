@@ -151,6 +151,7 @@ class AccomodationAdmin(BaseAdminModel):
     fields = [
         'year',
         'name',
+        'address',
         'price',
         'visibility',
         'capacity',

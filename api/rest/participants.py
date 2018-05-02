@@ -55,9 +55,11 @@ class ParticipantUpdateSerializer(serializers.HyperlinkedModelSerializer):
 
     def to_internal_value(self, data):
         internal_value = super(ParticipantUpdateSerializer, self).to_internal_value(data)
-        internal_value.update({
-            "email": data.get("email")
-        })
+        email = data.get('email', None)
+        if email:
+            internal_value.update({
+                "email": data.get("email")
+            })
         return internal_value
 
     def validate_email(self, value):
@@ -97,7 +99,9 @@ class ParticipantSerializer(ParticipantUpdateSerializer):
     class Meta:
         model = Participant
         fields = (
+            'address',
             'id',
+            'idNumber',
             'name',
             'address',
             'password',
@@ -149,7 +153,6 @@ class WhoAmIViewSet(viewsets.GenericViewSet):
             return ParticipantSerializer
         return ParticipantUpdateSerializer
 
-
     def list(self, request):
         try:
             participant = request.user.participant
@@ -163,7 +166,7 @@ class WhoAmIViewSet(viewsets.GenericViewSet):
             participant = request.user.participant
         except ObjectDoesNotExist:
             raise Http404
-        serializer = self.get_serializer(data=request.data, instance=participant)
+        serializer = self.get_serializer(data=request.data, instance=participant, partial=True)
         serializer.set_user(request.user)
         if serializer.is_valid():
             serializer.save()
