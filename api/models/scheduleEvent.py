@@ -48,4 +48,4 @@ class ScheduleEvent(Base):
 
     def __str__(self):
         """Return name as string representation."""
-        return "%s (%s)" % (self.name, self.year.year)
+        return "(%s) %s" % (self.year.year, self.name) if self.year else self.name

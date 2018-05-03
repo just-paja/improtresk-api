@@ -31,3 +31,7 @@ class Performer(Base):
         default=VISIBILITY_PUBLIC,
         choices=VISIBILITY_CHOICES,
     )
+
+    def __str__(self):
+        """Return name as string representation."""
+        return "(%s) %s" % (self.year.year, self.name) if self.year else self.name
