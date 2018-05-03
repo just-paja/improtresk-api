@@ -506,6 +506,7 @@ class PerformerAdmin(BaseAdminModel):
     """Define admin model for Performer."""
 
     list_display = ('name', 'year', 'visibility')
+    list_filter = ('year',)
     exclude = ('links',)
     inlines = [
         LinkInlineAdmin,
