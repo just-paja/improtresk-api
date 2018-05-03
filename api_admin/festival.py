@@ -170,7 +170,6 @@ class FoodPhotoAdmin(BaseInlineAdminModel):
 class FoodAdmin(FoodAdminMixin, BaseAdminModel):
     """Admin model for Food and its photos."""
 
-    list_filter = ('meal',)
     inlines = [
         FoodPhotoAdmin,
     ]
@@ -179,7 +178,6 @@ class FoodAdmin(FoodAdminMixin, BaseAdminModel):
 class SoupAdmin(FoodAdminMixin, BaseAdminModel):
     """Admin model for Food and its photos."""
 
-    list_filter = ('meal',)
     inlines = [
         FoodPhotoAdmin,
     ]

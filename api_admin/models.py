@@ -76,8 +76,9 @@ class BaseTagAdmin(BaseAdminModel):
 class FoodAdminMixin():
     list_display = (
         'name',
-        'meal',
+        'meal_link',
         'capacity',
         'created_at',
         'visibility',
     )
+    list_filter = ('meal__year', 'meal')

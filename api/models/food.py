@@ -1,5 +1,9 @@
 """Import Django models."""
+
 from django.db import models
+from django.template.defaultfilters import escape
+from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
@@ -45,6 +49,15 @@ class AbstractFood(CapacityMixin, Base):
             self.meal.date.strftime('%A'),
             self.name,
         )
+
+    def meal_link(self):
+        return format_html(
+            '<a href="{}">{}</a>',
+            reverse("admin:api_meal_change", args=(self.meal.id,)),
+            escape(self.meal)
+        )
+
+    meal_link.short_description = _('Meal')
 
 
 class Food(AbstractFood):
