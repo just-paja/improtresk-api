@@ -6,6 +6,7 @@ from ..models import ScheduleEvent, Year
 
 
 class ScheduleEventSerializer(serializers.ModelSerializer):
+    locationName = serializers.CharField(source='location_name')
     endAt = serializers.DateTimeField(source='end_at')
     startAt = serializers.DateTimeField(source='start_at')
 
@@ -14,6 +15,7 @@ class ScheduleEventSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
+            'locationName',
             'year',
             'startAt',
             'endAt',

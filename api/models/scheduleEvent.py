@@ -20,6 +20,12 @@ class ScheduleEvent(Base):
         verbose_name=_("Name"),
         max_length=127,
     )
+    location_name = models.CharField(
+        verbose_name=_("Location Name"),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
     start_at = models.DateTimeField(
         verbose_name=_("Event start time"),
     )
