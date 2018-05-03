@@ -1,10 +1,9 @@
 """Tests for Food model."""
 
+from dateutil.parser import parse
 from django.test import TestCase
 from freezegun import freeze_time
 from model_mommy import mommy
-
-from api.models import Food
 
 
 class FoodTest(TestCase):
@@ -12,8 +11,14 @@ class FoodTest(TestCase):
 
     def test_string_representation(self):
         """Test that Food turns to string properly."""
-        entry = Food(name="Foo Food")
-        self.assertEqual(str(entry), 'Foo Food')
+        year = mommy.make('Year')
+        meal = mommy.make('Meal', date=parse("2017-02-01"), year=year)
+        entry = mommy.make(
+            'Food',
+            name="Foo Food",
+            meal=meal,
+        )
+        self.assertEqual(str(entry), '(%s, Wednesday) Foo Food' % year.year)
 
     @freeze_time("2017-02-01")
     def test_capacity(self):

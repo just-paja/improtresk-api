@@ -39,4 +39,4 @@ class MealReservation(Base):
 
     def __str__(self):
         """Return name as string representation."""
-        return "Reservation of %s and %s for %s" % (self.food, self.soup, self.meal)
+        return "Reservation of %s and %s for %s" % (self.food.name, self.soup.name, self.meal)
