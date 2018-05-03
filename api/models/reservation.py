@@ -1,7 +1,10 @@
 """Payment model."""
 from django.conf import settings
 from django.db import models
+from django.template.defaultfilters import escape
+from django.urls import reverse
 from django.utils import timezone
+from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
@@ -119,3 +122,20 @@ class Reservation(Base):
                 timezone.now() +
                 settings.RESERVATION_DURATION_PAYMENT
             )
+
+    def order_link(self):
+        return format_html(
+            '<a href="{}">{}</a>',
+            reverse("admin:api_order_change", args=(self.order.id,)),
+            escape(self.order.symvar)
+        )
+
+    def participant_link(self):
+        return format_html(
+            '<a href="{}">{}</a>',
+            reverse("admin:api_participant_change", args=(self.order.participant.id,)),
+            escape(self.order.participant)
+        )
+
+    order_link.short_description = "Order"
+    participant_link.short_description = "Participant"

@@ -286,7 +286,9 @@ class ReservationAdmin(BaseAdminModel):
     """Admin model for Reservations."""
     readonly_fields = ('participant',)
     list_display = (
-        'participant',
+        'id',
+        'participant_link',
+        'order_link',
         'workshop',
         'accomodation',
         'price',
@@ -319,8 +321,8 @@ class OrderAdmin(BaseAdminModel):
     """Admin model for Orders."""
 
     list_display = (
-        'participant',
         'symvar',
+        'participant_link',
         'created_at',
         'price',
         'canceled',
@@ -328,6 +330,7 @@ class OrderAdmin(BaseAdminModel):
         'over_paid',
     )
     list_filter = ('year', 'paid', 'over_paid', 'canceled')
+    list_select_related = True
     fields = [
         'year',
         'participant',

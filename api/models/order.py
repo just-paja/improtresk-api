@@ -3,9 +3,12 @@
 from django.conf import settings
 from django.core import mail
 from django.db import models
+from django.template.defaultfilters import escape
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
-from django.template.loader import render_to_string
 
 from .base import Base
 from .participant import Participant
@@ -204,6 +207,15 @@ class Order(Base):
                 settings.EMAIL_SENDER,
                 [settings.EMAIL_TECH],
             )
+
+    def participant_link(self):
+        return format_html(
+            '<a href="{}">{}</a>',
+            reverse("admin:api_participant_change", args=(self.participant.id,)),
+            escape(self.participant)
+        )
+
+    participant_link.short_description = "Participant"
 
 
 def unassigned_orders():
