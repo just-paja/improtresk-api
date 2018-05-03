@@ -50,4 +50,8 @@ class Meal(CapacityMixin, Base):
 
     def __str__(self):
         """Return name as string representation."""
-        return "%s at %s" % (self.name, self.date)
+        return "(%s) %s at %s" % (
+            self.year.year,
+            self.get_name_display(),
+            self.date.strftime('%A')
+        )

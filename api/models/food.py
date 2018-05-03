@@ -40,7 +40,11 @@ class AbstractFood(CapacityMixin, Base):
 
     def __str__(self):
         """Return name as string representation."""
-        return self.name
+        return "(%s, %s) %s" % (
+            self.meal.year.year,
+            self.meal.date.strftime('%A'),
+            self.name,
+        )
 
 
 class Food(AbstractFood):
