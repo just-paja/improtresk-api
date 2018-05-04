@@ -1,20 +1,17 @@
-{% extends "admin/base_site.html" %}
+{% extends 'stats/bootstrap.html' %}
 {% load i18n static %}
-
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />{% endblock %}
-
-{% block coltype %}colMS{% endblock %}
-
-{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
   <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-  &rsaquo; Stats
+  &rsaquo;
+  <a href="{% url 'admin:stats' %}">{% trans 'Stats' %}</a>
+  &rsaquo; {{festival.year}}
+  &rsaquo; {% trans 'Ordered Food' %}
 </div>
 {% endblock %}
 
-{% block content %}
+{% block bscontent %}
 <div id="content-main">
   <div class="app-stasts module">
     <h1>Food {{ festival.year }}</h1>

@@ -1,6 +1,17 @@
-{% extends "stats/bootstrap.html" %}
+{% extends 'stats/bootstrap.html' %}
+{% load i18n static %}
 
-{% block content %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo;
+  <a href="{% url 'admin:stats' %}">{% trans 'Stats' %}</a>
+  &rsaquo; {{festival.year}}
+  &rsaquo; {% trans 'Food Delivery' %}
+</div>
+{% endblock %}
+
+{% block bscontent %}
 <div class="cotnainer-fluid">
   <h1>Food per location {{ festival.year }}</h1>
 

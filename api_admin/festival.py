@@ -17,12 +17,14 @@ from .models import (
 )
 
 from .stats_views import (
+    accomodation_registrations,
     accounting,
     food,
     food_per_location,
     index,
     participant_list,
     workshops,
+    workshop_participants,
 )
 
 
@@ -31,7 +33,12 @@ class FestivalAdminSite(AdminSite):
         return (
             super(FestivalAdminSite, self).get_urls() +
             [
-                url(r'^stats/$', index),
+                url(r'^stats/$', index, name='stats'),
+                url(
+                    r'^stats/(?P<festivalId>[0-9]+)/accomodation-registrations$',
+                    accomodation_registrations,
+                    name='stats-accomodation-registrations',
+                ),
                 url(
                     r'^stats/(?P<festivalId>[0-9]+)/food$',
                     food,
@@ -46,6 +53,11 @@ class FestivalAdminSite(AdminSite):
                     r'^stats/(?P<festivalId>[0-9]+)/workshops$',
                     workshops,
                     name='stats-workshops',
+                ),
+                url(
+                    r'^stats/(?P<festivalId>[0-9]+)/workshops-participants$',
+                    workshop_participants,
+                    name='stats-workshops-participants',
                 ),
                 url(
                     r'^stats/(?P<festivalId>[0-9]+)/accounting$',

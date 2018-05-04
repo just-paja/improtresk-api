@@ -35,7 +35,11 @@ class AccomodationSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
         source='descriptions',
     )
+    hasRooms = serializers.SerializerMethodField(method_name='has_rooms')
     requiresIdentification = serializers.BooleanField(source='requires_identification')
+
+    def has_rooms(self, obj):
+        return obj.rooms.count() > 0
 
     class Meta:
         model = Accomodation
@@ -50,6 +54,7 @@ class AccomodationSerializer(serializers.HyperlinkedModelSerializer):
             'photos',
             'available',
             'requiresIdentification',
+            'hasRooms',
         )
 
 

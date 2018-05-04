@@ -1,11 +1,5 @@
-{% extends "admin/base_site.html" %}
+{% extends "stats/bootstrap.html" %}
 {% load i18n static %}
-
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />{% endblock %}
-
-{% block coltype %}colMS{% endblock %}
-
-{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
@@ -14,34 +8,26 @@
 </div>
 {% endblock %}
 
-{% block content %}
-<div id="content-main">
-  <div class="app-stasts module">
+{% block bscontent %}
+<div class="container">
+  <div class="row">
   {% for festival in festivals %}
-    <table>
-    <caption>
-        {{ festival.year }}
-    </caption>
-        <tr class="model-festival">
-          <th scope="row">
-            <a href="{% url 'admin:stats-food' festivalId=festival.id%}">Jídlo</a>
-          </th>
-        </tr>
-        <tr class="model-festival">
-          <th scope="row">
-            <a href="{% url 'admin:stats-food-per-location' festivalId=festival.id%}">Dovoz jídla</a>
-          </th>
-        </tr>
-        <tr class="model-festival">
-          <th scope="row">
-            <a href="{% url 'admin:stats-workshops' festivalId=festival.id%}">Workshopy</a>
-          </th>
-        </tr>
-        <tr class="model-festival">
-          <th scope="row">Účastníci</th>
-        </tr>
-    </table>
+    <div class="col col-md-4">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h2 class="card-title">{{ festival.year }}</h2>
+        </div>
+        <div class="list-group list-group-flush">
+          <a class="list-group-item" href="{% url 'admin:stats-accomodation-registrations' festivalId=festival.id%}">Listina účastníků pro hotel</a>
+          <a class="list-group-item" href="{% url 'admin:stats-food' festivalId=festival.id%}">Jídlo</a>
+          <a class="list-group-item" href="{% url 'admin:stats-food-per-location' festivalId=festival.id%}">Dovoz jídla</a>
+          <a class="list-group-item" href="{% url 'admin:stats-accounting' festivalId=festival.id%}">Příspěvky</a>
+          <a class="list-group-item" href="{% url 'admin:stats-workshops-participants' festivalId=festival.id%}">Účastníci Workshopů</a>
+          <a class="list-group-item" href="{% url 'admin:stats-workshops' festivalId=festival.id%}">Zaplnění workshopů</a>
+        </div>
+      </div>
+    </div>
   {% endfor %}
-  </div>
+</div>
 </div>
 {% endblock %}

@@ -1,8 +1,20 @@
 {% extends 'stats/bootstrap.html' %}
+{% load i18n static %}
 
-{% block content %}
-<h1>Improtřesk 2017 - přehled příspěvků</h1>
-<p>5. května 2017 v Milevsku</p>
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo;
+  <a href="{% url 'admin:stats' %}">{% trans 'Stats' %}</a>
+  &rsaquo; {{festival.year}}
+  &rsaquo; {% trans 'Accounting' %}
+</div>
+{% endblock %}
+
+
+{% block bscontent %}
+<h1>Improtřesk {{festival.year}} - přehled příspěvků</h1>
+<p>{{festival.start_date}} v Milevsku</p>
 
 <table class="table" style="width: 100%">
   <thead>

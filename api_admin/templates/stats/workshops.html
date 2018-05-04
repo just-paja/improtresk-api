@@ -1,33 +1,48 @@
-{% extends "stats/bootstrap.html" %}
+{% extends 'stats/bootstrap.html' %}
+{% load i18n static %}
 
-{% block content %}
-<div class="container">
-  {% for workshop in workshops %}
-  <div class="card" style="page-break-after: always">
-    <div class="card-block">
-      <h2 class="card-title">{{workshop.name}} ({{workshop.assignment_count}}/{{workshop.capacity}})</h2>
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo;
+  <a href="{% url 'admin:stats' %}">{% trans 'Stats' %}</a>
+  &rsaquo; {{festival.year}}
+  &rsaquo; {% trans 'Workshops' %}
+</div>
+{% endblock %}
+
+{% block bscontent %}
+<div class="container-fluid">
+  <div class="row">
+    {% for workshop in workshops %}
+    <div class="col-lg-6 col-xl-4">
+      <div class="card" style="page-break-after: always">
+        <div class="card-block">
+          <h2 class="card-title">{{workshop.name}} ({{workshop.assignment_count}}/{{workshop.capacity}})</h2>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Jméno</th>
+              <th>Zařazeno</th>
+              <th>Objednáno</th>
+              <th>Měla vypršet</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for assignment in workshop.assignment_list %}
+            <tr>
+              <td>{{ assignment.participant.name }}</td>
+              <td class="text-muted">{{ assignment.created_at | date:'j. n. Y G:i' }}</td>
+              <td class="text-muted">{{ assignment.order.created_at | date:'j. n. Y G:i' }}</td>
+              <td class="text-muted">{{ assignment.order.reservation.ends_at | date:'j. n. Y G:i' }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Jméno</th>
-          <th>Zařazeno</th>
-          <th>Objednáno</th>
-          <th>Měla vypršet</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for assignment in workshop.assignment_list %}
-        <tr>
-          <td>{{ assignment.participant.name }}</td>
-          <td class="text-muted">{{ assignment.created_at | date:'j. n. Y G:i' }}</td>
-          <td class="text-muted">{{ assignment.order.created_at | date:'j. n. Y G:i' }}</td>
-          <td class="text-muted">{{ assignment.order.reservation.ends_at | date:'j. n. Y G:i' }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    {% endfor %}
   </div>
-  {% endfor %}
 </div>
 {% endblock %}

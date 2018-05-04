@@ -1,15 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />
+  <style type="text/css">
+    body.layout-free #content {
+      width: auto !important;
+      margin: 0 !important;
+    }
+  </style>
+  <style media="print">
+    #header, #footer, .breadcrumbs {
+      display: none !important;
+    }
+  </style>
+{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }}layout-free{% endblock %}
+
+
+{% block content %}
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
   <style type="text/css">
     th {
       text-align: left;
     }
   </style>
-</head>
-<body>
-  {% block content %}
+  {% block bscontent %}
   {% endblock %}
-</body>
+{% endblock %}

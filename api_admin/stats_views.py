@@ -1,4 +1,5 @@
 from api.models import (
+    Accomodation,
     Food,
     Order,
     Participant,
@@ -206,40 +207,90 @@ def workshops(request, festivalId):
 
 
 @staff_member_required
-def accounting(request, festivalId):
-    participants = Participant.objects\
-        .filter(workshops__workshop__year=festivalId)\
-        .order_by('name')\
-        .all()
-    data = []
+def workshop_participants(request, festivalId):
+    festival = Year.objects.get(pk=festivalId)
+    workshops = festival.get_workshops()
 
-    for participant in participants:
-        order = get_participant_order(participant)
+    for workshop in workshops:
+        workshop.assignment_count = workshop.participants.count()
+        workshop.assignment_list = workshop.participants.all()
 
-        if order:
-            data.append({
-                'name': participant.name,
-                'email': participant.email,
-                'address': participant.address,
-                'cash_expected': order.price,
-            })
+        for assignment in workshop.assignment_list:
+            assignment.order = Order.objects.filter(
+                participant=assignment.participant,
+                reservation__workshop_price__workshop=workshop,
+                confirmed=True,
+                canceled=False,
+            ).first()
 
     return render(
         request,
-        'stats/accounting.html',
+        'stats/workshops-participants.html',
         {
-            'data': data,
+            'festival': festival,
+            'workshops': workshops,
         },
     )
 
 
-def get_participant_order(participant):
-    return Order.objects.filter(
-        participant=participant,
-        canceled=False,
-        confirmed=True,
-        paid=True,
-    ).first()
+@staff_member_required
+def accounting(request, festivalId):
+    festival = Year.objects.get(pk=festivalId)
+    orders = Order.objects\
+        .filter(
+            year=festivalId,
+            canceled=False,
+            confirmed=True,
+            paid=True,
+        )\
+        .exclude(price=0)\
+        .order_by('participant__name')\
+        .all()
+    data = []
+
+    for order in orders:
+        data.append({
+            'name': order.participant.name,
+            'email': order.participant.email,
+            'address': order.participant.address,
+            'cash_expected': order.price,
+        })
+
+    return render(request, 'stats/accounting.html', {
+        'data': data,
+        'festival': festival,
+    })
+
+
+@staff_member_required
+def accomodation_registrations(request, festivalId):
+    festival = Year.objects.get(pk=festivalId)
+    accomodations = Accomodation.objects\
+        .filter(
+            year=festivalId,
+            requires_identification=True,
+        )\
+        .order_by('name')\
+        .all()
+    data = []
+
+    for accomodation in accomodations:
+        data.append({
+            'name': accomodation.name,
+            'address': accomodation.address,
+            'participants': Participant.objects.filter(
+                orders__year=festivalId,
+                orders__canceled=False,
+                orders__paid=True,
+                orders__confirmed=True,
+                orders__reservation__accomodation=accomodation,
+            ).all()
+        })
+
+    return render(request, 'stats/accomodation-registrations.html', {
+        'data': data,
+        'festival': festival,
+    })
 
 
 def get_participant_reservation(order):
