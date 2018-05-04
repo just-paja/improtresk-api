@@ -1,0 +1,27 @@
+{% if unpicked_count > 0 %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">{{meal.name}} {{meal.date}} ({{unpicked_count}})</h3>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Participant</th>
+        <th>E-mail</th>
+        <th>Soup</th>
+        <th>Food</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for reservation in unpicked_reservations %}
+        <tr>
+          <td>{{ reservation.participant }}</td>
+          <td>{{ reservation.participant.email }}</td>
+          <td>{{ reservation.meal_reservation.soup|default:"-" }}</td>
+          <td>{{ reservation.meal_reservation.food|default:"-" }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}

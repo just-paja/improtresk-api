@@ -18,25 +18,33 @@
   {% for delivery_meal in delivery %}
   <div>
     <h2>{{delivery_meal.date}}</h2>
+    <div class="row">
+      {% for delivery_location in delivery_meal.delivery %}
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-titlte">{{delivery_location.name}}</h3>
+          </div>
 
-    {% for delivery_location in delivery_meal.delivery %}
-    <h3>{{delivery_location.name}}</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Food</th>
-          <th>Deliver</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for food in delivery_location.delivery %}
-          <tr>
-            <td>{{ food.name }}</td>
-            <td>{{ food.deliver }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+          <table>
+            <thead>
+              <tr>
+                <th>Food</th>
+                <th>Deliver</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for food in delivery_location.delivery %}
+                <tr>
+                  <td>{{ food.name }}</td>
+                  <td>{{ food.deliver }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
     {% endfor %}
   </div>
   <hr />
