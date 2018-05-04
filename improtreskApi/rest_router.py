@@ -15,6 +15,10 @@ from api.rest import (
     years,
 )
 
+from api_roommates.rest import (
+    rooms,
+)
+
 from api_textual.rest import (
     news,
     performers,
@@ -110,6 +114,11 @@ router.register(
     r'years/(?P<year>[0-9]{4})/capacity',
     capacity.CapacityViewSet,
     base_name='capacity',
+)
+router.register(
+    r'years/(?P<year>[0-9]{4})/rooms',
+    rooms.RoomViewSet,
+    base_name='rooms',
 )
 
 router.register(

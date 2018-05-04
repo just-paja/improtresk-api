@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'mathfilters',
     'api',
     'api_textual',
+    'api_roommates',
     'api_admin',
 ]
 
