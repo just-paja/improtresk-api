@@ -14,3 +14,4 @@ __pycache__
 /build
 /local_settings.py
 /vendor
+/.pytest_cache
