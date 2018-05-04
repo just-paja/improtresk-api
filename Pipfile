@@ -1,18 +1,15 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
-django = "*"
+Django = "*"
 django-storages = "*"
 djangorestframework = "*"
 mysqlclient = "*"
 django-auth-ldap = "*"
-pillow = "*"
+Pillow = "*"
 django-cors-headers = "*"
 django-oauth-toolkit = "*"
 django-extensions = "*"
@@ -22,21 +19,14 @@ django-mathfilters = "*"
 boto = "*"
 fiobank = "*"
 
-
 [dev-packages]
-
 codeclimate-test-reporter = "*"
 coverage = "==4.3.4"
 django-nose = "*"
-"flake8-import-order" = "*"
-"flake8-strict" = "*"
-"flake8-tidy-imports" = "*"
-"flake8" = "*"
 freezegun = "*"
 mock = "*"
-model-mommy = "*"
+model_mommy = "*"
 nose = "*"
-pyflakes = "*"
 pylama = "*"
 pylint = "*"
 pytest-django = "*"
@@ -44,3 +34,5 @@ pytest-watch = "*"
 pytest = "*"
 python-dateutil = "*"
 pytest-cov = "*"
+pyflakes = "*"
+"flake8" = "*"

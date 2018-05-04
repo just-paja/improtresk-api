@@ -2,6 +2,7 @@ from api import models as models_api
 from oauth2_provider import admin as oauth_admin
 
 from api_textual import models as models_text
+from api_roommates import models as models_roommates
 from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
 from django.conf.urls import url
@@ -141,12 +142,17 @@ class AccomodationPhotoAdmin(BaseInlineAdminModel):
     model = models_api.AccomodationPhoto
 
 
+class AccomodationRoomAdmin(BaseInlineAdminModel):
+    model = models_roommates.Room
+
+
 class AccomodationAdmin(BaseAdminModel):
     """Admin model for Accomodation and its photos."""
 
     inlines = [
         AccomodationDescriptionAdmin,
         AccomodationPhotoAdmin,
+        AccomodationRoomAdmin,
     ]
     fields = [
         'year',

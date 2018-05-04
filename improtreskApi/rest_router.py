@@ -15,6 +15,10 @@ from api.rest import (
     years,
 )
 
+from api_roommates.rest import (
+    rooms,
+)
+
 from api_textual.rest import (
     news,
     performers,
@@ -36,9 +40,11 @@ router.register(r'lectorRoles', lector_roles.LectorRoleViewSet)
 router.register(r'lectors', lectors.LectorViewSet)
 router.register(r'news', news.NewsViewSet)
 router.register(r'orders', orders.OrderViewSet)
+router.register(r'orders/(?P<order>[0-9]+)/rooms', rooms.OrderRoomViewSet, base_name='rooms')
 router.register(r'ordersFood', orders.OrdersFoodViewSet)
 router.register(r'payments', payments.PaymentViewSet)
 router.register(r'polls', polls.PollViewSet)
+router.register(r'rooms', rooms.RoomViewSet, base_name='rooms')
 # .register(
 #     r'vote',
 #     polls.PollVoteViewSet,
@@ -111,7 +117,6 @@ router.register(
     capacity.CapacityViewSet,
     base_name='capacity',
 )
-
 router.register(
     r'years/(?P<year>[0-9]{4})/accomodation',
     accomodations.AccomodationViewSet,
