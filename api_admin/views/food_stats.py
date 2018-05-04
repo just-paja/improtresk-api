@@ -28,7 +28,7 @@ def get_unpicked_reservations(meal, paid):
 def get_picked_reservations(meal, food, paid):
     query = food.get_reservations_query().filter(
         order__year=meal.year,
-        order__paid=True,
+        order__paid=paid,
         order__confirmed=True,
         order__canceled=False,
     )
