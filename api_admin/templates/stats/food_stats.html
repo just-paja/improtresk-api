@@ -1,0 +1,108 @@
+{% extends 'stats/bootstrap.html' %}
+{% load i18n static %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo;
+  <a href="{% url 'admin:stats' %}">{% trans 'Stats' %}</a>
+  &rsaquo; {{festival.year}}
+  &rsaquo; {% trans 'Ordered Food' %}
+</div>
+{% endblock %}
+
+{% block bscontent %}
+<div id="content-main">
+  <div class="app-stasts module">
+    <h1>Food {{ festival.year }}</h1>
+
+    <h2>Picked</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Food</th>
+          <th>Date</th>
+          <th>Paid Confirmed</th>
+          <th>Unpaid Confirmed</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for food in order %}
+          <tr>
+            <td>{{ food.name }}</td>
+            <td>{{ food.meal.date }}</td>
+            <td>{{ food.paid_reservations }}</td>
+            <td>{{ food.unpaid_reservations }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <hr />
+
+    <div class="row">
+      <div class="col-lg-6">
+        <h2>Paid Unpicked</h2>
+        {% for meal in meals %}
+        {% if meal.unpicked_paid_reservations_count > 0 %}
+        <h3>{{meal.name}} {{meal.date}} ({{meal.unpicked_paid_reservations_count}})</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Participant</th>
+              <th>E-mail</th>
+              <th>Soup</th>
+              <th>Food</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reservation in meal.unpicked_paid_reservations %}
+              <tr>
+                <td>{{ reservation.id }}</td>
+                <td>{{ reservation.participant }}</td>
+                <td>{{ reservation.participant.email }}</td>
+                <td>{{ reservation.meal_reservation.soup|default:"-" }}</td>
+                <td>{{ reservation.meal_reservation.food|default:"-" }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="col-lg-6">
+        <h2>Unpaid Unpicked</h2>
+        {% for meal in meals %}
+        {% if meal.unpicked_unpaid_reservations_count > 0 %}
+        <h3>{{meal.name}} {{meal.date}} ({{meal.unpicked_unpaid_reservations_count}})</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Participant</th>
+              <th>E-mail</th>
+              <th>Soup</th>
+              <th>Food</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reservation in meal.unpicked_unpaid_reservations %}
+              <tr>
+                <td>{{ reservation.id }}</td>
+                <td>{{ reservation.participant }}</td>
+                <td>{{ reservation.participant.email }}</td>
+                <td>{{ reservation.meal_reservation.soup|default:"-" }}</td>
+                <td>{{ reservation.meal_reservation.food|default:"-" }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -2,29 +2,24 @@ from api import models as models_api
 from oauth2_provider import admin as oauth_admin
 
 from api_textual import models as models_text
-from api_roommates import models as models_roommates
-from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
 from django.conf.urls import url
 from django.contrib.admin import AdminSite
 
-from .models import (
-    BaseAdminModel,
-    BaseInlineAdminModel,
-    BaseTextAdminModel,
-    DEFAULT_READONLY,
-    FoodAdminMixin,
-)
-
-from .stats_views import (
-    accomodation_registrations,
-    accounting,
+from . import views
+from .admin import (
+    accomodation,
+    festival,
     food,
-    food_per_location,
-    index,
-    participant_list,
+    lectors,
+    news,
+    orders,
+    participants,
+    performers,
+    polls,
+    schedule,
+    texts,
     workshops,
-    workshop_participants,
 )
 
 
@@ -33,560 +28,75 @@ class FestivalAdminSite(AdminSite):
         return (
             super(FestivalAdminSite, self).get_urls() +
             [
-                url(r'^stats/$', index, name='stats'),
+                url(r'^stats/$', views.index, name='stats'),
                 url(
                     r'^stats/(?P<festivalId>[0-9]+)/accomodation-registrations$',
-                    accomodation_registrations,
+                    views.accomodation_inhabitant_list,
                     name='stats-accomodation-registrations',
                 ),
                 url(
                     r'^stats/(?P<festivalId>[0-9]+)/food$',
-                    food,
+                    views.food_stats,
                     name='stats-food',
                 ),
                 url(
                     r'^stats/(?P<festivalId>[0-9]+)/food-per-location$',
-                    food_per_location,
+                    views.food_delivery,
                     name='stats-food-per-location',
                 ),
                 url(
                     r'^stats/(?P<festivalId>[0-9]+)/workshops$',
-                    workshops,
+                    views.workshop_capacity,
                     name='stats-workshops',
                 ),
                 url(
                     r'^stats/(?P<festivalId>[0-9]+)/workshops-participants$',
-                    workshop_participants,
+                    views.workshop_participants,
                     name='stats-workshops-participants',
                 ),
                 url(
                     r'^stats/(?P<festivalId>[0-9]+)/accounting$',
-                    accounting,
+                    views.allowance_list,
                     name='stats-accounting',
                 ),
                 url(
+                    r'^stats/(?P<festivalId>[0-9]+)/participant-teams$',
+                    views.participant_teams,
+                    name='stats-participant-teams',
+                ),
+                url(
                     r'^stats/(?P<festivalId>[0-9]+)/participants$',
-                    participant_list,
+                    views.participant_list,
                     name='stats-participants',
                 ),
             ]
         )
 
 
-class LectorPhotoAdmin(BaseInlineAdminModel):
-    """Admin model for Lector photos."""
-
-    model = models_api.LectorPhoto
-
-
-class LectorAdmin(BaseAdminModel):
-    """Admin model for Lectors and their photos."""
-
-    inlines = [
-        LectorPhotoAdmin,
-    ]
-    search_fields = ['name']
-
-
-class LectorRoleAdmin(BaseAdminModel):
-    """Admin model for Lector roles."""
-
-    prepopulated_fields = {'slug': ('name',)}
-
-
-class WorkshopPhotoAdmin(BaseInlineAdminModel):
-    """Admin model for Workshop photos."""
-
-    model = models_api.WorkshopPhoto
-
-
-class WorkshopDifficultyAdmin(BaseAdminModel):
-    """Admin model for Workshop difficulties."""
-
-    prepopulated_fields = {'slug': ('name',)}
-
-
-class WorkshopLectorInlineAdmin(BaseInlineAdminModel):
-    """Inline admin model for Workshop lectors."""
-
-    model = models_api.WorkshopLector
-
-
-class WorkshopPriceInlineAdmin(BaseInlineAdminModel):
-    """Inline admin for Workshop prices."""
-
-    model = models_api.WorkshopPrice
-
-
-class ParticipantWorkshopAdmin(BaseInlineAdminModel):
-    """Admin model for Participant workshop assignment."""
-
-    model = models_api.ParticipantWorkshop
-    exclude = [
-        'created_at',
-    ]
-
-
-class WorkshopAdmin(BaseAdminModel):
-    """Admin model for Workshops and their photos."""
-
-    inlines = [
-        WorkshopPhotoAdmin,
-        WorkshopLectorInlineAdmin,
-        WorkshopPriceInlineAdmin,
-        ParticipantWorkshopAdmin,
-    ]
-
-    list_display = ('name', 'desc', 'difficulty', 'visibility')
-    list_filter = ('year', 'visibility', 'difficulty')
-    search_fields = ['name']
-
-
-class AccomodationDescriptionAdmin(BaseInlineAdminModel):
-    """Admin model for Accomodation photos."""
-
-    model = models_api.AccomodationDescription
-
-
-class AccomodationPhotoAdmin(BaseInlineAdminModel):
-    """Admin model for Accomodation photos."""
-
-    model = models_api.AccomodationPhoto
-
-
-class AccomodationRoomAdmin(BaseInlineAdminModel):
-    model = models_roommates.Room
-
-
-class AccomodationAdmin(BaseAdminModel):
-    """Admin model for Accomodation and its photos."""
-
-    inlines = [
-        AccomodationDescriptionAdmin,
-        AccomodationPhotoAdmin,
-        AccomodationRoomAdmin,
-    ]
-    fields = [
-        'year',
-        'name',
-        'address',
-        'price',
-        'visibility',
-        'capacity',
-        'requires_identification',
-    ]
-    list_display = ('name', 'year', 'capacity', 'price', 'visibility')
-    list_filter = ('year', 'visibility',)
-
-
-class FoodPhotoAdmin(BaseInlineAdminModel):
-    """Admin model for Food photos."""
-
-    model = models_api.FoodPhoto
-
-
-class FoodAdmin(FoodAdminMixin, BaseAdminModel):
-    """Admin model for Food and its photos."""
-
-    inlines = [
-        FoodPhotoAdmin,
-    ]
-
-
-class SoupAdmin(FoodAdminMixin, BaseAdminModel):
-    """Admin model for Food and its photos."""
-
-    inlines = [
-        FoodPhotoAdmin,
-    ]
-
-
-class MealAdmin(BaseAdminModel):
-    """Admin model for Meal."""
-    list_filter = ('year', 'visibility',)
-    list_display = (
-        'name',
-        'price',
-        'date',
-        'visibility',
-    )
-
-
-class PaymentAdmin(BaseAdminModel):
-    """Admin model for Food and its photos."""
-    list_display = (
-        'ident',
-        'order',
-        'user_identification',
-        'symvar',
-        'symcon',
-        'symspc',
-        'amount',
-        'sender',
-        'bank',
-        'message',
-        'currency',
-        'received_at',
-    )
-    list_filter = ('bank',)
-
-    def get_readonly_fields(self, request, obj=None):
-        """Define all read only fields."""
-        if obj:
-            return DEFAULT_READONLY + [
-                'ident',
-                'symvar',
-                'symcon',
-                'symspc',
-                'amount',
-                'sender',
-                'bank',
-                'message',
-                'currency',
-                'received_at',
-            ]
-        return super(PaymentAdmin, self).get_readonly_fields(
-            request,
-            obj,
-        )
-
-
-class ParticipantStayAdmin(BaseInlineAdminModel):
-    """Admin model for Participant workshop assignment."""
-
-    model = models_api.ParticipantStay
-    exclude = [
-        'created_at',
-    ]
-
-
-class ParticipantAdmin(BaseAdminModel):
-    """Admin model for Participants."""
-
-    inlines = [
-        ParticipantWorkshopAdmin,
-        ParticipantStayAdmin,
-    ]
-    readonly_fields = [
-        'password',
-        'last_login',
-    ]
-    exclude = [
-        'is_superuser',
-        'groups',
-        'user_permissions',
-        'first_name',
-        'last_name',
-        'is_staff',
-        'is_active',
-        'assigned_workshop',
-    ]
-    list_display = (
-        'name',
-        'team',
-        'email',
-        'newsletter',
-        'created_at',
-    )
-    list_filter = ('team', 'newsletter')
-    search_fields = ['name', 'email']
-
-
-class MealReservationInlineAdmin(BaseInlineAdminModel):
-    """Admin model for MealReservation."""
-
-    model = models_api.MealReservation
-
-
-class ReservationAdmin(BaseAdminModel):
-    """Admin model for Reservations."""
-    readonly_fields = ('participant',)
-    list_display = (
-        'id',
-        'participant_link',
-        'order_link',
-        'workshop',
-        'accomodation',
-        'price',
-        'ends_at',
-        'is_valid',
-    )
-    list_filter = (
-        'order__year',
-        'order__confirmed',
-        'order__canceled',
-        'order__paid',
-        'meals',
-    )
-    inlines = [MealReservationInlineAdmin]
-    search_fields = [
-        'order__participant__name',
-        'order__year__year',
-        'accomodation__name',
-        'workshop_price__workshop__name',
-        'order__price'
-    ]
-
-
-class ReservationInlineAdmin(admin.StackedInline):
-    """Inline admin model for Reservations."""
-    model = models_api.Reservation
-
-
-class OrderAdmin(BaseAdminModel):
-    """Admin model for Orders."""
-
-    list_display = (
-        'symvar',
-        'participant_link',
-        'created_at',
-        'price',
-        'canceled',
-        'paid',
-        'over_paid',
-    )
-    list_filter = ('year', 'paid', 'over_paid', 'canceled')
-    list_select_related = True
-    fields = [
-        'year',
-        'participant',
-        'symvar',
-        'accomodation_info',
-        'confirmed',
-        'canceled',
-        'paid',
-        'over_paid',
-        'price',
-        'created_at',
-        'updated_at',
-    ]
-    search_fields = [
-        'participant__name',
-        'participant__team__name',
-        'price',
-        'reservation__accomodation__name',
-        'reservation__workshop_price__workshop__name',
-        'symvar',
-    ]
-    inlines = [ReservationInlineAdmin]
-
-    def get_readonly_fields(self, request, obj=None):
-        if obj:
-            return [
-                'participant',
-                'symvar',
-                'total_amount_received',
-            ] + DEFAULT_READONLY
-        return [
-            'symvar',
-            'total_amount_received',
-        ] + DEFAULT_READONLY
-
-
-class PriceLevelInlineAdmin(BaseInlineAdminModel):
-    """Inline admin for Workshop prices."""
-
-    model = models_api.PriceLevel
-
-
-class YearAdmin(BaseAdminModel):
-    """Admin model for Years."""
-
-    inlines = [
-        PriceLevelInlineAdmin,
-    ]
-    list_display = ('year', 'topic', 'current', 'start_date', 'end_date')
-    list_filter = ('current',)
-
-
-class TeamAdmin(BaseAdminModel):
-    """Admin model for Teams."""
-
-    list_display = (
-        'id',
-        'name',
-        'visibility',
-        'desc',
-    )
-
-
-class RulesAdmin(BaseAdminModel):
-    """Define admin model for Rules."""
-
-    list_display = ('year', 'created_at')
-    list_filter = ('year',)
-
-
-class ScheduleEventAdmin(BaseAdminModel):
-    """Define admin model for Schedule Events."""
-
-    list_display = ('name', 'location_name', 'start_at', 'end_at')
-    list_filter = ('year',)
-    search_fields = [
-        'name',
-        'location_name',
-    ]
-
-
-class TextPhotoInlineAdmin(BaseInlineAdminModel):
-    """Admin model for Food photos."""
-
-    model = models_text.TextPhoto
-
-
-class TextAdmin(BaseTextAdminModel):
-    """Admin model for Text."""
-    list_filter = ('lang', 'category')
-    inlines = [
-        TextPhotoInlineAdmin,
-    ]
-
-
-class WorkshopLocationDescriptionInlineAdmin(BaseInlineAdminModel):
-    """Admin model for WorkshopLocation photos."""
-
-    model = models_text.WorkshopLocationDescription
-
-
-class WorkshopLocationPhotoInlineAdmin(BaseInlineAdminModel):
-    """Admin model for WorkshopLocation photos."""
-
-    model = models_text.WorkshopLocationPhoto
-
-
-class WorkshopLocationAdmin(BaseAdminModel):
-    """Admin model for Workshop location."""
-
-    inlines = [
-        WorkshopLocationDescriptionInlineAdmin,
-        WorkshopLocationPhotoInlineAdmin,
-    ]
-    list_display = ('name', 'address', 'updated_at')
-
-
-class TravelingTipPhotoInlineAdmin(BaseInlineAdminModel):
-    """Admin model for TravelingTip photos."""
-
-    model = models_text.TravelingTipPhoto
-
-
-class TravelingTipAdmin(BaseTextAdminModel):
-    """Admin model for Workshop location."""
-    fields = [
-        'name',
-        'slug',
-        'lang',
-        'text',
-    ]
-    inlines = [
-        TravelingTipPhotoInlineAdmin,
-    ]
-
-
-class NewsPhotoInlineAdmin(BaseInlineAdminModel):
-    """Admin model for TravelingTip photos."""
-
-    model = models_text.NewsPhoto
-
-
-class NewsAdmin(BaseTextAdminModel):
-    """Define admin model for News."""
-    fields = [
-        'name',
-        'slug',
-        'lang',
-        'text',
-    ]
-    inlines = [
-        NewsPhotoInlineAdmin,
-    ]
-
-
-class LinkInlineAdmin(BaseInlineAdminModel):
-    """Admin model for Links."""
-
-    model = models_text.PerformerLink
-
-
-class PerformerDescriptionInlineAdmin(BaseInlineAdminModel):
-    """Admin model for TravelingTip photos."""
-
-    model = models_text.PerformerDescription
-
-
-class PerformerPhotoInlineAdmin(BaseInlineAdminModel):
-    """Admin model for TravelingTip photos."""
-
-    model = models_text.PerformerPhoto
-
-
-class PerformerAdmin(BaseAdminModel):
-    """Define admin model for Performer."""
-
-    list_display = ('name', 'year', 'visibility')
-    list_filter = ('year',)
-    exclude = ('links',)
-    inlines = [
-        LinkInlineAdmin,
-        PerformerDescriptionInlineAdmin,
-        PerformerPhotoInlineAdmin,
-    ]
-
-
-class PollAnswerInlineAdmin(BaseInlineAdminModel):
-    """Inline admin for Poll Answers."""
-
-    model = models_text.PollAnswer
-    readonly_fields = ['get_vote_count']
-
-
-class PollAdmin(BaseAdminModel):
-    """Admin for Polls."""
-
-    inlines = [
-        PollAnswerInlineAdmin,
-    ]
-    list_display = (
-        'question',
-        'closed',
-        'get_answer_count',
-        'get_vote_count',
-        'get_winning_answer',
-        'get_last_vote_date',
-        'updated_at',
-    )
-    readonly_fields = [
-        'get_answer_count',
-        'get_vote_count',
-        'get_winning_answer',
-        'get_last_vote_date',
-    ] + DEFAULT_READONLY
-
-
 festival_site = FestivalAdminSite()
 
-festival_site.register(models_api.Accomodation, AccomodationAdmin)
-festival_site.register(models_api.Food, FoodAdmin)
-festival_site.register(models_api.Lector, LectorAdmin)
-festival_site.register(models_api.LectorRole, LectorRoleAdmin)
-festival_site.register(models_api.Meal, MealAdmin)
-festival_site.register(models_api.Order, OrderAdmin)
-festival_site.register(models_api.Participant, ParticipantAdmin)
-festival_site.register(models_api.Payment, PaymentAdmin)
-festival_site.register(models_api.Reservation, ReservationAdmin)
-festival_site.register(models_api.Rules, RulesAdmin)
-festival_site.register(models_api.ScheduleEvent, ScheduleEventAdmin)
-festival_site.register(models_api.Soup, SoupAdmin)
-festival_site.register(models_api.Team, TeamAdmin)
-festival_site.register(models_api.Workshop, WorkshopAdmin)
-festival_site.register(models_api.WorkshopDifficulty, WorkshopDifficultyAdmin)
-festival_site.register(models_api.Year, YearAdmin)
-festival_site.register(models_text.News, NewsAdmin)
-festival_site.register(models_text.Performer, PerformerAdmin)
-festival_site.register(models_text.Poll, PollAdmin)
-festival_site.register(models_text.Text, TextAdmin)
-festival_site.register(models_text.TravelingTip, TravelingTipAdmin)
-festival_site.register(models_text.WorkshopLocation, WorkshopLocationAdmin)
+festival_site.register(models_api.Accomodation, accomodation.AccomodationAdmin)
+festival_site.register(models_api.Food, food.FoodAdmin)
+festival_site.register(models_api.Lector, lectors.LectorAdmin)
+festival_site.register(models_api.LectorRole, lectors.LectorRoleAdmin)
+festival_site.register(models_api.Meal, food.MealAdmin)
+festival_site.register(models_api.Order, orders.OrderAdmin)
+festival_site.register(models_api.Participant, participants.ParticipantAdmin)
+festival_site.register(models_api.Payment, orders.PaymentAdmin)
+festival_site.register(models_api.Reservation, orders.ReservationAdmin)
+festival_site.register(models_api.Rules, festival.RulesAdmin)
+festival_site.register(models_api.ScheduleEvent, schedule.ScheduleEventAdmin)
+festival_site.register(models_api.Soup, food.SoupAdmin)
+festival_site.register(models_api.Team, participants.TeamAdmin)
+festival_site.register(models_api.Workshop, workshops.WorkshopAdmin)
+festival_site.register(models_api.WorkshopDifficulty, workshops.WorkshopDifficultyAdmin)
+festival_site.register(models_api.Year, festival.YearAdmin)
+festival_site.register(models_text.News, news.NewsAdmin)
+festival_site.register(models_text.Performer, performers.PerformerAdmin)
+festival_site.register(models_text.Poll, polls.PollAdmin)
+festival_site.register(models_text.Text, texts.TextAdmin)
+festival_site.register(models_text.TravelingTip, texts.TravelingTipAdmin)
+festival_site.register(models_text.WorkshopLocation, workshops.WorkshopLocationAdmin)
 
 festival_site.register(oauth_admin.Application, oauth_admin.ApplicationAdmin)
 festival_site.register(oauth_admin.Grant, oauth_admin.GrantAdmin)

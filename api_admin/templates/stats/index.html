@@ -12,18 +12,24 @@
 <div class="container">
   <div class="row">
   {% for festival in festivals %}
-    <div class="col col-md-4">
+    <div class="col col-md-6 col-lg-4 col-xl-3">
       <div class="card mb-4">
         <div class="card-header">
-          <h2 class="card-title">{{ festival.year }}</h2>
+          <h2 class="card-title mb-0">{{ festival.year }}</h2>
+        </div>
+        <div class="list-group list-group-flush">
+          <a class="list-group-item" href="{% url 'admin:stats-food-per-location' festivalId=festival.id%}">Dovoz jídla</a>
+          <a class="list-group-item" href="{% url 'admin:stats-food' festivalId=festival.id%}">Objednávky Jídla</a>
+          <a class="list-group-item" href="{% url 'admin:stats-participant-teams' festivalId=festival.id%}">Skupiny</a>
+          <a class="list-group-item" href="{% url 'admin:stats-workshops' festivalId=festival.id%}">Zaplnění workshopů</a>
+        </div>
+        <div class="card-header">
+          <div class="card-title mb-0">{% trans 'Printable materials' %}</div>
         </div>
         <div class="list-group list-group-flush">
           <a class="list-group-item" href="{% url 'admin:stats-accomodation-registrations' festivalId=festival.id%}">Listina účastníků pro hotel</a>
-          <a class="list-group-item" href="{% url 'admin:stats-food' festivalId=festival.id%}">Jídlo</a>
-          <a class="list-group-item" href="{% url 'admin:stats-food-per-location' festivalId=festival.id%}">Dovoz jídla</a>
           <a class="list-group-item" href="{% url 'admin:stats-accounting' festivalId=festival.id%}">Příspěvky</a>
-          <a class="list-group-item" href="{% url 'admin:stats-workshops-participants' festivalId=festival.id%}">Účastníci Workshopů</a>
-          <a class="list-group-item" href="{% url 'admin:stats-workshops' festivalId=festival.id%}">Zaplnění workshopů</a>
+          <a class="list-group-item" href="{% url 'admin:stats-workshops-participants' festivalId=festival.id%}">Účastníci podle Workshopu</a>
         </div>
       </div>
     </div>

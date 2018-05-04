@@ -1,0 +1,24 @@
+{% extends 'stats/bootstrap.html' %}
+{% load i18n static %}
+
+{% block content %}
+<!DOCTYPE html>
+<h1>Improtřesk {{festival.year}} - {% trans 'impro teams overview' %}</h1>
+
+<hr />
+
+<table>
+  <thead>
+    <th>{% trans 'Team' %}</th>
+    <th>{% trans 'Participants' %}</th>
+  </thead>
+  <tbody>
+    {% for team in teams %}
+      <tr>
+        <td>{{ team.name }}</td>
+        <td>{{ team.count }}</td>
+      </div>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
