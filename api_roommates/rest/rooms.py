@@ -64,8 +64,13 @@ class RoomViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
                 room=room,
                 participant=self.participant
             )
+            other_rooms = self.participant.inhabited_rooms.filter(
+                room__accomodation__year=room.accomodation.year
+            ).all()
+            for deprecated_room in other_rooms:
+                deprecated_room.delete()
             inhabitant.save()
-            serializer = RoomSerializer(room)
+            serializer = RoomSerializer(self.get_queryset(), many=True)
             return Response(serializer.data)
         return Response(
             {'errors': ['room-is-full']},
@@ -78,7 +83,7 @@ class RoomViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
         inhabitant = room.inhabitants.filter(participant=self.participant).first()
         if inhabitant:
             inhabitant.delete()
-            serializer = RoomSerializer(room)
+            serializer = RoomSerializer(self.get_queryset(), many=True)
             return Response(serializer.data)
         return Response(
             {'errors': ['not-in-the-room']},
