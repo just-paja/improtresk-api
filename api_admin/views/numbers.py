@@ -6,6 +6,22 @@ from django.db.models import Count, Sum
 from django.shortcuts import render
 
 
+def get_festival_orders(festival):
+    return Order.objects.filter(year=festival)
+
+
+def get_festival_participants(festival):
+    return Participant.objects.filter(
+        orders__year=festival,
+        orders__paid=True,
+        orders__canceled=False,
+    )
+
+
+def get_festival_payments(festival):
+    return Payment.objects.filter(order__year=festival)
+
+
 def get_workshop_participants_count(festival):
     return ParticipantWorkshop.objects.filter(
         year=festival,
@@ -13,8 +29,7 @@ def get_workshop_participants_count(festival):
 
 
 def get_workshopless_participants_count(festival):
-    return Order.objects.filter(
-        year=festival,
+    return get_festival_orders(festival).filter(
         reservation__workshop_price=None,
         paid=True,
         canceled=False,
@@ -22,81 +37,51 @@ def get_workshopless_participants_count(festival):
 
 
 def get_team_participants_count(festival):
-    return Participant.objects.filter(
-        orders__year=festival,
-        orders__paid=True,
-        orders__canceled=False,
-    ).exclude(team=None).count()
+    return get_festival_participants(festival).exclude(team=None).count()
 
 
 def get_teamless_participants_count(festival):
-    return Participant.objects.filter(
-        orders__year=festival,
-        orders__paid=True,
-        orders__canceled=False,
-        team=None,
-    ).count()
+    return get_festival_participants(festival).filter(team=None).count()
 
 
 def get_lunch_participants_count(festival):
-    return Participant.objects.filter(
-        orders__year=festival,
-        orders__paid=True,
-        orders__canceled=False,
-    ).annotate(
+    return get_festival_participants(festival).annotate(
         meals_count=Count('orders__reservation__meals'),
     ).filter(meals_count__gt=0).count()
 
 
 def get_lunchless_participants_count(festival):
-    return Participant.objects.filter(
-        orders__year=festival,
-        orders__paid=True,
-        orders__canceled=False,
-    ).annotate(
+    return get_festival_participants(festival).annotate(
         meals_count=Count('orders__reservation__meals'),
     ).filter(meals_count=0).count()
 
 
 def get_orders_count(festival):
-    return Order.objects.filter(year=festival).count()
+    return get_festival_orders(festival).count()
 
 
 def get_paid_orders_count(festival):
-    return Order.objects.filter(
-        canceled=False,
-        paid=True,
-        year=festival,
-    ).count()
+    return get_festival_orders(festival).filter(canceled=False, paid=True).count()
 
 
 def get_unpaid_confirmed_orders_count(festival):
-    return Order.objects.filter(
+    return get_festival_orders(festival).filter(
         canceled=False,
         confirmed=True,
         paid=False,
-        year=festival,
     ).count()
 
 
 def get_unpaid_unconfirmed_orders_count(festival):
-    return Order.objects.filter(
+    return get_festival_orders(festival).filter(
         canceled=False,
         confirmed=False,
         paid=False,
-        year=festival,
     ).count()
-
-
-def get_festival_payments(festival):
-    return Payment.objects.filter(order__year=festival)
 
 
 def get_canceled_orders_count(festival):
-    return Order.objects.filter(
-        canceled=True,
-        year=festival,
-    ).count()
+    return get_festival_orders(festival).filter(canceled=True).count()
 
 
 def get_amount_received(festival):
@@ -104,8 +89,7 @@ def get_amount_received(festival):
 
 
 def get_amount_expected(festival):
-    return Order.objects.filter(
-        year=festival,
+    return get_festival_orders(festival).filter(
         canceled=False,
         confirmed=True,
         reservation__ends_at__gt=datetime.now(),
