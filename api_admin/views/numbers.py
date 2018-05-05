@@ -2,7 +2,6 @@ from api.models import Order, Participant, Payment, Reservation, Year
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Sum
 from django.shortcuts import render
-from django.utils import timezone
 
 
 def get_festival_orders(festival):
@@ -74,11 +73,7 @@ def get_amount_received(festival):
 
 
 def get_amount_expected(festival):
-    return get_festival_orders(festival).filter(
-        canceled=False,
-        confirmed=True,
-        reservation__ends_at__gt=timezone.now(),
-    ).aggregate(Sum('price'))
+    return get_festival_orders(festival).filter_expected().aggregate(Sum('price'))
 
 
 def get_paired_payments_count(festival):
@@ -104,6 +99,7 @@ def get_amounts_per_price_level(festival):
 
 def get_festival_stats(festival):
     return {
+        'festival': festival,
         'orders_total': get_orders_count(festival),
         'orders_paid_active': get_paid_orders_count(festival),
         'orders_unpaid_confirmed': get_unpaid_confirmed_orders_count(festival),
@@ -126,7 +122,9 @@ def get_festival_stats(festival):
 @staff_member_required
 def numbers(request, festivalId):
     festival = Year.objects.get(pk=festivalId)
+    previous = Year.objects.filter(year__lt=festival.year).order_by('-year').first()
     return render(request, 'stats/numbers.html', {
         'festival': festival,
-        'stats': get_festival_stats(festival),
+        'current': get_festival_stats(festival),
+        'previous': get_festival_stats(previous),
     })

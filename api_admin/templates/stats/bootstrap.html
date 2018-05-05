@@ -33,6 +33,48 @@
       text-align: left;
     }
   </style>
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+    crossorigin="anonymous"></script>
+  <script>
+    const getValueDiff = function(current, prev) {
+      return prev === 0 ? 1 : (prev - current)/prev;
+    };
+
+    const formatValueDiff = function(number) {
+      const percentage = parseInt(100 * number, 10);
+      if (percentage > 0) {
+        return '+' + percentage + '%';
+      }
+      return percentage + '%';
+    }
+
+    $(function() {
+      const numbers = $('.stats-number');
+      for (let i = 0; i < numbers.length; i++) {
+        const number = $(numbers[i]);
+        const current = number.find('.stats-number-current');
+        const previous = number.find('.stats-number-previous');
+
+        if (previous.length) {
+          const valueCurrent = parseFloat(current.text());
+          const valuePrevious = parseFloat(previous.text());
+          const diff = $('<span class="stats-number-diff" />');
+          let valueDiff = getValueDiff(valueCurrent, valuePrevious);
+          if (valueDiff < 1) {
+            valueDiff = -1*valueDiff;
+            diff.addClass('text-danger');
+          } else {
+            diff.addClass('text-success');
+          }
+          diff.html(formatValueDiff(valueDiff));
+          number.append('| ');
+          number.append(diff);
+        }
+      }
+    });
+  </script>
   {% block bscontent %}
   {% endblock %}
 {% endblock %}

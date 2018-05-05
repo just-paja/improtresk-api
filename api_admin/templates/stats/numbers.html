@@ -14,7 +14,8 @@
 {% block bscontent %}
 <div id="content-main">
   <div class="app-stasts module">
-    <h1>Festival {{ festival.year }} in numbers</h1>
+    <h1>Festival {{ current.festival.year }} in numbers</h1>
+    <p>{% trans 'Showing diff' %} {{current.festival.year}} vs {{previous.festival.year}}</p>
     <div class="row">
       <div class="col-md-6 col-lg-4">
         <div class="card mb-4">
@@ -24,7 +25,7 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between">
               <a href="{% url 'admin:api_participant_changelist' %}?year__id__exact={{festival.id}}">{% trans 'Total' %}</a>
-              <span>{{stats.participants_total}}</span>
+              {% include 'stats/number.html' with current=current.participants_total previous=previous.participants_total %}
             </li>
           </ul>
           <div class="card-header">
@@ -33,12 +34,11 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between">
               <a href="{% url 'admin:api_participant_changelist' %}?on_workshop=1&year__id__exact={{festival.id}}">{% trans 'On Workshop' %}</a>
-              <span>{% trans '' %}</span>
-              <span>{{stats.participants_on_workshop}}</span>
+              {% include 'stats/number.html' with current=current.participants_on_workshop previous=previous.participants_on_workshop %}
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <a href="{% url 'admin:api_participant_changelist' %}?on_workshop=2&year__id__exact={{festival.id}}">{% trans 'Without Workshop' %}</a>
-              <span>{{stats.participants_without_workshop}}</span>
+              {% include 'stats/number.html' with current=current.participants_without_workshop previous=previous.participants_without_workshop %}
             </li>
           </ul>
           <div class="card-header">
@@ -47,11 +47,11 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between">
               <span>{% trans 'With Team' %}</span>
-              <span>{{stats.participants_with_team}}</span>
+              {% include 'stats/number.html' with current=current.participants_with_team previous=previous.participants_with_team %}
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <span>{% trans 'Without Team' %}</span>
-              <span>{{stats.participants_without_team}}</span>
+              {% include 'stats/number.html' with current=current.participants_without_team previous=previous.participants_without_team %}
             </li>
           </ul>
           <div class="card-header">
@@ -60,11 +60,11 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between">
               <a href="{% url 'admin:api_participant_changelist' %}?has_meal=1&year__id__exact={{festival.id}}">{% trans 'With Meal' %}</a>
-              <span>{{stats.participants_with_lunch}}</span>
+              {% include 'stats/number.html' with current=current.participants_with_lunch previous=previous.participants_with_lunch %}
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <a href="{% url 'admin:api_participant_changelist' %}?has_meal=2&year__id__exact={{festival.id}}">{% trans 'Without Meal' %}</a>
-              <span>{{stats.participants_without_lunch}}</span>
+              {% include 'stats/number.html' with current=current.participants_without_lunch previous=previous.participants_without_lunch %}
             </li>
           </ul>
         </div>
@@ -77,23 +77,23 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between">
               <a href="{% url 'admin:api_order_changelist' %}?year__id__exact={{festival.id}}">{% trans 'Total' %}</a>
-              <span>{{stats.orders_total}}</span>
+              {% include 'stats/number.html' with current=current.orders_total previous=previous.orders_total %}
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <a href="{% url 'admin:api_order_changelist' %}?paid__exact=1&year__id__exact={{festival.id}}">{% trans 'Paid' %}</a>
-              <span>{{stats.orders_paid_active}}</span>
+              {% include 'stats/number.html' with current=current.orders_paid_active previous=previous.orders_paid_active %}
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <a href="{% url 'admin:api_order_changelist' %}?confirmed__exact=1&paid__exact=0&year__id__exact={{festival.id}}">{% trans 'Unpaid Confirmed' %}</a>
-              <span>{{stats.orders_unpaid_confirmed}}</span>
+              {% include 'stats/number.html' with current=current.orders_unpaid_confirmed previous=previous.orders_unpaid_confirmed %}
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <a href="{% url 'admin:api_order_changelist' %}?confirmed__exact=0&paid__exact=0&year__id__exact={{festival.id}}">{% trans 'Unpaid Unconfirmed' %}</a>
-              <span>{{stats.orders_unpaid_unconfirmed}}</span>
+              {% include 'stats/number.html' with current=current.orders_unpaid_unconfirmed previous=previous.orders_unpaid_unconfirmed %}
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <a href="{% url 'admin:api_order_changelist' %}?canceled__exact=1&year__id__exact={{festival.id}}">{% trans 'Canceled' %}</a>
-              <span>{{stats.orders_canceled}}</span>
+              {% include 'stats/number.html' with current=current.orders_canceled previous=previous.orders_canceled %}
             </li>
           </ul>
         </div>
@@ -106,22 +106,22 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between">
               <span>{% trans 'Paired payments' %}</span>
-              <span>{{stats.payments_paired_total}}</span>
+              {% include 'stats/number.html' with current=current.payments_paired_total previous=previous.payments_paired_total %}
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <span>{% trans 'Amount received' %}</span>
-              <span>{{stats.amount_received}} Kč</span>
+              {% include 'stats/number.html' with current=current.amount_received previous=previous.amount_received %}
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <span>{% trans 'Amount expected to receive' %}</span>
-              <span>{{stats.amount_expected}} Kč</span>
+              {% include 'stats/number.html' with current=current.amount_expected previous=previous.amount_expected %}
             </li>
           </ul>
           <div class="card-header">
             <h4 class="card-title mb-0">{% trans 'Per Price Level' %}</h4>
           </div>
           <ul class="list-group list-group-flush">
-            {% for price_level in stats.price_level_amounts %}
+            {% for price_level in current.price_level_amounts %}
               <li class="list-group-item d-flex justify-content-between">
                 <span>{{price_level.name}}</span>
                 <span>{{price_level.amount}} Kč</span>

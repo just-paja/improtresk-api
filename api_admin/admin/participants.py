@@ -1,6 +1,6 @@
 from django.contrib.admin import SimpleListFilter
 
-from api.models import Participant, ParticipantStay, ParticipantWorkshop, Year
+from api.models import ParticipantStay, ParticipantWorkshop, Year
 
 from ..models import BaseAdminModel, BaseInlineAdminModel
 

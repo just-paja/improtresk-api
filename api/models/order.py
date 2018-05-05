@@ -3,6 +3,7 @@
 from django.conf import settings
 from django.core import mail
 from django.db import models
+from django.db.models import Q, QuerySet
 from django.template.loader import render_to_string
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
@@ -30,8 +31,20 @@ def generate_symvar():
     return "%s%s" % (today, total)
 
 
+class OrderQuerySet(QuerySet):
+    def filter_expected(self):
+        return self.filter(
+            Q(paid=False) &
+            Q(reservation__ends_at__gt=now()),
+            confirmed=True,
+            canceled=False,
+        )
+
+
 class Order(Base):
     """Stores orders types."""
+
+    objects = OrderQuerySet.as_manager()
 
     year = models.ForeignKey(
         'Year',

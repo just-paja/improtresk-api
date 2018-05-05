@@ -1,0 +1,7 @@
+<span class="stats-number">
+  <span class="stats-number-current">{{current|floatformat}}<span>
+  {% if previous != None %}
+    |
+    <span class="stats-number-previous">{{previous|floatformat}}<span>
+  {% endif %}
+</span>
