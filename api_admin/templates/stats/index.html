@@ -18,6 +18,7 @@
           <h2 class="card-title mb-0">{{ festival.year }}</h2>
         </div>
         <div class="list-group list-group-flush">
+          <a class="list-group-item" href="{% url 'admin:stats-numbers' festivalId=festival.id%}">Čísla</a>
           <a class="list-group-item" href="{% url 'admin:stats-food-per-location' festivalId=festival.id%}">Dovoz jídla</a>
           <a class="list-group-item" href="{% url 'admin:stats-food' festivalId=festival.id%}">Objednávky Jídla</a>
           <a class="list-group-item" href="{% url 'admin:stats-participant-teams' festivalId=festival.id%}">Skupiny</a>

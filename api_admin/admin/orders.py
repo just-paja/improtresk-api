@@ -59,7 +59,7 @@ class OrderAdmin(BaseAdminModel):
         'paid',
         'over_paid',
     )
-    list_filter = ('year', 'paid', 'over_paid', 'canceled')
+    list_filter = ('year', 'paid', 'confirmed', 'over_paid', 'canceled')
     list_select_related = True
     autocomplete_fields = ['participant']
     fields = [

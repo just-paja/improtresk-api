@@ -5,6 +5,7 @@ from .allowance_list import allowance_list
 from .food_delivery import food_delivery
 from .food_stats import food_stats
 from .index import index
+from .numbers import numbers
 from .participant_list import participant_list
 from .participant_teams import participant_teams
 from .workshop_capacity import workshop_capacity
@@ -16,6 +17,7 @@ __all__ = (
     food_delivery,
     food_stats,
     index,
+    numbers,
     participant_list,
     participant_teams,
     workshop_capacity,

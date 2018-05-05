@@ -1,0 +1,118 @@
+{% extends 'stats/bootstrap.html' %}
+{% load i18n static %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo;
+  <a href="{% url 'admin:stats' %}">{% trans 'Stats' %}</a>
+  &rsaquo; {{festival.year}}
+  &rsaquo; {% trans 'Numbers' %}
+</div>
+{% endblock %}
+
+{% block bscontent %}
+<div id="content-main">
+  <div class="app-stasts module">
+    <h1>Festival {{ festival.year }} in numbers</h1>
+    <div class="row">
+      <div class="col-md-6 col-lg-4">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4 class="card-title mb-0">{% trans 'Participants' %}</h4>
+          </div>
+          <div class="card-header">
+            {% trans 'Workshops' %}
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between">
+              <span>{% trans 'On Workshop' %}</span>
+              <span>{{stats.participants_on_workshop}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>{% trans 'Without Workshop' %}</span>
+              <span>{{stats.participants_without_workshop}}</span>
+            </li>
+          </ul>
+          <div class="card-header">
+            {% trans 'Teams' %}
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between">
+              <span>{% trans 'With Team' %}</span>
+              <span>{{stats.participants_with_team}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>{% trans 'Without Team' %}</span>
+              <span>{{stats.participants_without_team}}</span>
+            </li>
+          </ul>
+          <div class="card-header">
+            {% trans 'Lunch' %}
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between">
+              <span>{% trans 'With Lunch' %}</span>
+              <span>{{stats.participants_with_lunch}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>{% trans 'Without Lunch' %}</span>
+              <span>{{stats.participants_without_lunch}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4 class="card-title mb-0">{% trans 'Orders' %}</h4>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between">
+              <a href="{% url 'admin:api_order_changelist' %}?year__id__exact={{festival.id}}">{% trans 'Total' %}</a>
+              <span>{{stats.orders_total}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <a href="{% url 'admin:api_order_changelist' %}?paid__exact=1&year__id__exact={{festival.id}}">{% trans 'Paid' %}</a>
+              <span>{{stats.orders_paid_active}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <a href="{% url 'admin:api_order_changelist' %}?confirmed__exact=1&paid__exact=0&year__id__exact={{festival.id}}">{% trans 'Unpaid Confirmed' %}</a>
+              <span>{{stats.orders_unpaid_confirmed}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <a href="{% url 'admin:api_order_changelist' %}?confirmed__exact=0&paid__exact=0&year__id__exact={{festival.id}}">{% trans 'Unpaid Unconfirmed' %}</a>
+              <span>{{stats.orders_unpaid_unconfirmed}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <a href="{% url 'admin:api_order_changelist' %}?canceled__exact=1&year__id__exact={{festival.id}}">{% trans 'Canceled' %}</a>
+              <span>{{stats.orders_canceled}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4 class="card-title mb-0">{% trans 'Money' %}</h4>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between">
+              <span>{% trans 'Paired payments' %}</span>
+              <span>{{stats.payments_paired_total}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>{% trans 'Amount received' %}</span>
+              <span>{{stats.amount_received}} Kč</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>{% trans 'Amount expected' %}</span>
+              <span>{{stats.amount_expected}} Kč</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

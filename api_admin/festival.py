@@ -42,6 +42,11 @@ class FestivalAdminSite(AdminSite):
                     name='stats-food',
                 ),
                 url(
+                    r'^stats/(?P<festivalId>[0-9]+)/numbers$',
+                    views.numbers,
+                    name='stats-numbers',
+                ),
+                url(
                     r'^stats/(?P<festivalId>[0-9]+)/food-per-location$',
                     views.food_delivery,
                     name='stats-food-per-location',
