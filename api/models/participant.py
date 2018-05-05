@@ -43,10 +43,13 @@ class ParticipantQuerySet(QuerySet):
         return self.annotate_meal_count().filter(meal_count=0)
 
 
+ParticipantManager = auth.models.BaseUserManager.from_queryset(ParticipantQuerySet)
+
+
 class Participant(Base, auth.models.User):
     """Stores participants."""
     USERNAME_FIELD = 'email'
-    objects = ParticipantQuerySet.as_manager()
+    objects = ParticipantManager()
 
     name = models.CharField(max_length=255)
     address = models.CharField(
