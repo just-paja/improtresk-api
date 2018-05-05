@@ -108,7 +108,7 @@ class Reservation(Base):
 
     def update_price(self):
         price = self.price()
-        if self.order and self.order.price != price:
+        if self.order and not self.order.paid and self.order.price != price:
             self.order.price = price
             if self.order.confirmed and not self.order.canceled:
                 self.order.update_paid_status()
