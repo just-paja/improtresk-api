@@ -39,12 +39,15 @@
     crossorigin="anonymous"></script>
   <script>
     const getValueDiff = function(current, prev) {
-      return prev === 0 ? 1 : (prev - current)/prev;
+      if (current === prev) {
+        return 0;
+      }
+      return prev === 0 ? 1 : (current - prev)/prev;
     };
 
     const formatValueDiff = function(number) {
       const percentage = parseInt(100 * number, 10);
-      if (percentage > 0) {
+      if (number > 0) {
         return '+' + percentage + '%';
       }
       return percentage + '%';
@@ -62,10 +65,9 @@
           const valuePrevious = parseFloat(previous.text());
           const diff = $('<span class="stats-number-diff" />');
           let valueDiff = getValueDiff(valueCurrent, valuePrevious);
-          if (valueDiff < 1) {
-            valueDiff = -1*valueDiff;
+          if (valueDiff < 0) {
             diff.addClass('text-danger');
-          } else {
+          } else if (valueDiff > 0) {
             diff.addClass('text-success');
           }
           diff.html(formatValueDiff(valueDiff));
