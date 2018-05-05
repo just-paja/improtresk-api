@@ -95,6 +95,10 @@ class ParticipantSerializer(ParticipantUpdateSerializer):
         read_only=True,
         slug_field='workshop_id',
     )
+    idNumber = serializers.CharField(
+        source='id_number',
+        required=False,
+    )
 
     class Meta:
         model = Participant
