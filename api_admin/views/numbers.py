@@ -44,6 +44,10 @@ def get_orders_count(festival):
     return get_festival_orders(festival).count()
 
 
+def get_free_orders_count(festival):
+    return get_festival_orders(festival).filter(canceled=False, paid=True, price=0).count()
+
+
 def get_paid_orders_count(festival):
     return get_festival_orders(festival).filter(canceled=False, paid=True).count()
 
@@ -105,6 +109,7 @@ def get_festival_stats(festival):
         'orders_unpaid_confirmed': get_unpaid_confirmed_orders_count(festival),
         'orders_unpaid_unconfirmed': get_unpaid_unconfirmed_orders_count(festival),
         'orders_canceled': get_canceled_orders_count(festival),
+        'orders_free': get_free_orders_count(festival),
         'participants_total': get_participants_count(festival),
         'participants_on_workshop': get_workshop_participants_count(festival),
         'participants_without_workshop': get_workshopless_participants_count(festival),
