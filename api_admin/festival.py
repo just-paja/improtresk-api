@@ -1,7 +1,8 @@
 from api import models as models_api
-from oauth2_provider import admin as oauth_admin
+from api_roommates import models as models_roommates
+from api_textual import models as models_textual
 
-from api_textual import models as models_text
+from oauth2_provider import admin as oauth_admin
 from django.contrib.auth import admin as auth_admin
 from django.conf.urls import url
 from django.contrib.admin import AdminSite
@@ -17,6 +18,7 @@ from .admin import (
     participants,
     performers,
     polls,
+    roommates,
     schedule,
     texts,
     workshops,
@@ -91,12 +93,12 @@ festival_site.register(models_api.Team, participants.TeamAdmin)
 festival_site.register(models_api.Workshop, workshops.WorkshopAdmin)
 festival_site.register(models_api.WorkshopDifficulty, workshops.WorkshopDifficultyAdmin)
 festival_site.register(models_api.Year, festival.YearAdmin)
-festival_site.register(models_text.News, news.NewsAdmin)
-festival_site.register(models_text.Performer, performers.PerformerAdmin)
-festival_site.register(models_text.Poll, polls.PollAdmin)
-festival_site.register(models_text.Text, texts.TextAdmin)
-festival_site.register(models_text.TravelingTip, texts.TravelingTipAdmin)
-festival_site.register(models_text.WorkshopLocation, workshops.WorkshopLocationAdmin)
+festival_site.register(models_textual.News, news.NewsAdmin)
+festival_site.register(models_textual.Performer, performers.PerformerAdmin)
+festival_site.register(models_textual.Poll, polls.PollAdmin)
+festival_site.register(models_textual.Text, texts.TextAdmin)
+festival_site.register(models_textual.TravelingTip, texts.TravelingTipAdmin)
+festival_site.register(models_textual.WorkshopLocation, workshops.WorkshopLocationAdmin)
 
 festival_site.register(oauth_admin.Application, oauth_admin.ApplicationAdmin)
 festival_site.register(oauth_admin.Grant, oauth_admin.GrantAdmin)
@@ -105,3 +107,6 @@ festival_site.register(oauth_admin.RefreshToken, oauth_admin.RefreshTokenAdmin)
 
 festival_site.register(auth_admin.Group, auth_admin.GroupAdmin)
 festival_site.register(auth_admin.User, auth_admin.UserAdmin)
+
+festival_site.register(models_roommates.Room, roommates.RoomAdmin)
+festival_site.register(models_roommates.Inhabitant, roommates.RoomMateAdmin)

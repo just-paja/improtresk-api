@@ -1,13 +1,11 @@
 """Payment model."""
 from django.conf import settings
 from django.db import models
-from django.template.defaultfilters import escape
-from django.urls import reverse
 from django.utils import timezone
-from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
+from ..fields import format_relation_link
 
 
 class Reservation(Base):
@@ -124,17 +122,13 @@ class Reservation(Base):
             )
 
     def order_link(self):
-        return format_html(
-            '<a href="{}">{}</a>',
-            reverse("admin:api_order_change", args=(self.order.id,)),
-            escape(self.order.symvar)
-        )
+        return format_relation_link('api_order', self.order.id, self.order.symvar)
 
     def participant_link(self):
-        return format_html(
-            '<a href="{}">{}</a>',
-            reverse("admin:api_participant_change", args=(self.order.participant.id,)),
-            escape(self.order.participant)
+        return format_relation_link(
+            'api_participant',
+            self.order.participant.id,
+            self.order.participant,
         )
 
     order_link.short_description = "Order"

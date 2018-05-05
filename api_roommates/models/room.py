@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from api.fields import format_relation_link
 from api.models.base import Base
 
 
@@ -26,3 +27,6 @@ class Room(Base):
     def __str__(self):
         """Return name as string representation."""
         return "%s %s" % (self.accomodation, self.number)
+
+    def accomodation_link(self):
+        return format_relation_link('api_accomodation', self.accomodation.id, self.accomodation)
