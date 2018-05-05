@@ -1,59 +1,44 @@
-from datetime import datetime
-
-from api.models import Order, Participant, ParticipantWorkshop, Payment, Year
+from api.models import Order, Participant, Payment, Reservation, Year
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import Count, Sum
+from django.db.models import Sum
 from django.shortcuts import render
+from django.utils import timezone
 
 
 def get_festival_orders(festival):
     return Order.objects.filter(year=festival)
 
 
-def get_festival_participants(festival):
-    return Participant.objects.filter(
-        orders__year=festival,
-        orders__paid=True,
-        orders__canceled=False,
-    )
-
-
 def get_festival_payments(festival):
     return Payment.objects.filter(order__year=festival)
 
 
+def get_participants_count(festival):
+    return Participant.objects.filter_by_festival(festival).count()
+
+
 def get_workshop_participants_count(festival):
-    return ParticipantWorkshop.objects.filter(
-        year=festival,
-    ).count()
+    return Participant.objects.filter_by_festival(festival).filter_with_workshop().count()
 
 
 def get_workshopless_participants_count(festival):
-    return get_festival_orders(festival).filter(
-        reservation__workshop_price=None,
-        paid=True,
-        canceled=False,
-    ).count()
+    return Participant.objects.filter_by_festival(festival).filter_without_workshop().count()
 
 
 def get_team_participants_count(festival):
-    return get_festival_participants(festival).exclude(team=None).count()
+    return Participant.objects.filter_by_festival(festival).exclude(team=None).count()
 
 
 def get_teamless_participants_count(festival):
-    return get_festival_participants(festival).filter(team=None).count()
+    return Participant.objects.filter_by_festival(festival).filter(team=None).count()
 
 
 def get_lunch_participants_count(festival):
-    return get_festival_participants(festival).annotate(
-        meals_count=Count('orders__reservation__meals'),
-    ).filter(meals_count__gt=0).count()
+    return Participant.objects.filter_by_festival(festival).filter_with_meal().count()
 
 
 def get_lunchless_participants_count(festival):
-    return get_festival_participants(festival).annotate(
-        meals_count=Count('orders__reservation__meals'),
-    ).filter(meals_count=0).count()
+    return Participant.objects.filter_by_festival(festival).filter_without_meal().count()
 
 
 def get_orders_count(festival):
@@ -92,12 +77,29 @@ def get_amount_expected(festival):
     return get_festival_orders(festival).filter(
         canceled=False,
         confirmed=True,
-        reservation__ends_at__gt=datetime.now(),
+        reservation__ends_at__gt=timezone.now(),
     ).aggregate(Sum('price'))
 
 
 def get_paired_payments_count(festival):
     return get_festival_payments(festival).count()
+
+
+def get_price_level_amount_received(price_level):
+    return Reservation.objects.filter(
+        workshop_price__price_level=price_level,
+    ).aggregate(amount=Sum('order__payments__amount'))
+
+
+def get_amounts_per_price_level(festival):
+    data = []
+    for price_level in festival.price_levels.all():
+        data.append({
+            'name': price_level.name,
+            'id': price_level.id,
+            'amount': get_price_level_amount_received(price_level).get('amount') or 0,
+        })
+    return data
 
 
 def get_festival_stats(festival):
@@ -107,6 +109,7 @@ def get_festival_stats(festival):
         'orders_unpaid_confirmed': get_unpaid_confirmed_orders_count(festival),
         'orders_unpaid_unconfirmed': get_unpaid_unconfirmed_orders_count(festival),
         'orders_canceled': get_canceled_orders_count(festival),
+        'participants_total': get_participants_count(festival),
         'participants_on_workshop': get_workshop_participants_count(festival),
         'participants_without_workshop': get_workshopless_participants_count(festival),
         'participants_with_team': get_team_participants_count(festival),
@@ -116,6 +119,7 @@ def get_festival_stats(festival):
         'payments_paired_total': get_paired_payments_count(festival),
         'amount_received': get_amount_received(festival).get('amount__sum') or 0,
         'amount_expected': get_amount_expected(festival).get('price__sum') or 0,
+        'price_level_amounts': get_amounts_per_price_level(festival),
     }
 
 

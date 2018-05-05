@@ -1,8 +1,33 @@
+from django.db.models import Q
 from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
+from django.utils import timezone
 
 from api import models as models_api
 
 from ..models import BaseAdminModel, BaseInlineAdminModel, DEFAULT_READONLY
+
+
+class OrderReservationValidFilter(SimpleListFilter):
+    title = 'Time valid'
+    parameter_name = 'time_valid'
+
+    def lookups(self, request, model_admin):
+        return [
+            (1, 'Yes'),
+            (2, 'No'),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == '1':
+            return queryset.filter(
+                reservation__ends_at__gt=timezone.now(),
+            )
+        if self.value() == '2':
+            return queryset.filter(
+                Q(reservation__ends_at__lte=timezone.now()) |
+                Q(reservation__ends_at__isnull=True)
+            )
 
 
 class MealReservationInlineAdmin(BaseInlineAdminModel):
@@ -53,13 +78,22 @@ class OrderAdmin(BaseAdminModel):
     list_display = (
         'symvar',
         'participant_link',
-        'created_at',
+        'reservation_link',
         'price',
+        'is_valid',
         'canceled',
         'paid',
-        'over_paid',
+        'created_at',
+        'valid_until',
     )
-    list_filter = ('year', 'paid', 'confirmed', 'over_paid', 'canceled')
+    list_filter = (
+        'year',
+        'paid',
+        'confirmed',
+        'over_paid',
+        'canceled',
+        OrderReservationValidFilter,
+    )
     list_select_related = True
     autocomplete_fields = ['participant']
     fields = [

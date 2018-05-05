@@ -17,7 +17,10 @@ class BaseAdminModel(admin.ModelAdmin):
         return DEFAULT_READONLY + list(self.readonly_fields)
 
     def find_year_filters(self):
-        return [item for item in self.list_filter if item == 'year' or 'year' in item]
+        return [item for item in self.list_filter if isinstance(item, str) and (
+            item == 'year' or
+            'year' in item
+        )]
 
     def changelist_view(self, request, *args, **kwargs):
         referer = request.META.get('HTTP_REFERER', None)

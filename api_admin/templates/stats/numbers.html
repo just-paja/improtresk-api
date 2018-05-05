@@ -21,16 +21,23 @@
           <div class="card-header">
             <h4 class="card-title mb-0">{% trans 'Participants' %}</h4>
           </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between">
+              <a href="{% url 'admin:api_participant_changelist' %}?year__id__exact={{festival.id}}">{% trans 'Total' %}</a>
+              <span>{{stats.participants_total}}</span>
+            </li>
+          </ul>
           <div class="card-header">
             {% trans 'Workshops' %}
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between">
-              <span>{% trans 'On Workshop' %}</span>
+              <a href="{% url 'admin:api_participant_changelist' %}?on_workshop=1&year__id__exact={{festival.id}}">{% trans 'On Workshop' %}</a>
+              <span>{% trans '' %}</span>
               <span>{{stats.participants_on_workshop}}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between">
-              <span>{% trans 'Without Workshop' %}</span>
+              <a href="{% url 'admin:api_participant_changelist' %}?on_workshop=2&year__id__exact={{festival.id}}">{% trans 'Without Workshop' %}</a>
               <span>{{stats.participants_without_workshop}}</span>
             </li>
           </ul>
@@ -52,11 +59,11 @@
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between">
-              <span>{% trans 'With Lunch' %}</span>
+              <a href="{% url 'admin:api_participant_changelist' %}?has_meal=1&year__id__exact={{festival.id}}">{% trans 'With Meal' %}</a>
               <span>{{stats.participants_with_lunch}}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between">
-              <span>{% trans 'Without Lunch' %}</span>
+              <a href="{% url 'admin:api_participant_changelist' %}?has_meal=2&year__id__exact={{festival.id}}">{% trans 'Without Meal' %}</a>
               <span>{{stats.participants_without_lunch}}</span>
             </li>
           </ul>
@@ -106,9 +113,20 @@
               <span>{{stats.amount_received}} Kč</span>
             </li>
             <li class="list-group-item d-flex justify-content-between">
-              <span>{% trans 'Amount expected' %}</span>
+              <span>{% trans 'Amount expected to receive' %}</span>
               <span>{{stats.amount_expected}} Kč</span>
             </li>
+          </ul>
+          <div class="card-header">
+            <h4 class="card-title mb-0">{% trans 'Per Price Level' %}</h4>
+          </div>
+          <ul class="list-group list-group-flush">
+            {% for price_level in stats.price_level_amounts %}
+              <li class="list-group-item d-flex justify-content-between">
+                <span>{{price_level.name}}</span>
+                <span>{{price_level.amount}} Kč</span>
+              </li>
+            {% endfor %}
           </ul>
         </div>
       </div>

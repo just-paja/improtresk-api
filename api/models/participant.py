@@ -4,8 +4,10 @@ from django.contrib import auth
 from django.core import mail
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.db.models import Count, Q, QuerySet
 from django.template.loader import render_to_string
+from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
 from .participantToken import PASSWORD_RESET, ParticipantToken
@@ -13,9 +15,38 @@ from .team import Team
 from .workshop import Workshop
 
 
+class ParticipantQuerySet(QuerySet):
+    def annotate_workshop_count(self):
+        return self.annotate(workshop_count=Count('workshops'))
+
+    def annotate_meal_count(self):
+        return self.annotate(meal_count=Count('orders__reservation__meals'))
+
+    def filter_by_festival(self, festival):
+        return self.filter(
+            Q(orders__paid=True) |
+            Q(orders__reservation__ends_at__gt=timezone.now()),
+            orders__year=festival,
+            orders__canceled=False,
+        )
+
+    def filter_with_workshop(self):
+        return self.annotate_workshop_count().filter(workshop_count__gt=0)
+
+    def filter_without_workshop(self):
+        return self.annotate_workshop_count().filter(workshop_count=0)
+
+    def filter_with_meal(self):
+        return self.annotate_meal_count().filter(meal_count__gt=0)
+
+    def filter_without_meal(self):
+        return self.annotate_meal_count().filter(meal_count=0)
+
+
 class Participant(Base, auth.models.User):
     """Stores participants."""
     USERNAME_FIELD = 'email'
+    objects = ParticipantQuerySet.as_manager()
 
     name = models.CharField(max_length=255)
     address = models.CharField(

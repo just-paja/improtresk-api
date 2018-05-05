@@ -209,7 +209,27 @@ class Order(Base):
     def participant_link(self):
         return format_relation_link('api_participant', self.participant.id, self.participant)
 
+    def reservation_link(self):
+        return format_relation_link('api_reservation', self.reservation.id, self.reservation.id)
+
+    def valid_until(self):
+        if self.reservation:
+            return self.reservation.ends_at
+        return None
+
+    def is_valid(self):
+        if self.paid:
+            return True
+        if not self.reservation:
+            return False
+        if self.reservation.ends_at:
+            return self.reservation.ends_at > now() and not self.canceled
+        return False
+
+    is_valid.boolean = True
+
     participant_link.short_description = "Participant"
+    reservation_link.short_description = "Reservation"
 
 
 def unassigned_orders():
