@@ -10,6 +10,12 @@ class RulesAdmin(BaseAdminModel):
     list_filter = ('year',)
 
 
+class PriceLevelAdmin(BaseAdminModel):
+    search_fields = ('name', 'year')
+    list_display = ('name', 'year', 'takes_effect_on')
+    list_filter = ('year',)
+
+
 class PriceLevelInlineAdmin(BaseInlineAdminModel):
     """Inline admin for Workshop prices."""
 

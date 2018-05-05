@@ -22,3 +22,6 @@ class WorkshopLocation(Base):
     class Meta:
         verbose_name = _("Workshop location")
         verbose_name_plural = _("Workshop locations")
+
+    def __str__(self):
+        return self.name

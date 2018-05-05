@@ -20,6 +20,17 @@ class WorkshopLectorInlineAdmin(BaseInlineAdminModel):
     """Inline admin model for Workshop lectors."""
 
     model = models_api.WorkshopLector
+    autocomplete_fields = ('lector',)
+
+
+class WorkshopPriceAdmin(BaseAdminModel):
+    """Inline admin for Workshop prices."""
+
+    autocomplete_fields = ('workshop', 'price_level')
+    fields = ('workshop', 'price_level', 'price')
+    list_display = ('id', 'workshop_link', 'price_level_link', 'price', 'effective_from')
+    list_filter = ('workshop__year',)
+    search_fields = ('workshop__name', 'workshop__year', 'price', 'price_level__name')
 
 
 class WorkshopPriceInlineAdmin(BaseInlineAdminModel):
@@ -39,6 +50,7 @@ class WorkshopAdmin(BaseAdminModel):
 
     list_display = ('name', 'desc', 'difficulty', 'visibility')
     list_filter = ('year', 'visibility', 'difficulty')
+    autocomplete_fields = ('location',)
     search_fields = ['name']
 
 
@@ -62,3 +74,4 @@ class WorkshopLocationAdmin(BaseAdminModel):
         WorkshopLocationPhotoInlineAdmin,
     ]
     list_display = ('name', 'address', 'updated_at')
+    search_fields = ('name', 'address')

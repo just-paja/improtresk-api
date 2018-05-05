@@ -32,6 +32,7 @@ class ReservationAdmin(BaseAdminModel):
         'meals',
     )
     inlines = [MealReservationInlineAdmin]
+    autocomplete_fields = ('workshop_price', 'order',)
     search_fields = [
         'order__participant__name',
         'order__year__year',
@@ -60,6 +61,7 @@ class OrderAdmin(BaseAdminModel):
     )
     list_filter = ('year', 'paid', 'over_paid', 'canceled')
     list_select_related = True
+    autocomplete_fields = ['participant']
     fields = [
         'year',
         'participant',

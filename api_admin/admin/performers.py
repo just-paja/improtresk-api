@@ -27,6 +27,7 @@ class PerformerAdmin(BaseAdminModel):
     list_display = ('name', 'year', 'visibility')
     list_filter = ('year',)
     exclude = ('links',)
+    search_fields = ('name',)
     inlines = [
         LinkInlineAdmin,
         PerformerDescriptionInlineAdmin,

@@ -49,6 +49,7 @@ class ParticipantAdmin(BaseAdminModel):
         'newsletter',
         'created_at',
     )
+    autocomplete_fields = ['team']
     list_filter = ('team', 'newsletter')
     search_fields = ['name', 'email']
 
@@ -62,3 +63,5 @@ class TeamAdmin(BaseAdminModel):
         'visibility',
         'desc',
     )
+
+    search_fields = ('name',)
