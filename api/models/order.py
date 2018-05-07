@@ -8,7 +8,8 @@ from django.template.loader import render_to_string
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
-from ..fields import format_relation_link
+from ..codes import decrypt, encrypt
+from ..fields import format_relation_link, format_checkin_link
 from .base import Base
 from .participant import Participant
 from .payment import STATUS_PAID
@@ -38,6 +39,19 @@ class OrderQuerySet(QuerySet):
             Q(reservation__ends_at__gt=now()),
             confirmed=True,
             canceled=False,
+        )
+
+    def filter_by_code(self, code):
+        print(decrypt(code))
+        print(decrypt(code))
+        print(decrypt(code))
+        return self.filter(symvar=decrypt(code))
+
+    def filter_by_participant(self, participant, year):
+        return self.filter(
+            canceled=False,
+            participant=participant,
+            year=year,
         )
 
 
@@ -97,7 +111,9 @@ class Order(Base):
 
     def __str__(self):
         """Return name as string representation."""
-        return "%s at %s" % (self.participant.name, self.created_at)
+        if self.year:
+            return "(%s) %s, %s" % (self.year.year, self.symvar, self.participant.name)
+        return "(?) %s, %s" % (self.symvar, self.participant.name)
 
     def save(self, *args, **kwargs):
         """Generate variable symbol if not available yet."""
@@ -225,6 +241,9 @@ class Order(Base):
     def reservation_link(self):
         return format_relation_link('api_reservation', self.reservation.id, self.reservation.id)
 
+    def checkin_link(self):
+        return format_checkin_link(self.get_code())
+
     def valid_until(self):
         if self.reservation:
             return self.reservation.ends_at
@@ -239,8 +258,12 @@ class Order(Base):
             return self.reservation.ends_at > now() and not self.canceled
         return False
 
+    def get_code(self):
+        return encrypt(self.symvar)
+
     is_valid.boolean = True
 
+    get_code.short_description = "Code"
     participant_link.short_description = "Participant"
     reservation_link.short_description = "Reservation"
 

@@ -17,8 +17,9 @@ class FoodTest(TestCase):
             'Food',
             name="Foo Food",
             meal=meal,
+            capacity=20,
         )
-        self.assertEqual(str(entry), '(%s, Wednesday) Foo Food' % year.year)
+        self.assertEqual(str(entry), '(%s, Wednesday) Foo Food (0/20)' % year.year)
 
     @freeze_time("2017-02-01")
     def test_capacity(self):

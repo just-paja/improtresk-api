@@ -1,6 +1,7 @@
 from api import models as models_api
 from api_roommates import models as models_roommates
 from api_textual import models as models_textual
+from checkin import models as models_checkin
 
 from oauth2_provider import admin as oauth_admin
 from django.contrib.auth import admin as auth_admin
@@ -10,6 +11,7 @@ from django.contrib.admin import AdminSite
 from . import views
 from .admin import (
     accomodation,
+    checkin,
     festival,
     food,
     lectors,
@@ -100,6 +102,7 @@ festival_site.register(models_api.Workshop, workshops.WorkshopAdmin)
 festival_site.register(models_api.WorkshopDifficulty, workshops.WorkshopDifficultyAdmin)
 festival_site.register(models_api.WorkshopPrice, workshops.WorkshopPriceAdmin)
 festival_site.register(models_api.Year, festival.YearAdmin)
+festival_site.register(models_checkin.Checkin, checkin.CheckinAdmin)
 festival_site.register(models_textual.News, news.NewsAdmin)
 festival_site.register(models_textual.Performer, performers.PerformerAdmin)
 festival_site.register(models_textual.Poll, polls.PollAdmin)

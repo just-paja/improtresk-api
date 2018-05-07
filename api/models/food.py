@@ -42,10 +42,12 @@ class AbstractFood(CapacityMixin, Base):
 
     def __str__(self):
         """Return name as string representation."""
-        return "(%s, %s) %s" % (
+        return "(%s, %s) %s (%s/%s)" % (
             self.meal.year.year,
             self.meal.date.strftime('%A'),
             self.name,
+            self.number_of_reservations(),
+            self.capacity,
         )
 
     def meal_link(self):

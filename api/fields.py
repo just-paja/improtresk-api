@@ -19,3 +19,11 @@ def format_relation_link(model_ident, pk, label):
         reverse("admin:%s_change" % model_ident, args=(pk,)),
         escape(label)
     )
+
+
+def format_checkin_link(code):
+    return format_html(
+        '<a href="{}">{}</a>',
+        reverse("checkin", kwargs={'code': code}),
+        escape(code)
+    )

@@ -38,7 +38,7 @@ class MealReservationInlineAdmin(BaseInlineAdminModel):
 
 class ReservationAdmin(BaseAdminModel):
     """Admin model for Reservations."""
-    readonly_fields = ('participant',)
+    readonly_fields = ('participant_link', 'checkin_link')
     list_display = (
         'id',
         'participant_link',
@@ -100,6 +100,7 @@ class OrderAdmin(BaseAdminModel):
         'year',
         'participant',
         'symvar',
+        'checkin_link',
         'accomodation_info',
         'confirmed',
         'canceled',
@@ -125,10 +126,12 @@ class OrderAdmin(BaseAdminModel):
                 'participant',
                 'symvar',
                 'total_amount_received',
+                'checkin_link',
             ] + DEFAULT_READONLY
         return [
             'symvar',
             'total_amount_received',
+            'checkin_link',
         ] + DEFAULT_READONLY
 
 

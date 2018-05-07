@@ -1,0 +1,188 @@
+{% extends "stats/bootstrap.html" %}
+{% load i18n static %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; {% trans 'Checkin' %}
+  &rsaquo; Stats
+</div>
+{% endblock %}
+
+{% block bscontent %}
+<div class="container">
+  <h1 class="mb-3">{% trans 'Checkin' %}</h1>
+  {% if just_paid %}
+    <div class="alert alert-success">{% trans 'Participant paid' %}</div>
+  {% endif %}
+  {% if just_refunded %}
+    <div class="alert alert-success">{% trans 'Participant refunded' %}</div>
+  {% endif %}
+  {% if just_checked_in %}
+    <div class="alert alert-success">{% trans 'Participant was checked in' %}</div>
+  {% endif %}
+  {% if checked_in and not just_checked_in %}
+    <div class="alert alert-warning">{% trans 'Participant is already checked in' %}</div>
+  {% endif %}
+
+  <div class="row">
+    <div class="col-md-6 col-lg-4 mb-3">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title mb-0">{{order.symvar}}</h2>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            {% trans 'Participant' %}:
+            {{participant.name}}
+          </li>
+          <li class="list-group-item">
+            {% trans 'Workshop' %}:
+            {% if workshop %}
+              {{workshop.name}}
+            {% else %}
+              {% trans 'No workshop' %}
+            {% endif %}
+          </li>
+          <li class="list-group-item {% if order.paid %}text-success{% else %}bg-warning{% endif %}">
+            {% trans 'Price' %}:
+            {{order.price}} Kč
+          </li>
+          <li class="list-group-item {% if paid_diff < 0 %}bg-warning{% elif paid_diff > 0 %}bg-danger{% endif %}">
+            {% trans 'Paid' %}:
+            {{paid_price}} Kč
+            {% if paid_diff != 0  %}
+              ({% trans 'Diff:'%} {{paid_diff}} Kč)
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+      {% if not checked_in %}
+        <div class="card-footer">
+          {% if not can_checkin %}
+            <div class="text-danger">
+              {% if not food_selected %}
+                <p>{% trans 'Food needs to be selected' %}</p>
+              {% endif %}
+              {% if not accomodation_room_selected %}
+                <p>{% trans 'Accomodation room needs to be selected' %}</p>
+              {% endif %}
+              {% if paid_diff < 0 %}
+                <p>{% trans 'Money needs to be returned' %}</p>
+              {% endif %}
+              {% if paid_diff > 0 %}
+                <p>{% trans 'Money needs to be received' %}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+          <div class="d-flex">
+            <form action="{% url 'checkin_check' code %}" method="post">
+              {% csrf_token %}
+              <button
+                class="btn {% if can_checkin %}btn-primary{% else %}btn-danger{% endif %}"
+                {% if not can_checkin %}disabled{% endif %}
+                type="submit"
+              >
+                {% trans 'Check in!' %}
+              </button>
+            </form>
+            {% if paid_diff > 0 %}
+              <form class="d-flex ml-auto" action="{% url 'checkin_pay' code %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-primary" type="submit">
+                  {% trans 'Participant paid' %}
+                </button>
+              </form>
+            {% endif %}
+            {% if paid_diff < 0 %}
+              <form class="d-flex ml-auto" action="{% url 'checkin_refund' code %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-primary" type="submit">
+                  {% trans 'Participant refunded' %}
+                </button>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="col-md-6 col-lg-4 mb-3">
+      <div class="card">
+        <div class="card-header">
+          <h2>{% trans 'Accomodation' %}</h2>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            {% if accomodation %}
+              {{accomodation.name}}
+            {% else %}
+              {% trans 'No accomodation selected!' %}
+            {% endif %}
+          </li>
+          {% if accomodation.requires_identification %}
+            <li class="list-group-item {% if not participant.id_number or not participant.address %}bg-warning{% endif %}">
+              {% trans 'Identification' %}:
+              {% if participant.id_number and participant.address %}
+                {% trans 'Ok' %}
+              {% else %}
+                {% if not participant.id_number %}
+                  {% trans 'Participant ID Number not given' %}
+                {% endif %}
+                {% if not participant.address %}
+                  {% trans 'Participant Address not given' %}
+                {% endif %}
+              {% endif %}
+            </li>
+          {% endif %}
+          {% if accomodation_has_rooms %}
+            <li class="list-group-item d-flex {% if not accomodation_room %}bg-warning{% endif %}">
+              <span class="mr-1">{% trans 'Room' %}:</span>
+              {% if accomodation_room %}
+                <span>{{accomodation_room.room.number}}</span>
+              {% else %}
+                <div class="d-flex flex-grow justify-content-between">
+                  <span>{% trans 'Not selected' %}</span>
+                  <a href="{% url 'admin:api_roommates_room_changelist' %}?available=1">
+                    {% trans 'Pick a room' %}
+                  </a>
+                </div>
+              {% endif %}
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4 mb-3">
+      <div class="card">
+        <div class="card-header">
+          <h2>{% trans 'Food' %}</h2>
+        </div>
+        {% if meals %}
+          <ul class="list-group list-group-flush">
+            {% for meal in meals %}
+              <li class="list-group-item">
+                <strong>{{meal.meal.name}} {{meal.meal.date | date:"l"}}</strong><br />
+                {% if meal.soup %}{{meal.soup.name}}{% else %}{% trans 'No soup' %}{% endif %} |
+                {% if meal.food %}{{meal.food.name}}{% else %}{% trans 'No food' %}{% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div class="card-body">
+            <p class="text-muted mb-0">{% trans 'No food ordered' %}</p>
+          </div>
+        {% endif %}
+        {% if not food_selected %}
+          <div class="card-footer">
+            <a href="{% url 'admin:api_reservation_change' order.reservation.id %}">
+              Vybrat jídlo
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

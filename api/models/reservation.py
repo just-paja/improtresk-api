@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from .base import Base
-from ..fields import format_relation_link
+from ..fields import format_relation_link, format_checkin_link
 
 
 class Reservation(Base):
@@ -130,6 +130,9 @@ class Reservation(Base):
             self.order.participant.id,
             self.order.participant,
         )
+
+    def checkin_link(self):
+        return format_checkin_link(self.order.get_code())
 
     order_link.short_description = "Order"
     participant_link.short_description = "Participant"

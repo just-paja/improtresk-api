@@ -18,6 +18,7 @@ drf-extensions = "*"
 django-mathfilters = "*"
 boto = "*"
 fiobank = "*"
+qrcode = "*"
 
 [dev-packages]
 codeclimate-test-reporter = "*"

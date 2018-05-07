@@ -12,8 +12,11 @@ from ..fields import VISIBILITY_PUBLIC
 
 
 class YearManager(models.Manager):
+    def filter_current(self):
+        return self.filter(current=True).order_by('-year')
+
     def get_current(self):
-        return self.filter(current=True).order_by('-year').first()
+        return self.filter_current().first()
 
 
 class Year(Base):

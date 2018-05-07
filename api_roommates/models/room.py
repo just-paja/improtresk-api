@@ -30,3 +30,6 @@ class Room(Base):
 
     def accomodation_link(self):
         return format_relation_link('api_accomodation', self.accomodation.id, self.accomodation)
+
+    def remaining_capacity(self):
+        return self.size - self.inhabitants.count()

@@ -1,16 +1,20 @@
+import qrcode
+
 from datetime import date
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.utils.timezone import localtime, now
-from django.http import Http404
+from django.http import Http404, HttpResponse
 
 from rest_framework import mixins, permissions, serializers, status, viewsets
-
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from ..models import Participant
 from ..models.participantToken import PASSWORD_RESET
+from .decorators import require_participant, require_year_active, require_order_active
+from ..codes import decrypt
 
 
 def is_true(value):
@@ -157,29 +161,36 @@ class WhoAmIViewSet(viewsets.GenericViewSet):
             return ParticipantSerializer
         return ParticipantUpdateSerializer
 
+    @require_participant
     def list(self, request):
-        try:
-            participant = request.user.participant
-        except ObjectDoesNotExist:
-            raise Http404
-        serializer = self.get_serializer(participant)
+        serializer = self.get_serializer(self.participant)
         return Response(serializer.data)
 
+    @require_participant
     def patch(self, request):
-        try:
-            participant = request.user.participant
-        except ObjectDoesNotExist:
-            raise Http404
-        serializer = self.get_serializer(data=request.data, instance=participant, partial=True)
+        serializer = self.get_serializer(data=request.data, instance=self.participant, partial=True)
         serializer.set_user(request.user)
         if serializer.is_valid():
             serializer.save()
-            response_serializer = ParticipantSerializer(participant)
+            response_serializer = ParticipantSerializer(self.participant)
             return Response(response_serializer.data)
         return Response(
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+
+    @action(methods=['get'], detail=False)
+    @require_year_active
+    @require_participant
+    @require_order_active
+    def code(self, request):
+        url = request.scheme + '://' + request.get_host() + '/checkin/' + self.order.get_code()
+        print(url)
+        print(decrypt(self.order.get_code()))
+        response = HttpResponse(content_type="image/png")
+        qr = qrcode.make(url)
+        qr.save(response, 'PNG')
+        return response
 
 
 class ResetPasswordViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
