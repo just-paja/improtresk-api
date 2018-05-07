@@ -97,7 +97,7 @@ class Order(Base):
 
     def __str__(self):
         """Return name as string representation."""
-        return "%s at %s" % (self.participant.name, self.created_at)
+        return "(%s) %s, %s" % (self.year.year, self.symvar, self.participant.name)
 
     def save(self, *args, **kwargs):
         """Generate variable symbol if not available yet."""

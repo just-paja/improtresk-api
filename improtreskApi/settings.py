@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'api_textual',
     'api_roommates',
     'api_admin',
+    'checkin',
 ]
 
 MIDDLEWARE = [

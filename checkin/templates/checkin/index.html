@@ -1,0 +1,59 @@
+{% extends "stats/bootstrap.html" %}
+{% load i18n static %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; {% trans 'Checkin' %}
+  &rsaquo; Stats
+</div>
+{% endblock %}
+
+{% block bscontent %}
+<h1>{% trans 'Checkin' %}<br /><small>{{order.symvar}}</small></h1>
+
+<ul class="list-group">
+  <li class="list-group-item">
+    {% trans 'Accomodation' %}:
+    {% if workshop %}
+      {{accomodation.name}}
+    {% else %}
+      {% trans 'No accomodation' %}
+    {% endif %}
+  </li>
+  <li class="list-group-item">
+    {% trans 'Workshop' %}:
+    {% if workshop %}
+      {{workshop.name}}
+    {% else %}
+      {% trans 'No workshop' %}
+    {% endif %}
+  </li>
+  <li class="list-group-item {% if order.paid %}text-success{% else %}text-warning{% endif %}">
+    {% trans 'Price' %}:
+    {{order.price}} Kč
+  </li>
+  <li class="list-group-item bg-warning">
+    {% trans 'Paid' %}:
+    {{paid_price}} Kč
+    ({% trans 'Diff:'%} {{overpaid_by}} Kč)
+  </li>
+</ul>
+
+<h2>{% trans 'Meals' %}</h2>
+
+<ul class="list-group">
+  {% for meal in meals %}
+    <li class="list-group-item">
+      <strong>{{meal.meal.name}}</strong><br />
+      {{meal.soup.name}}
+      {{meal.food.name}}
+    </li>
+  {% endfor %}
+</ul>
+
+<form action="">
+<button class="btn btn-primary" type="submit">
+  Check!
+</button>
+{% endblock %}

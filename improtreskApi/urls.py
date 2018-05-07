@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from api_admin.festival import festival_site
+from checkin.urls import urlpatterns as checkin
 
 from django.conf import settings
 from django.conf.urls import include, url
@@ -25,6 +26,7 @@ urlpatterns = [
     url(r'^admin/', festival_site.urls),
     url(r'^api/', include(router.urls)),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    url(r'^checkin/', include(checkin))
 ]
 
 if settings.DEBUG:
