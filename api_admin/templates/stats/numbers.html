@@ -27,6 +27,10 @@
               <a href="{% url 'admin:api_participant_changelist' %}?year__id__exact={{festival.id}}">{% trans 'Total' %}</a>
               {% include 'stats/number.html' with current=current.participants_total previous=previous.participants_total %}
             </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <a href="{% url 'admin:api_participant_changelist' %}?year__id__exact={{festival.id}}">{% trans 'Present' %}</a>
+              {% include 'stats/number.html' with current=current.participants_checked previous=previous.participants_checked %}
+            </li>
           </ul>
           <div class="card-header">
             {% trans 'Workshops' %}

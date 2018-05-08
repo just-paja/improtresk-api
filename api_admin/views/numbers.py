@@ -1,4 +1,5 @@
 from api.models import Order, Participant, Payment, Reservation, Year
+from checkin.models import Checkin
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Sum
 from django.shortcuts import render
@@ -14,6 +15,10 @@ def get_festival_payments(festival):
 
 def get_participants_count(festival):
     return Participant.objects.filter_by_festival(festival).count()
+
+
+def get_participants_checked_count(festival):
+    return Checkin.objects.filter(order__year=festival).count()
 
 
 def get_workshop_participants_count(festival):
@@ -111,6 +116,7 @@ def get_festival_stats(festival):
         'orders_canceled': get_canceled_orders_count(festival),
         'orders_free': get_free_orders_count(festival),
         'participants_total': get_participants_count(festival),
+        'participants_checked': get_participants_checked_count(festival),
         'participants_on_workshop': get_workshop_participants_count(festival),
         'participants_without_workshop': get_workshopless_participants_count(festival),
         'participants_with_team': get_team_participants_count(festival),
