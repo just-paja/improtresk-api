@@ -80,6 +80,7 @@ class OrderAdmin(BaseAdminModel):
         'participant_link',
         'reservation_link',
         'price',
+        'total_amount_received',
         'is_valid',
         'canceled',
         'paid',

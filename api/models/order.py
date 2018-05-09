@@ -263,9 +263,10 @@ class Order(Base):
 
     is_valid.boolean = True
 
-    get_code.short_description = "Code"
-    participant_link.short_description = "Participant"
-    reservation_link.short_description = "Reservation"
+    get_code.short_description = _("Code")
+    participant_link.short_description = _("Participant")
+    reservation_link.short_description = _("Reservation")
+    total_amount_received.short_description = _("Received")
 
 
 def unassigned_orders():
