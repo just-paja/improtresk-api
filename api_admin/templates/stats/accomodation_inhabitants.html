@@ -14,30 +14,32 @@
 
 {% block bscontent %}
 {% for accomodation in data %}
-  <div>
-    <h1>{{accomodation.name}}</h1>
-    <table class="table" style="width: 100%">
-      <thead>
-        <tr>
-          <th style="width: auto">Jméno</th>
-          <th>E-mail</th>
-          <th>Číslo OP</th>
-          <th>Adresa Bydliště</th>
-          <th style="min-width: 30pt">Podpis</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for participant in accomodation.participants %}
-          <tr>
-            <td>{{ participant.name }}</td>
-            <td>{{ participant.email }}</td>
-            <td>{{ participant.id_number }}</td>
-            <td>{{ participant.address }}</td>
-            <td></td>
-          </tr>
+  {% if accomodation.rooms %}
+    <div>
+      <h1>{{accomodation.name}}</h1>
+      <div class="row">
+        {% for room in accomodation.rooms %}
+          <div class="col-lg-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                {{room.number}}
+              </div>
+              {% include 'stats/inhabitants_table.html' with participants=room.inhabitants %}
+            </div>
+          </div>
         {% endfor %}
-      </tbody>
-    </table>
-  </div>
+        {% if accomodation.without_room %}
+          <div class="col-lg-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                {% trans 'Without room' %}
+              </div>
+              {% include 'stats/inhabitants_table.html' with participants=accomodation.without_room %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
 {% endfor %}
 {% endblock %}
