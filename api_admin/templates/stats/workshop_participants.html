@@ -16,12 +16,16 @@
   {% for workshop in workshops %}
   <div class="card" style="page-break-after: always">
     <div class="card-header">
-      <h2 class="card-title mb-0">{{workshop.name}}</h2>
+      <div class="d-flex justify-content-between">
+        <h2 class="card-title mb-0">{{workshop.name}}</h2>
+        <a href="#" class="participant-emails-toggle d-print-none">{% trans 'Toggle emails' %}</a>
+      </div>
     </div>
     <ul class="list-group list-group-flush">
       {% for participant in workshop.participants %}
         <li class="list-group-item">
           {{participant}}{% if participant.team %} [{{participant.team}}]{% endif %}
+          <span class="participant-email d-print-none">&lt;{{participant.email}}&gt;</span>
         </li>
       {% endfor %}
     </ul>
