@@ -5,6 +5,7 @@
     <thead>
       <tr>
         <th style="width: auto">Jméno</th>
+        <th style="width: auto">Datum narození</th>
         <th>Číslo OP</th>
         <th>Adresa Bydliště</th>
         <th style="min-width: 30pt">Podpis</th>
@@ -14,6 +15,7 @@
       {% for participant in participants %}
         <tr>
           <td>{{ participant.name }}</td>
+          <td>{{ participant.birthday }}</td>
           <td>{{ participant.id_number }}</td>
           <td>{{ participant.address }}</td>
           <td></td>
