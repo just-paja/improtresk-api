@@ -29,6 +29,7 @@ class Command(BaseCommand):
                 food.append({
                     'date': str(meal.meal.date),
                     'food': meal.food.name if meal.food else None,
+                    'id': meal.food.id if meal.food else None,
                 })
             data.append({
                 'id': order.participant.id,
