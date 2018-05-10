@@ -42,9 +42,6 @@ class OrderQuerySet(QuerySet):
         )
 
     def filter_by_code(self, code):
-        print(decrypt(code))
-        print(decrypt(code))
-        print(decrypt(code))
         return self.filter(symvar=decrypt(code))
 
     def filter_by_participant(self, participant, year):
