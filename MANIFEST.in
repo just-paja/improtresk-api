@@ -3,7 +3,7 @@ recursive-include api *.py *.mo *.txt
 recursive-include api_textual *.py *.mo *.txt
 recursive-include api_admin *.py *.mo *.html
 recursive-include api_roommates *.py *.mo *.html
-recursive-include checkin *.py *.mo *.html
+recursive-include checkin *.py *.mo *.html *.txt
 recursive-include improtreskApi *.py
 include requirements.txt
 include README.md
