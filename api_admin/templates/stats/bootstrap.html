@@ -16,7 +16,8 @@
     .flex-grow {
       flex-grow: 1;
     }
-    .participant-email {
+    .participant-email,
+    .problem-solution {
       display: none;
     }
   </style>
@@ -91,9 +92,82 @@
       }
     }
 
+    const troubleList = [
+      {
+        description: 'Mám žízeň',
+        solution: 'Dej si pivo',
+      },
+      {
+        description: 'Znám tu málo lidí',
+        solution: 'Seznámit účastníka s nejblíž stojícím člověkem',
+      },
+      {
+        description: 'Nechci spát sám',
+        solution: 'Seznámit účastníka s nejblíž stojící osobou opačného pohlaví',
+      },
+      {
+        description: 'Mám hlad',
+        solution: 'Nasměrovat účastníka do Billy',
+      },
+      {
+        description: 'Mám vybitý telefon',
+        solution: 'Zvukař ti půjčí nabíječku',
+      },
+      {
+        description: 'ještě jsem se nelíbil/a s Láďou',
+        solution: 'Seznámit účastníka s Láďou',
+      },
+      {
+        description: 'Nechal jsem si něco doma',
+        solution: 'Dej si panáka a zapomeň na to',
+      },
+      {
+        description: 'Nevím co dál se svým životem',
+        solution: 'Užij si Improtřesk, ono se to nějak vyvrbí',
+      },
+      {
+        description: 'jsem moc střízlivý',
+        solution: 'Nasměrovat účastníka do hospody',
+      },
+      {
+        description: 'Mám sebou málo peněz',
+        solution: 'Rozdávej polibky za poplatek',
+      },
+      {
+        description: 'Mám tu málo kamarádů',
+        solution: 'Oběťmi každého, koho potkáš',
+      },
+      {
+        description: 'Necítím se dostatečně naladěný na Improtřesk',
+        solution: 'Říct účastníkovi vtip',
+      },
+    ];
+
+    const lookForTrouble = () => {
+      const index = parseInt(Math.random() * (troubleList.length - 1), 10);
+      return troubleList[index];
+    };
+
+    const bindTroubleMaker = () => {
+      const el = $('.trouble-maker');
+      const trouble = lookForTrouble();
+      const desc = $('<p class="text-big" />');
+      const solution = $('<p class="problem-solution text-big" />');
+      const showSolution = $('<a class="btn btn-primary" />');
+
+      desc.html(trouble.description);
+      solution.html(trouble.solution);
+      showSolution.html('Vyřešit');
+      showSolution.click((e) => {
+        $(e.target).hide().siblings('.problem-solution').show();
+      });
+      el.append(desc, solution, showSolution);
+    };
+
     $(function() {
       bindParticipantEmailsToggle();
       bindNumberFormatters();
+      bindTroubleMaker();
     });
   </script>
   {% block bscontent %}
