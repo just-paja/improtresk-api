@@ -14,7 +14,6 @@ from rest_framework.response import Response
 from ..models import Participant
 from ..models.participantToken import PASSWORD_RESET
 from .decorators import require_participant, require_year_active, require_order_active
-from ..codes import decrypt
 
 
 def is_true(value):
