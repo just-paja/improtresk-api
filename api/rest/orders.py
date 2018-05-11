@@ -172,8 +172,6 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:
-            return Order.objects.all()
         if user.participant:
             return Order.objects\
                 .filter(participant=user.participant)\
