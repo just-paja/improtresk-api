@@ -1,0 +1,9 @@
+Vítej na Improtřesku!
+
+Milý účastníku, Improtřesk je festival s rodinnou atmosférou, to znamená, že ještě než odjedeš, budeš skoro všechny znát jménem. Chovej se u nás jako doma, ale počítej s tím, že my podle toho poznáme, jak to u tebe doma vypadá :-)
+
+Informace k programu,   workshopům, obědům, mapu, a ubytování najdeš na hlavní nástěnce v předsálí.
+
+Kdybys cokoliv potřeboval, obrať se na organizátory - jsme tu pro tebe.
+
+{% include 'mail/partial/footer.txt' %}
