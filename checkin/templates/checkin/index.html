@@ -143,7 +143,7 @@
               {% else %}
                 <div class="d-flex flex-grow justify-content-between">
                   <span>{% trans 'Not selected' %}</span>
-                  <a href="{% url 'admin:api_roommates_room_changelist' %}?available=1">
+                  <a href="{% url 'admin:api_roommates_inhabitant_add' %}?participant={{participant.id}}">
                     {% trans 'Pick a room' %}
                   </a>
                 </div>
