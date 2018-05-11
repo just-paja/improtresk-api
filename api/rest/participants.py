@@ -185,8 +185,6 @@ class WhoAmIViewSet(viewsets.GenericViewSet):
     @require_order_active
     def code(self, request):
         url = request.scheme + '://' + request.get_host() + '/checkin/' + self.order.get_code()
-        print(url)
-        print(decrypt(self.order.get_code()))
         response = HttpResponse(content_type="image/png")
         qr = qrcode.make(url)
         qr.save(response, 'PNG')
