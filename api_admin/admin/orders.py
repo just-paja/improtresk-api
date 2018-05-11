@@ -173,3 +173,35 @@ class PaymentAdmin(BaseAdminModel):
             request,
             obj,
         )
+
+
+class MealReservationAdmin(BaseAdminModel):
+    """Admin model for Meal Reservations."""
+    readonly_fields = (
+        'participant_link',
+        'checkin_link',
+        'reservation',
+        'meal',
+    )
+    list_display = (
+        'id',
+        'participant_link',
+        'order_link',
+        'reservation_link',
+        'meal',
+        'food',
+        'soup',
+    )
+    list_filter = (
+        'reservation__order__year',
+        'reservation__order__confirmed',
+        'reservation__order__canceled',
+        'reservation__order__paid',
+    )
+    autocomplete_fields = ('reservation', 'meal', 'food', 'soup')
+    search_fields = [
+        'meal__name',
+        'food__name',
+        'soup__name',
+        'reservation__order__participant__name',
+    ]

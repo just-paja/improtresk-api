@@ -12,11 +12,12 @@ from functools import wraps
 from ..models import Checkin
 
 
-def has_food_selected(mealreservations):
+def get_unselected_meals(mealreservations):
+    unselected = []
     for meal in mealreservations:
         if not meal.soup or not meal.food:
-            return False
-    return True
+            unselected.append(meal)
+    return unselected
 
 
 def is_overpaid(order, paid_price):
@@ -55,7 +56,8 @@ def require_checkin_data(func):
             paid_price = 0
         mealreservations = reservation.mealreservation_set.all()
         paid_diff = order.price - paid_price
-        food_selected = has_food_selected(mealreservations)
+        meals_to_select = get_unselected_meals(mealreservations)
+        food_selected = len(meals_to_select) == 0
         rooms = order.participant.inhabited_rooms.filter(
             room__accomodation=reservation.accomodation,
         )
@@ -79,6 +81,7 @@ def require_checkin_data(func):
             'just_paid': 'paid' in request.GET,
             'just_refunded': 'refunded' in request.GET,
             'meals': mealreservations,
+            'meals_to_select': meals_to_select,
             'order': order,
             'paid_diff': paid_diff,
             'paid_price': paid_price,

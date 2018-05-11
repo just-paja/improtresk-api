@@ -162,23 +162,21 @@
         {% if meals %}
           <ul class="list-group list-group-flush">
             {% for meal in meals %}
-              <li class="list-group-item">
-                <strong>{{meal.meal.name}} {{meal.meal.date | date:"l"}}</strong><br />
-                {% if meal.soup %}{{meal.soup.name}}{% else %}{% trans 'No soup' %}{% endif %} |
-                {% if meal.food %}{{meal.food.name}}{% else %}{% trans 'No food' %}{% endif %}
+              <li class="list-group-item d-flex justify-content-between">
+                <div>
+                  <strong>{{meal.meal.name}} {{meal.meal.date | date:"l"}}</strong><br />
+                  {% if meal.soup %}{{meal.soup.name}}{% else %}{% trans 'No soup' %}{% endif %} |
+                  {% if meal.food %}{{meal.food.name}}{% else %}{% trans 'No food' %}{% endif %}
+                </div>
+                <a href="{% url 'admin:api_mealreservation_change' meal.id %}">
+                  Vybrat jídlo
+                </a>
               </li>
             {% endfor %}
           </ul>
         {% else %}
           <div class="card-body">
             <p class="text-muted mb-0">{% trans 'No food ordered' %}</p>
-          </div>
-        {% endif %}
-        {% if not food_selected %}
-          <div class="card-footer">
-            <a href="{% url 'admin:api_reservation_change' order.reservation.id %}">
-              Vybrat jídlo
-            </a>
           </div>
         {% endif %}
       </div>

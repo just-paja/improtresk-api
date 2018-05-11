@@ -12,17 +12,15 @@ class FoodPhotoAdmin(BaseInlineAdminModel):
 class FoodAdmin(FoodAdminMixin, BaseAdminModel):
     """Admin model for Food and its photos."""
 
-    inlines = [
-        FoodPhotoAdmin,
-    ]
+    inlines = [FoodPhotoAdmin]
+    search_fields = ['name', 'meal__year__year']
 
 
 class SoupAdmin(FoodAdminMixin, BaseAdminModel):
     """Admin model for Food and its photos."""
 
-    inlines = [
-        FoodPhotoAdmin,
-    ]
+    inlines = [FoodPhotoAdmin]
+    search_fields = ['name', 'meal__year__year']
 
 
 class MealAdmin(BaseAdminModel):
@@ -34,3 +32,4 @@ class MealAdmin(BaseAdminModel):
         'date',
         'visibility',
     )
+    search_fields = ['name', 'year__year']
