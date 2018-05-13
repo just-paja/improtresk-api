@@ -1,0 +1,26 @@
+{% load i18n %}
+
+{% if participants %}
+  <table class="table mb-0" style="width: 100%">
+    <thead>
+      <tr>
+        <th style="width: auto">Jméno</th>
+        <th style="width: auto">Datum narození</th>
+        <th style="min-width: 30pt">Podpis</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for participant in participants %}
+        <tr>
+          <td>{{ participant.name }}</td>
+          <td>{{ participant.birthday }}</td>
+          <td></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <div class="card-footer">
+    <p class="mb-0 text-muted">{% trans 'Room empty' %}</p>
+  </div>
+{% endif %}

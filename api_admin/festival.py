@@ -64,6 +64,11 @@ class FestivalAdminSite(AdminSite):
                     name='stats-workshops-participants',
                 ),
                 url(
+                    r'^stats/(?P<festivalId>[0-9]+)/workshops-attendance$',
+                    views.workshop_attendance,
+                    name='stats-workshops-attendance',
+                ),
+                url(
                     r'^stats/(?P<festivalId>[0-9]+)/accounting$',
                     views.allowance_list,
                     name='stats-accounting',

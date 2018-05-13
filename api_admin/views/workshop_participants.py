@@ -3,8 +3,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render
 
 
-@staff_member_required
-def workshop_participants(request, festivalId):
+def get_workshop_participants_data(festivalId):
     festival = Year.objects.get(pk=festivalId)
     workshops = festival.get_workshops()
     workshopless = Order.objects.filter(
@@ -30,11 +29,16 @@ def workshop_participants(request, festivalId):
         data.append(workshopless_data)
         for order in workshopless:
             workshopless_data['participants'].append(order.participant)
+    return {
+        'festival': festival,
+        'workshops': data,
+    }
+
+
+@staff_member_required
+def workshop_participants(request, festivalId):
     return render(
         request,
         'stats/workshop_participants.html',
-        {
-            'festival': festival,
-            'workshops': data,
-        },
+        get_workshop_participants_data(festivalId),
     )

@@ -1,0 +1,27 @@
+{% extends 'stats/bootstrap.html' %}
+{% load i18n static %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo;
+  <a href="{% url 'admin:stats' %}">{% trans 'Stats' %}</a>
+  &rsaquo; {{festival.year}}
+  &rsaquo; {% trans 'Workshops' %}
+</div>
+{% endblock %}
+
+{% block bscontent %}
+<div class="container">
+  {% for workshop in workshops %}
+  <div class="card" style="page-break-after: always">
+    <div class="card-header">
+      <div class="d-flex justify-content-between">
+        <h2 class="card-title mb-0">{{workshop.name}}</h2>
+      </div>
+    </div>
+    {% include 'stats/attendee_table.html' with participants=workshop.participants %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
