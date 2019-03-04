@@ -52,4 +52,4 @@ class Command(BaseCommand):
                     },
                 )
                 if created and order:
-                        order.update_paid_status()
+                    order.update_paid_status()
