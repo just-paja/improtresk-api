@@ -21,7 +21,6 @@ fiobank = "*"
 qrcode = "*"
 
 [dev-packages]
-codeclimate-test-reporter = "*"
 coverage = "*"
 django-nose = "*"
 freezegun = "*"
