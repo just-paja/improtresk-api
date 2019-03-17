@@ -24,6 +24,7 @@ class YearSerializer(serializers.HyperlinkedModelSerializer):
     priceLevels = PriceLevelSerializer(source='price_levels', many=True)
     startDate = serializers.DateField(source='start_date')
     startSignupsAt = serializers.DateTimeField(source='start_date_of_signups')
+    withoutWorkshop = serializers.BooleanField(source='without_workshop')
 
     class Meta:
         model = Year
@@ -37,6 +38,7 @@ class YearSerializer(serializers.HyperlinkedModelSerializer):
             'endFoodPickingAt',
             'current',
             'priceLevels',
+            'withoutWorkshop',
         )
 
 
@@ -46,6 +48,7 @@ class YearDetailSerializer(serializers.HyperlinkedModelSerializer):
     startDate = serializers.DateField(source='start_date')
     startSignupsAt = serializers.DateTimeField(source='start_date_of_signups')
     workshops = serializers.SerializerMethodField()
+    withoutWorkshop = serializers.BooleanField(source='without_workshop')
 
     class Meta:
         model = Year
@@ -59,6 +62,7 @@ class YearDetailSerializer(serializers.HyperlinkedModelSerializer):
             'endFoodPickingAt',
             'current',
             'workshops',
+            'withoutWorkshop',
         )
 
     def get_workshops(self, obj):

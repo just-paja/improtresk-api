@@ -51,6 +51,10 @@ class Year(Base):
     current = models.BooleanField(
         verbose_name=_("Is this year current?"),
     )
+    without_workshop = models.BooleanField(
+        verbose_name=_("Can people attend festival without workshop?"),
+        default=True,
+    )
 
     class Meta:
         ordering = ('-year', )
