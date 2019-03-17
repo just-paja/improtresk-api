@@ -91,9 +91,9 @@ jobs:
             ./venv/bin/vrun pipenv run curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
 
-      - run:
-          name: Code Climate reporter
-          command: ./venv/bin/vrun pipenv run ./cc-test-reporter after-build
+      # - run:
+      #     name: Code Climate reporter
+      #     command: ./venv/bin/vrun pipenv run ./cc-test-reporter after-build
 
       - store_test_results:
           path: /tmp/junit-test-report.xml
