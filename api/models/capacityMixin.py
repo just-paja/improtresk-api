@@ -31,8 +31,7 @@ class CapacityMixin(models.Model):
             orders__canceled=False,
             orders__reservation__ends_at__gt=now(),
             orders__reservation__in=self.get_reservations_query(),
-        ).exclude(
-            orders__paid=True,
+            orders__paid=False,
         ).distinct().count()
 
     def number_of_reservations(self):
