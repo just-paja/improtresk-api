@@ -283,7 +283,7 @@ def workshops_at_capacity():
     workshops = Workshop.objects.filter(year=year)
     full = []
     for workshop in workshops:
-        if not workshop.has_free_capacity():
+        if not workshop.accepts_participants():
             full.append(workshop)
     return full
 

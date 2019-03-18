@@ -75,3 +75,6 @@ class Workshop(CapacityMixin, Base):
         ).exclude(
             order__participant__workshops__workshop__exact=self
         ).count()
+
+    def accepts_participants(self):
+        return self.capacity > self.participants.count()
