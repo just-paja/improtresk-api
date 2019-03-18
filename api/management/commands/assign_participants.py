@@ -26,3 +26,4 @@ class Command(BaseCommand):
             assigned = order.try_to_assign()
             if not assigned:
                 print('Failed to assign %s (%s) to %s' % get_order_desc(order))
+                break
