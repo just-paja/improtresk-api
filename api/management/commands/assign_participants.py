@@ -1,12 +1,8 @@
 #!/usr/bin/env python
-import datetime
-
-from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from fiobank import FioBank
-
 from ...models.order import unassigned_orders
+
 
 def get_order_desc(order):
     return (
