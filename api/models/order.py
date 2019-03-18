@@ -217,20 +217,21 @@ class Order(Base):
                 workshop=self.reservation.workshop(),
             )
             assignment.save()
-        else:
-            formatConfig = {
-                'order': self.id,
-                'participant': self.participant.name,
-                'workshop': self.reservation.workshop().name,
-            }
-            mail.send_mail(
-                '[O{order}]: Nepovedlo se zařadit na workshop'.format(
-                    **formatConfig,
-                ),
-                render_to_string('mail/assignment_failed.txt', formatConfig),
-                settings.EMAIL_SENDER,
-                [settings.EMAIL_TECH],
-            )
+            return True
+        formatConfig = {
+            'order': self.id,
+            'participant': self.participant.name,
+            'workshop': self.reservation.workshop().name,
+        }
+        mail.send_mail(
+            '[O{order}]: Nepovedlo se zařadit na workshop'.format(
+                **formatConfig,
+            ),
+            render_to_string('mail/assignment_failed.txt', formatConfig),
+            settings.EMAIL_SENDER,
+            [settings.EMAIL_TECH],
+        )
+        return False
 
     def participant_link(self):
         return format_relation_link('api_participant', self.participant.id, self.participant)
@@ -273,6 +274,8 @@ def unassigned_orders():
     return Order.objects.filter(
         year=year,
         paid=True,
+    ).exclude(
+        participant__workshops__year=year
     )
 
 
